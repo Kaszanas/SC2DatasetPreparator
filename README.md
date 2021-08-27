@@ -11,7 +11,7 @@ In order to specify different processing flags for https://github.com/Kaszanas/S
 
 ## Usage
 
-Before using this software please Python >= 3.7 and ```requirements.txt```.
+Before using this software please install Python >= 3.7 and ```requirements.txt```.
 
 Please keep in mind that ```src/directory_flattener.py``` does not contain default flag values and can be customized with the following command line flags:
 
