@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5296664.svg)](https://doi.org/10.5281/zenodo.5296664)
+
 # SC2DatasetPreparator
 
 This repository contains tools which can be used in order to perform the following steps:
@@ -53,3 +55,17 @@ optional arguments:
 ```
 
 # Citation
+
+```
+@software{Bialecki_2021_5296664,
+  author       = {Białecki, Andrzej},
+  title        = {{Kaszanas/SC2DatasetPreparator: 1.0.0 
+                   SC2DatasetPreparator Release}},
+  month        = aug,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {1.0.0},
+  doi          = {10.5281/zenodo.5296664},
+  url          = {https://doi.org/10.5281/zenodo.5296664}
+}
+```
