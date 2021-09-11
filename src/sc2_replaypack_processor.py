@@ -5,8 +5,8 @@ from tqdm import tqdm
 from multiprocessing import Pool
 
 
-def multiprocessing_scheduler(processing_arguments):
-    with Pool(processes=12) as pool:
+def multiprocessing_scheduler(processing_arguments, number_of_processes):
+    with Pool(processes=number_of_processes) as pool:
         pool.imap_unordered(multiprocessing_client, processing_arguments)
         pool.close()
         pool.join()
@@ -16,17 +16,16 @@ def multiprocessing_client(arguments:tuple):
 
     directory, output_directory_filepath = arguments
 
-    subprocess.run(["GoSC2Science.exe",
+    subprocess.run(["SC2InfoExtractorGo.exe",
                     f"-input={directory}/",
                     f"-output={output_directory_filepath}/",
-                    "-integrity_check=false",
-                    "-validity_check=false",
+                    "-perform_integrity_checks=false",
+                    "-perform_validity_checks=false",
                     "-number_of_packages=1",
-                    "-game_mode=0b1111111111",
+                    "-game_mode=0b11111111",
                     "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
                     "-perform_anonymization=false",
-                    "-localize_maps=true",
-                    "-with_multiprocessing=false",
+                    "-max_procs=1",
                     "-log_level=3",
                     f"-log_dir={output_directory_filepath}/"])
 
@@ -56,4 +55,4 @@ if __name__ == "__main__":
 
         multiprocessing_list.append((directory, output_directory_filepath))
 
-    multiprocessing_scheduler(multiprocessing_list)
+    multiprocessing_scheduler(multiprocessing_list, int(args.number_of_processes))
