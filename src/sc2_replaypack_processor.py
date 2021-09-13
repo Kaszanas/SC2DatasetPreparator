@@ -21,10 +21,10 @@ def multiprocessing_client(arguments:tuple):
                     f"-output={output_directory_filepath}/",
                     "-perform_integrity_checks=false",
                     "-perform_validity_checks=false",
+                    "-perform_cleanup=true",
                     "-number_of_packages=1",
                     "-game_mode=0b11111111",
                     "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
-                    "-perform_anonymization=false",
                     "-max_procs=1",
                     "-log_level=3",
                     f"-log_dir={output_directory_filepath}/"])
