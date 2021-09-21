@@ -12,28 +12,44 @@ def multiprocessing_scheduler(processing_arguments, number_of_processes):
         pool.join()
 
 
-def multiprocessing_client(arguments:tuple):
+def multiprocessing_client(arguments: tuple):
 
     directory, output_directory_filepath = arguments
 
-    subprocess.run(["SC2InfoExtractorGo.exe",
-                    f"-input={directory}/",
-                    f"-output={output_directory_filepath}/",
-                    "-perform_integrity_checks=false",
-                    "-perform_validity_checks=false",
-                    "-perform_cleanup=true",
-                    "-number_of_packages=1",
-                    "-game_mode=0b11111111",
-                    "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
-                    "-max_procs=1",
-                    "-log_level=3",
-                    f"-log_dir={output_directory_filepath}/"])
+    subprocess.run(
+        [
+            "SC2InfoExtractorGo.exe",
+            f"-input={directory}/",
+            f"-output={output_directory_filepath}/",
+            "-perform_integrity_checks=true",
+            "-perform_validity_checks=false",
+            "-perform_cleanup=true",
+            "-number_of_packages=1",
+            "-game_mode=0b11111111",
+            "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
+            "-max_procs=1",
+            "-log_level=3",
+            f"-log_dir={output_directory_filepath}/",
+        ]
+    )
+
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo")
-    parser.add_argument("--input_dir", help="Please provide input path to the directory containing the dataset that is going to be processed.")
-    parser.add_argument("--output_dir", help="Please provide an output directory for the resulting files.")
-    parser.add_argument("--number_of_processes", help="Please provide the number of processes to be spawned for the dataset processing.")
+    parser = argparse.ArgumentParser(
+        description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
+    )
+    parser.add_argument(
+        "--input_dir",
+        help="Please provide input path to the directory containing the dataset that is going to be processed.",
+    )
+    parser.add_argument(
+        "--output_dir",
+        help="Please provide an output directory for the resulting files.",
+    )
+    parser.add_argument(
+        "--number_of_processes",
+        help="Please provide the number of processes to be spawned for the dataset processing.",
+    )
     args = parser.parse_args()
 
     multiprocessing_list = []
