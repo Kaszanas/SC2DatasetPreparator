@@ -6,11 +6,18 @@ import glob
 import shutil
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools.")
-    parser.add_argument("--input_path", help="Please provide input path to the dataset that is going to be processed.")
-    parser.add_argument("--file_extension", help="Please provide a file extension for files that will be moved and renamed.")
+    parser = argparse.ArgumentParser(
+        description="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools."
+    )
+    parser.add_argument(
+        "--input_path",
+        help="Please provide input path to the dataset that is going to be processed.",
+    )
+    parser.add_argument(
+        "--file_extension",
+        help="Please provide a file extension for files that will be moved and renamed.",
+    )
     args = parser.parse_args()
-
 
     dir_structure_mapping = {}
 
@@ -33,7 +40,9 @@ if __name__ == "__main__":
 
                 # Moving and renaming files:
                 current_file = os.path.join(root, file)
-                new_path_and_filename = os.path.join(new_root_directory, unique_filename+args.file_extension)
+                new_path_and_filename = os.path.join(
+                    new_root_directory, unique_filename + args.file_extension
+                )
 
                 # Copying files:
                 shutil.copy(current_file, new_path_and_filename)
@@ -41,5 +50,7 @@ if __name__ == "__main__":
                 # Add to a mapping
                 dir_structure_mapping[unique_filename] = relative_file
 
-    with open(os.path.join(args.input_path+"_processed", "processed_mapping.json"), "w") as json_file:
+    with open(
+        os.path.join(args.input_path + "_processed", "processed_mapping.json"), "w"
+    ) as json_file:
         json.dump(dir_structure_mapping, json_file)
