@@ -25,7 +25,6 @@ def multiprocessing_client(arguments: tuple):
             "-perform_validity_checks=false",
             "-perform_cleanup=true",
             "-number_of_packages=1",
-            "-game_mode=0b11111111",
             "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
             "-max_procs=1",
             "-log_level=3",
