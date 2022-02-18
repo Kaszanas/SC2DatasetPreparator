@@ -49,7 +49,7 @@ optional arguments:
   --output_dir OUTPUT_DIR
                         Please provide an output directory for the resulting
                         files.
-  --number_of_processes NUMBER_OF_PROCESSES
+  --n_processes N_PROCESSES
                         Please provide the number of processes to be spawn for
                         the dataset processing.
 ```

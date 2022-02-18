@@ -43,38 +43,13 @@ async def replay_reader(output_path, filepath, hash_set, lock):
         pass
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool for downloading maps based on the data that is available within .SC2Replay file."
-    )
-    parser.add_argument(
-        "--input_path",
-        default="D:\\Projects\\SC2MapDownloader\\Download",
-        help="Please provide input path to the dataset that is going to be processed.",
-    )
-    parser.add_argument(
-        "--output_path",
-        default="D:\\Projects\\SC2MapDownloader\\Maps4",
-        help="Please provide output path where sc2 map files will be downloaded.",
-    )
-    parser.add_argument(
-        "--file_extension",
-        default=".SC2Replay",
-        help="Please provide a file extension for files that will be moved and renamed.",
-    )
-    args = parser.parse_args()
-
+def map_downloader(input_path: str, output_path: str) -> None:
+    futures = []
     replay_map_archive_hashes = set()
 
-    list_of_replay_files = []
     loop = asyncio.get_event_loop()
     lock = asyncio.Lock(loop=loop)
-    futures = []
-
-    args_file_extension = args.file_extension
-    args_output_path = args.output_path
-
-    for root, _, filename in os.walk(args.input_path):
+    for root, _, filename in os.walk(input_path):
         # Performing action for every file that was detected
         for file in filename:
             if file.endswith(".SC2Replay"):
@@ -83,7 +58,7 @@ if __name__ == "__main__":
 
                 futures.append(
                     replay_reader(
-                        output_path=args_output_path,
+                        output_path=output_path,
                         filepath=filepath,
                         hash_set=replay_map_archive_hashes,
                         lock=lock,
@@ -91,3 +66,25 @@ if __name__ == "__main__":
                 )
 
     result = loop.run_until_complete(asyncio.gather(*futures))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Tool for downloading maps based on the data that is available within .SC2Replay file."
+    )
+    parser.add_argument(
+        "--input_path",
+        default="../Maps/input",
+        help="Please provide input path to the dataset that is going to be processed.",
+    )
+    parser.add_argument(
+        "--output_path",
+        default="../Maps/output",
+        help="Please provide output path where sc2 map files will be downloaded.",
+    )
+
+    args = parser.parse_args()
+
+    args_input_path = args.input_path
+    args_output_path = args.output_path
+    map_downloader(input_path=args_input_path, output_path=args_output_path)
