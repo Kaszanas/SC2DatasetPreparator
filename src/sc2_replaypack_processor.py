@@ -5,8 +5,9 @@ from tqdm import tqdm
 from multiprocessing import Pool
 
 
-def multiprocessing_scheduler(processing_arguments, number_of_processes):
-    """_summary_
+def multiprocessing_scheduler(processing_arguments, number_of_processes) -> None:
+    """
+    Responsible for spawning the multiprocessing_client functions.
 
     :param processing_arguments: _description_
     :type processing_arguments: _type_
@@ -20,10 +21,11 @@ def multiprocessing_scheduler(processing_arguments, number_of_processes):
         pool.join()
 
 
-def multiprocessing_client(arguments: tuple):
-    """_summary_
+def multiprocessing_client(arguments: tuple) -> None:
+    """
+    Responsible for running a single process that will extract data from a replaypack.
 
-    :param arguments: _description_
+    :param arguments: Arguments tuple containing the input and output directory.
     :type arguments: tuple
     """
 
@@ -47,6 +49,16 @@ def multiprocessing_client(arguments: tuple):
 
 
 def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes: int):
+    """
+    Processes multiple StarCraft II replaypacks by using https://github.com/Kaszanas/SC2InfoExtractorGo
+
+    :param input_dir: Input directory which contains the replaypacks in separate folders. The replay folders should have their replays at the top level.
+    :type input_dir: str
+    :param output_dir: Output directory which will contain all of the output produced by the https://github.com/Kaszanas/SC2InfoExtractorGo
+    :type output_dir: str
+    :param n_processes: Specifies the number of Python processes that will be spawned and used for replaypack processing.
+    :type n_processes: int
+    """
     multiprocessing_list = []
     for directory, _, _ in tqdm(os.walk(input_dir)):
 
