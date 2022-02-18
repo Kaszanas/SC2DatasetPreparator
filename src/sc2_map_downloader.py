@@ -12,7 +12,8 @@ async def replay_reader(
     hash_set: set,
     lock: asyncio.Lock,
 ) -> None:
-    """Contains logic to try to read and download a map based on the information that is held within .SC2Replay file.
+    """
+    Contains logic to try to read and download a map based on the information that is held within .SC2Replay file.
 
     :param output_path: Specifies where the final map file will be downloaded.
     :type output_path: str
