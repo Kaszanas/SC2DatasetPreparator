@@ -1,2 +1,5 @@
+/.vscode
+/venv
+
 SC2InfoExtractorGo.exe
 command.txt

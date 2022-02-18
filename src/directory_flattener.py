@@ -2,7 +2,6 @@ import os
 import argparse
 import uuid
 import json
-import glob
 import shutil
 
 if __name__ == "__main__":

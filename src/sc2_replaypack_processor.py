@@ -6,6 +6,14 @@ from multiprocessing import Pool
 
 
 def multiprocessing_scheduler(processing_arguments, number_of_processes):
+    """_summary_
+
+    :param processing_arguments: _description_
+    :type processing_arguments: _type_
+    :param number_of_processes: _description_
+    :type number_of_processes: _type_
+    """
+
     with Pool(processes=number_of_processes) as pool:
         pool.imap_unordered(multiprocessing_client, processing_arguments)
         pool.close()
@@ -13,6 +21,11 @@ def multiprocessing_scheduler(processing_arguments, number_of_processes):
 
 
 def multiprocessing_client(arguments: tuple):
+    """_summary_
+
+    :param arguments: _description_
+    :type arguments: tuple
+    """
 
     directory, output_directory_filepath = arguments
 
