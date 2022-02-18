@@ -1,18 +1,21 @@
 import os
 import argparse
 import subprocess
+from typing import List, Tuple
 from tqdm import tqdm
 from multiprocessing import Pool
 
 
-def multiprocessing_scheduler(processing_arguments, number_of_processes) -> None:
+def multiprocessing_scheduler(
+    processing_arguments: List[Tuple[str, str]], number_of_processes: int
+) -> None:
     """
     Responsible for spawning the multiprocessing_client functions.
 
-    :param processing_arguments: _description_
-    :type processing_arguments: _type_
-    :param number_of_processes: _description_
-    :type number_of_processes: _type_
+    :param processing_arguments: Processing arguments argument holds a list of input and output directories for the https://github.com/Kaszanas/SC2InfoExtractorGo
+    :type processing_arguments: List[Tuple[str, str]]
+    :param number_of_processes: Specifies how many processes will be spawned.
+    :type number_of_processes: int
     """
 
     with Pool(processes=number_of_processes) as pool:
