@@ -46,6 +46,29 @@ def multiprocessing_client(arguments: tuple):
     )
 
 
+def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes: int):
+    multiprocessing_list = []
+    for directory, _, _ in tqdm(os.walk(input_dir)):
+
+        # Create the main output directory:
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+
+        output_directory_name = directory.split("\\")[-1]
+        if output_directory_name == "input":
+            continue
+
+        output_directory_filepath = os.path.join(output_dir, output_directory_name)
+
+        # Create the output subdirectories:
+        if not os.path.exists(output_directory_filepath):
+            os.mkdir(output_directory_filepath)
+
+        multiprocessing_list.append((directory, output_directory_filepath))
+
+    multiprocessing_scheduler(multiprocessing_list, int(n_processes))
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
@@ -59,28 +82,15 @@ if __name__ == "__main__":
         help="Please provide an output directory for the resulting files.",
     )
     parser.add_argument(
-        "--number_of_processes",
+        "--n_processes",
         help="Please provide the number of processes to be spawned for the dataset processing.",
     )
     args = parser.parse_args()
-
-    multiprocessing_list = []
-    for directory, _, file in tqdm(os.walk(args.input_dir)):
-
-        # Create the main output directory:
-        if not os.path.exists(args.output_dir):
-            os.mkdir(args.output_dir)
-
-        output_directory_name = directory.split("\\")[-1]
-        if output_directory_name == "input":
-            continue
-
-        output_directory_filepath = os.path.join(args.output_dir, output_directory_name)
-
-        # Create the output subdirectories:
-        if not os.path.exists(output_directory_filepath):
-            os.mkdir(output_directory_filepath)
-
-        multiprocessing_list.append((directory, output_directory_filepath))
-
-    multiprocessing_scheduler(multiprocessing_list, int(args.number_of_processes))
+    args_input_dir = args.input_dir
+    args_output_dir = args.output_dir
+    args_n_processes = args.n_processes
+    multiproc_replaypack_processor(
+        input_dir=args_input_dir,
+        output_dir=args_output_dir,
+        n_processes=args_n_processes,
+    )
