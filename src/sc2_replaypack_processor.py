@@ -90,15 +90,21 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--input_dir",
+        type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed.",
+        default="../processing/sc2_replaypack_processor/input",
     )
     parser.add_argument(
         "--output_dir",
+        type=str,
         help="Please provide an output directory for the resulting files.",
+        default="../processing/sc2_replaypack_processor/output",
     )
     parser.add_argument(
         "--n_processes",
+        type=int,
         help="Please provide the number of processes to be spawned for the dataset processing.",
+        default=4,
     )
     args = parser.parse_args()
     args_input_dir = args.input_dir

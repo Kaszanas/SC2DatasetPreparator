@@ -2,10 +2,16 @@
 
 # SC2DatasetPreparator
 
-This repository contains tools which can be used in order to perform the following steps:
+This repository contains tools which can be used to create an StarCraft II dataset. The following steps are suggested:
 
-1. Using ```src/directory_flattener.py``` Flatten the directory structure and save the old directory tree to a mapping of ```{"replayUniqueHash": "whereItWasInOldStructure"}```
-2. Using ```src/sc2_replaypack_processor``` Perform replaypack processing with https://github.com/Kaszanas/SC2InfoExtractorGo
+0. Obtain a number of replays to process. This can be a replaypack or your own replay folder.
+1. Download latest version of [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo), or build it from source.
+2. *Optional* Using ```src/directory_flattener.py``` Flatten the directory structure and save the old directory tree to a mapping: ```{"replayUniqueHash": "whereItWasInOldStructure"}```. This is required in order to properly use the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo).
+3. *Optional* Use the map downloader ```src/sc2_map_downloader.py``` to download maps that were used in the replays that you obtained.
+4. *Optional* Use the SC2MapLocaleExtractor to obtain the mapping of ```{"foreign_map_name": "english_map_name"}``` which is required for the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo) to translate the map names.
+5. Perform replaypack processing using ```src/sc2_replaypack_processor.py``` with the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo) in PATH, or next to the script.
+6. *Optional* Using the ```src/file_renamer.py```, rename the files that were generated in step 5.
+7. Using the ```src/file_packager.py```, create .zip archives containing the datasets and the supplementary files.
 
 ## Customization
 
@@ -13,7 +19,7 @@ In order to specify different processing flags for https://github.com/Kaszanas/S
 
 ## Usage
 
-Before using this software please install Python >= 3.7 and ```requirements.txt```.
+Before using this software please install Python >= 3.10 and ```requirements.txt```.
 
 Please keep in mind that ```src/directory_flattener.py``` does not contain default flag values and can be customized with the following command line flags:
 
@@ -34,9 +40,21 @@ optional arguments:
                         moved and renamed.
 ```
 
+Please keep in mind that the  ```src/sc2_map_downloader.py``` does not contain default flag values and can be customized with the following command line flags:
+```
+usage: sc2_map_downloader.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
+
+Tool for downloading maps based on the data that is available within .SC2Replay file.
+
+options:
+  -h, --help            show this help message and exit
+  --input_path INPUT_PATH
+                        Please provide input path to the dataset that is going to be processed.
+  --output_path OUTPUT_PATH
+                        Please provide output path where sc2 map files will be downloaded.
+```
 
 Please keep in mind that the  ```src/sc2_replaypack_processor.py``` does not contain default flag values and can be customized with the following command line flags:
-
 ```
 Tool used for processing SC2 datasets. with
 https://github.com/Kaszanas/SC2InfoExtractorGo
@@ -53,6 +71,33 @@ optional arguments:
                         Please provide the number of processes to be spawn for
                         the dataset processing.
 ```
+
+Please keep in mind that the  ```src/file_renamer.py``` does not contain default flag values and can be customized with the following command line flags:
+```
+usage: file_renamer.py [-h] [--input_dir INPUT_DIR]
+
+Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo
+
+options:
+  -h, --help            show this help message and exit
+  --input_dir INPUT_DIR
+                        Please provide input path to the directory containing the dataset that is going   
+                        to be processed.
+```
+
+Please keep in mind that the  ```src/file_packager.py``` does not contain default flag values and can be customized with the following command line flags:
+```
+usage: file_packager.py [-h] [--input_dir INPUT_DIR]
+
+Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo
+
+options:
+  -h, --help            show this help message and exit
+  --input_dir INPUT_DIR
+                        Please provide input path to the directory containing the dataset that is going   
+                        to be processed.
+```
+
 
 # Citation
 

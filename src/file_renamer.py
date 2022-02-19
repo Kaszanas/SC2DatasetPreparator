@@ -29,11 +29,13 @@ def file_renamer(input_dir: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
+        description="Tool used for processing SC2 datasets with https://github.com/Kaszanas/SC2InfoExtractorGo"
     )
     parser.add_argument(
         "--input_dir",
+        type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed.",
+        default="../processing/sc2_replaypack_processor/output",
     )
     args = parser.parse_args()
     file_renamer(input_dir=args.input_dir)

@@ -5,7 +5,7 @@ import json
 import shutil
 
 
-def directory_flattener(input_path: str, file_extension: str) -> dict:
+def directory_flattener(input_path: str, output_path: str, file_extension: str) -> dict:
     """
     Provides the main logic for "directory flattening". Detects a files that end with a specific extension,
     and moves them to the top of the input path. This function returns a file mapping for all of the files that were moved.
@@ -30,7 +30,7 @@ def directory_flattener(input_path: str, file_extension: str) -> dict:
                 unique_filename = uuid.uuid4().hex
 
                 # Create directory if it doesn't exist:
-                new_root_directory = args.input_path + "_processed"
+                new_root_directory = output_path + "_processed"
                 if not os.path.exists(new_root_directory):
                     os.makedirs(new_root_directory)
 
@@ -70,14 +70,25 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--input_path",
+        type=str,
         help="Please provide input path to the dataset that is going to be processed.",
+        default="..processing/directory_flattener/input",
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        help="Please provide output path where sc2 map files will be downloaded.",
+        default="../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--file_extension",
+        type=str,
         help="Please provide a file extension for files that will be moved and renamed.",
+        default=".SC2Replay",
     )
     args = parser.parse_args()
 
     args_input_path = args.input_path
+    args_output_path = args.output_path
     dir_structure_mapping = directory_flattener(input_path=args_input_path)
     save_dir_mapping(output_path=args_input_path, dir_mapping=dir_structure_mapping)
