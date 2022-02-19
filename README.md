@@ -2,10 +2,16 @@
 
 # SC2DatasetPreparator
 
-This repository contains tools which can be used in order to perform the following steps:
+This repository contains tools which can be used to create an StarCraft II dataset. The following steps are suggested:
 
-1. Using ```src/directory_flattener.py``` Flatten the directory structure and save the old directory tree to a mapping of ```{"replayUniqueHash": "whereItWasInOldStructure"}```
-2. Using ```src/sc2_replaypack_processor``` Perform replaypack processing with https://github.com/Kaszanas/SC2InfoExtractorGo
+0. Obtain a number of replays to process. This can be a replaypack or your own replay folder.
+1. Download latest version of [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo), or build it from source.
+2. *Optional* Using ```src/directory_flattener.py``` Flatten the directory structure and save the old directory tree to a mapping: ```{"replayUniqueHash": "whereItWasInOldStructure"}```. This is required in order to properly use the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo).
+3. *Optional* Use the map downloader ```src/sc2_map_downloader.py``` to download maps that were used in the replays that you obtained.
+4. *Optional* Use the SC2MapLocaleExtractor to obtain the mapping of ```{"foreign_map_name": "english_map_name"}``` which is required for the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo) to translate the map names.
+5. Perform replaypack processing using ```src/sc2_replaypack_processor.py``` with the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo) in PATH, or next to the script.
+6. *Optional* Using the ```src/file_renamer.py```, rename the files that were generated in step 5.
+7. Using the ```src/file_packager.py```, create .zip archives containing the datasets and the supplementary files.
 
 ## Customization
 
