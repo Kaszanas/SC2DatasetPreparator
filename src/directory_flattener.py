@@ -5,7 +5,7 @@ import json
 import shutil
 
 
-def directory_flattener(input_path: str, file_extension: str) -> dict:
+def directory_flattener(input_path: str, output_path: str, file_extension: str) -> dict:
     """
     Provides the main logic for "directory flattening". Detects a files that end with a specific extension,
     and moves them to the top of the input path. This function returns a file mapping for all of the files that were moved.
@@ -30,7 +30,7 @@ def directory_flattener(input_path: str, file_extension: str) -> dict:
                 unique_filename = uuid.uuid4().hex
 
                 # Create directory if it doesn't exist:
-                new_root_directory = args.input_path + "_processed"
+                new_root_directory = output_path + "_processed"
                 if not os.path.exists(new_root_directory):
                     os.makedirs(new_root_directory)
 
