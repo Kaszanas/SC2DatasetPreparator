@@ -20,7 +20,9 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--input_dir",
+        type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed.",
+        default="../processing/sc2_replaypack_processor/output",
     )
     args = parser.parse_args()
     dir_file_packager(input_dir=args.input_dir)

@@ -70,14 +70,25 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--input_path",
+        type=str,
         help="Please provide input path to the dataset that is going to be processed.",
+        default="..processing/directory_flattener/input",
+    )
+    parser.add_argument(
+        "--output_path",
+        type=str,
+        help="Please provide output path where sc2 map files will be downloaded.",
+        default="../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--file_extension",
+        type=str,
         help="Please provide a file extension for files that will be moved and renamed.",
+        default=".SC2Replay",
     )
     args = parser.parse_args()
 
     args_input_path = args.input_path
+    args_output_path = args.output_path
     dir_structure_mapping = directory_flattener(input_path=args_input_path)
     save_dir_mapping(output_path=args_input_path, dir_mapping=dir_structure_mapping)
