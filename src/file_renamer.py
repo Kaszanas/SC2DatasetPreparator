@@ -3,6 +3,14 @@ import argparse
 
 
 def file_renamer(input_dir: str) -> None:
+    """
+    Provides logic for renaming files with .zip and .json files that are contained within a directory.
+    Contains hardcoded rules: if the file is of .zip extension it adds "_data" prefix to the filename.
+    And if the file is of .json extension it adds "_summary" prefix to the filename.
+
+    :param input_dir: Specifies the input directory where the files will be renamed.
+    :type input_dir: str
+    """
     for directory, _, file_list in os.walk(input_dir):
         for file in file_list:
             if file.endswith(".zip"):

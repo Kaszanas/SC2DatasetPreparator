@@ -5,22 +5,31 @@ import argparse
 import asyncio
 
 
-async def replay_reader(output_path, filepath, hash_set, lock):
-    """_summary_
+async def replay_reader(
+    output_path: str,
+    replay_root: str,
+    replay_filepath: str,
+    hash_set: set,
+    lock: asyncio.Lock,
+) -> None:
+    """
+    Contains logic to try to read and download a map based on the information that is held within .SC2Replay file.
 
-    :param output_path: _description_
-    :type output_path: _type_
-    :param filepath: _description_
-    :type filepath: _type_
-    :param hash_set: _description_
-    :type hash_set: bool
-    :param lock: _description_
-    :type lock: _type_
-    :return: _description_
-    :rtype: _type_
+    :param output_path: Specifies where the final map file will be downloaded.
+    :type output_path: str
+    :param replay_root: Specifies the root directory of a replay.
+    :type replay_root: str
+    :param filepath: Specifies the path of a replay within the replay_root.
+    :type filepath: str
+    :param hash_set: Specifies a set that holds all of the previously seen maps.
+    :type hash_set: set
+    :param lock: Specifies an asyncio.Lock
+    :type lock: asyncio.Lock
     """
     try:
-        replay = sc2reader.load_replay(os.path.join(root, filepath), load_map=True)
+        replay = sc2reader.load_replay(
+            os.path.join(replay_root, replay_filepath), load_map=True
+        )
         replay_url = replay.map_file.url
         print(replay_url)
         replay_map_hash = replay.map_hash
@@ -33,17 +42,23 @@ async def replay_reader(output_path, filepath, hash_set, lock):
 
         if download_replay:
             response = requests.get(replay_url, allow_redirects=True)
-            output_filepath = os.path.join(
-                args.output_path, f"{replay_map_hash}.SC2Map"
-            )
+            output_filepath = os.path.join(output_path, f"{replay_map_hash}.SC2Map")
             with open(output_filepath, "wb") as output_map_file:
                 output_map_file.write(response.content)
-                return True
+                return
     except:
-        pass
+        return
 
 
 def map_downloader(input_path: str, output_path: str) -> None:
+    """
+    Holds the main loop for asynchronous map downloading logic.
+
+    :param input_path: Specifies the input path that contains .SC2Replay files which will be used for map detection.
+    :type input_path: str
+    :param output_path: Specifies the output path where the downloaded maps will be placed.
+    :type output_path: str
+    """
     futures = []
     replay_map_archive_hashes = set()
 
@@ -59,6 +74,7 @@ def map_downloader(input_path: str, output_path: str) -> None:
                 futures.append(
                     replay_reader(
                         output_path=output_path,
+                        root=root,
                         filepath=filepath,
                         hash_set=replay_map_archive_hashes,
                         lock=lock,
