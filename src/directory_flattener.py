@@ -43,24 +43,26 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
             dir_structure_mapping = {}
             for root, _, filenames in os.walk(maybe_dir):
                 for file in filenames:
-                    # Prepare relative paths:
-                    relative_dir = os.path.relpath(root, maybe_dir)
-                    relative_file = os.path.join(relative_dir, file)
+                    if file.endswith(file_extension):
 
-                    # Get unique filename:
-                    unique_filename = uuid.uuid4().hex
-                    unique_filename_with_ext = unique_filename + file_extension
-                    new_path_and_filename = os.path.join(
-                        full_output_path, unique_filename_with_ext
-                    )
+                        # Prepare relative paths:
+                        relative_dir = os.path.relpath(root, maybe_dir)
+                        relative_file = os.path.join(relative_dir, file)
 
-                    current_file = os.path.abspath(os.path.join(root, file))
+                        # Get unique filename:
+                        unique_filename = uuid.uuid4().hex
+                        unique_filename_with_ext = unique_filename + file_extension
+                        new_path_and_filename = os.path.join(
+                            full_output_path, unique_filename_with_ext
+                        )
 
-                    # Copying files:
-                    shutil.copy(current_file, new_path_and_filename)
+                        current_file = os.path.abspath(os.path.join(root, file))
 
-                    # Add to a mapping
-                    dir_structure_mapping[unique_filename_with_ext] = relative_file
+                        # Copying files:
+                        shutil.copy(current_file, new_path_and_filename)
+
+                        # Add to a mapping
+                        dir_structure_mapping[unique_filename_with_ext] = relative_file
             save_dir_mapping(
                 output_path=full_output_path, dir_mapping=dir_structure_mapping
             )
