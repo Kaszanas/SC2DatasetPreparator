@@ -39,25 +39,24 @@ fn main() {
     for entry in WalkDir::new(args.input_directory) {
         let entry = entry.unwrap();
 
-        // Find all of the files:
-        if entry.file_type().is_file() {
-            let extension =
-                String::from_str(entry.path().extension().unwrap().to_str().unwrap()).unwrap();
-            // If the file extension matches then copy the file:
-            if extension == args.file_extension {
-                println!("Found a file with extension!")
-            }
-            println!("Found a file");
+        if entry.file_type().is_dir() {
+            println!("Detected a dir");
+            continue;
         }
-        println!("{}", entry.path().display());
+
+        let extension =
+            String::from_str(entry.path().extension().unwrap().to_str().unwrap()).unwrap();
+
+        if extension != args.file_extension {
+            println!("Detected a wrong file extension");
+            continue;
+        }
+
+        // Find all of the files:
+        if entry.file_type().is_file() && extension == args.file_extension {
+            // If the file extension matches then copy the file:
+            // And save it to a directory mapping.
+            // Save the directory mapping to drive.
+        }
     }
-
-    // TODO: If the path is a directory then go in
-
-    // TODO: Walk through the directory
-
-    // TODO: If the file extension matches the CLI extension then copy the file
-    // And save it to a directory mapping.
-
-    // Save the directory mapping to drive.
 }
