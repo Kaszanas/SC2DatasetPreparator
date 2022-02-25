@@ -1,6 +1,7 @@
-use std::{path::Path, str::FromStr};
+use std::{panic, path::Path, str::FromStr};
 
 use clap::Parser;
+use serde_json::{Map, Value};
 use uuid::Uuid;
 use walkdir::WalkDir;
 
@@ -36,15 +37,22 @@ fn main() {
         args.input_directory, args.output_directory
     );
 
+    let mut directory_mapping = Map::new();
+    let mut replaypack_input_dir = String::from("");
     // Iterate over the input directory
     for entry in WalkDir::new(&args.input_directory) {
         let entry = entry.unwrap();
 
         // This needs to be in here because the code that is ran later skips iterations:
-        let mut main_input_dir = String::from("");
         if entry.depth() == 1 && entry.file_type().is_dir() {
-            main_input_dir.push_str(entry.path().to_str().unwrap());
-            println!("{}", main_input_dir);
+            replaypack_input_dir.push_str(
+                entry
+                    .path()
+                    .file_name()
+                    .and_then(|dir_name| dir_name.to_str())
+                    .unwrap(),
+            );
+            println!("{}", replaypack_input_dir);
         }
 
         // The code's function is only to copy files so we skip directories:
@@ -96,22 +104,41 @@ fn main() {
                 .unwrap();
             println!("{}", relative_entry_path);
 
-            let mut my_uuid = Uuid::new_v4().to_simple().to_string();
-            println!("{}", my_uuid);
+            let mut unique_id_filename = Uuid::new_v4().to_simple().to_string();
+            println!("{}", unique_id_filename);
 
             // let old_file_no_extension = old_file_w_extension.strip_suffix(&extension).unwrap();
 
             let mut extension_w_dot = String::from(".");
             extension_w_dot.push_str(&args.file_extension);
-            my_uuid.push_str(&extension_w_dot);
-            let output_path = Path::new(&args.output_directory).join(my_uuid);
-            println!("{}", output_path.to_str().unwrap());
-            continue;
+            unique_id_filename.push_str(&extension_w_dot);
 
-            // std::fs::copy(entry.path(), to)
+            let output_dir_path = Path::new(&args.output_directory).join(&replaypack_input_dir);
 
-            // And save it to a directory mapping.
-            // Save the directory mapping to drive.
+            println!("{}", output_dir_path.to_str().unwrap());
+
+            let output_dir = std::fs::create_dir_all(&output_dir_path);
+            match output_dir {
+                Ok(output_path) => output_path,
+                Err(error) => panic!(
+                    "Could not create the directory! Received the following error {:?}",
+                    error
+                ),
+            };
+
+            let is_copied = std::fs::copy(entry.path(), output_dir_path.join(&unique_id_filename));
+            match is_copied {
+                Err(error) => panic!(
+                    "Could not copy the file! The following error was raised: {:?}",
+                    error
+                ),
+                Ok(_) => (),
+            }
+
+            directory_mapping.insert(
+                unique_id_filename,
+                Value::String(relative_entry_path.to_string()),
+            );
         }
     }
 }
