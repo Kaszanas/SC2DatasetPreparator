@@ -1,14 +1,15 @@
-pub mod replaypack_walker;
+pub mod directory_flattener;
+pub mod utils;
 
 use clap::Parser;
 
 fn main() {
-    let args = replaypack_walker::Args::parse();
+    let args = directory_flattener::Args::parse();
 
     println!(
         "Input Something! {}! Output {}!",
         args.input_directory, args.output_directory
     );
 
-    replaypack_walker::directory_flattener(args);
+    directory_flattener::directory_flattener(args);
 }
