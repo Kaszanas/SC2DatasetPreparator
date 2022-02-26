@@ -59,9 +59,14 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
                         )
 
                         current_file = os.path.abspath(os.path.join(root, file))
+                        current_file = "\\\\?\\" + current_file
 
                         # Copying files:
-                        shutil.copy(current_file, new_path_and_filename)
+                        if os.path.exists(current_file):
+                            shutil.copy(current_file, new_path_and_filename)
+                        else:
+                            print(len(current_file))
+                            print("err")
 
                         # Add to a mapping
                         dir_structure_mapping[unique_filename_with_ext] = relative_file
