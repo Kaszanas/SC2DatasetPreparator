@@ -45,9 +45,11 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
                 for file in filenames:
                     if file.endswith(file_extension):
 
+                        # Get abspath from root
                         # Prepare relative paths:
-                        relative_dir = os.path.relpath(root, maybe_dir)
-                        relative_file = os.path.join(relative_dir, file)
+                        root_abspath = os.path.join(os.path.abspath(root), file)
+                        input_abspath = os.path.abspath(input_path)
+                        relative_file = root_abspath.removeprefix(input_abspath)
 
                         # Get unique filename:
                         unique_filename = uuid.uuid4().hex

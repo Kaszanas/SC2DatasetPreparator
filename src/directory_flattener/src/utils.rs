@@ -36,22 +36,23 @@ pub fn file_copier(
     args: &directory_flattener::Args,
 ) -> FileCopierResult {
     let mut directory_mapping = serde_json::Map::new();
-    let mut replaypack_input_dir = String::from("");
-    let mut output_dir_path = None;
+    let mut replaypack_input_dir = PathBuf::new();
+
+    let mut saved_output_path: Option<PathBuf> = None;
 
     for entry in WalkDir::new(input_replaypack.as_path()) {
         let entry = entry.unwrap();
 
         // This needs to be in here because the code that is ran later skips iterations:
         if entry.depth() == 0 && entry.file_type().is_dir() {
-            replaypack_input_dir.push_str(
+            replaypack_input_dir.push(
                 entry
                     .path()
                     .file_name()
                     .and_then(|dir_name| dir_name.to_str())
                     .unwrap(),
             );
-            println!("{}", replaypack_input_dir);
+            println!("{}", replaypack_input_dir.display());
         }
 
         // The code's function is only to copy files so we skip directories:
@@ -110,17 +111,15 @@ pub fn file_copier(
             extension_w_dot.push_str(&args.file_extension);
             unique_id_filename.push_str(&extension_w_dot);
 
-            output_dir_path = Some(Path::new(&args.output_directory).join(&replaypack_input_dir));
+            let output_dir_path = saved_output_path
+                .insert(Path::new(&args.output_directory).join(&replaypack_input_dir));
 
-            println!("{}", output_dir_path.to_owned().unwrap().to_str().unwrap());
+            println!("{}", output_dir_path.to_str().unwrap());
 
-            let copy_to_path = output_dir_path
-                .to_owned()
-                .unwrap()
-                .join(&unique_id_filename);
+            let copy_to_path = output_dir_path.join(&unique_id_filename);
             println!("{}", copy_to_path.to_str().unwrap());
 
-            let is_output_dir = std::fs::create_dir_all(&output_dir_path.to_owned().unwrap());
+            let is_output_dir = std::fs::create_dir_all(&output_dir_path);
             match is_output_dir {
                 Ok(output_path) => output_path,
                 Err(error) => panic!(
@@ -145,8 +144,10 @@ pub fn file_copier(
         }
     }
 
-    return FileCopierResult {
-        output_dir_path: output_dir_path,
+    let result = FileCopierResult {
+        output_dir_path: saved_output_path,
         directory_mapping,
     };
+
+    return result;
 }

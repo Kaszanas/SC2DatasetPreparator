@@ -1,6 +1,5 @@
 use clap::Parser;
-use std::panic;
-use walkdir::WalkDir;
+use walkdir::{DirEntry, WalkDir};
 
 use crate::utils;
 
@@ -28,6 +27,10 @@ pub struct Args {
     pub file_extension: String,
 }
 
+fn is_dir(entry: &DirEntry) -> bool {
+    entry.path().is_dir()
+}
+
 pub fn directory_flattener(args: Args) {
     // Iterate over the depth 1 from input dir.
     // This accesses directories (replaypacks) that are within the input directory:
@@ -35,6 +38,7 @@ pub fn directory_flattener(args: Args) {
         .min_depth(1)
         .max_depth(1)
         .into_iter()
+        .filter_entry(|dir_entry| is_dir(dir_entry))
         .map(|dir_entry| dir_entry.unwrap().path().to_owned());
 
     // Iterating over all of the replaypacks that were found in the input directory:
@@ -42,14 +46,6 @@ pub fn directory_flattener(args: Args) {
         // Iterating over all of the files and subdirectories of a replaypack:
         // TODO: Return output_dir_path from this:
         let copier_result = utils::file_copier(&input_replaypack, &args);
-
-        // Save the directory mapping to the drive
-        match copier_result.output_dir_path {
-            Some(_) => (),
-            None => {
-                panic!("Could not create a directory mapping file! Found output_dir_path = None")
-            }
-        }
 
         utils::save_dir_mapping(
             copier_result.output_dir_path.unwrap(),
