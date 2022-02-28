@@ -1,6 +1,13 @@
 /.vscode
-/venv
+/venv*
 
+**/.vscode
+
+/processing
+
+*.SC2Replay
+
+NOTES.txt
 SC2InfoExtractorGo.exe
 command.txt
 
