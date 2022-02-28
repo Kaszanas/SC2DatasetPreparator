@@ -4,7 +4,7 @@ import requests
 import argparse
 
 
-async def replay_reader(
+def replay_reader(
     output_path: str,
     replay_root: str,
     replay_filepath: str,
@@ -26,7 +26,7 @@ async def replay_reader(
     """
     try:
         replay = sc2reader.load_replay(
-            os.path.join(replay_root, replay_filepath), load_map=True
+            replay_filepath, load_map=True
         )
         replay_url = replay.map_file.url
         print(replay_url)
@@ -45,6 +45,7 @@ async def replay_reader(
                 output_map_file.write(response.content)
                 return
     except:
+        print("Error detected!")
         return
 
 
