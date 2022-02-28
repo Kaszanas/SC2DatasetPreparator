@@ -2,7 +2,6 @@ import sc2reader
 import os
 import requests
 import argparse
-import asyncio
 
 
 async def replay_reader(
@@ -10,7 +9,6 @@ async def replay_reader(
     replay_root: str,
     replay_filepath: str,
     hash_set: set,
-    lock: asyncio.Lock,
 ) -> None:
     """
     Contains logic to try to read and download a map based on the information that is held within .SC2Replay file.
@@ -35,10 +33,10 @@ async def replay_reader(
         replay_map_hash = replay.map_hash
 
         download_replay = False
-        async with lock:
-            if replay_map_hash not in hash_set:
-                hash_set.add(replay_map_hash)
-                download_replay = True
+
+        if replay_map_hash not in hash_set:
+            hash_set.add(replay_map_hash)
+            download_replay = True
 
         if download_replay:
             response = requests.get(replay_url, allow_redirects=True)
@@ -59,11 +57,8 @@ def map_downloader(input_path: str, output_path: str) -> None:
     :param output_path: Specifies the output path where the downloaded maps will be placed.
     :type output_path: str
     """
-    futures = []
     replay_map_archive_hashes = set()
 
-    loop = asyncio.get_event_loop()
-    lock = asyncio.Lock(loop=loop)
     for root, _, filename in os.walk(input_path):
         # Performing action for every file that was detected
         for file in filename:
@@ -71,17 +66,12 @@ def map_downloader(input_path: str, output_path: str) -> None:
                 # Asynchronously download maps
                 filepath = os.path.join(root, file)
 
-                futures.append(
-                    replay_reader(
+                replay_reader(
                         output_path=output_path,
-                        root=root,
-                        filepath=filepath,
+                        replay_root=root,
+                        replay_filepath=filepath,
                         hash_set=replay_map_archive_hashes,
-                        lock=lock,
                     )
-                )
-
-    result = loop.run_until_complete(asyncio.gather(*futures))
 
 
 if __name__ == "__main__":
@@ -92,6 +82,7 @@ if __name__ == "__main__":
         "--input_path",
         default="../Maps/input",
         help="Please provide input path to the dataset that is going to be processed.",
+        default="../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--output_path",
