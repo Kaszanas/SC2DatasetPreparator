@@ -1,9 +1,46 @@
 import argparse
 import json
+from typing import Dict
 
-def json_merger(path_to_json_one:str, path_to_json_two:str):
 
-    pass
+def json_merger(path_to_json_one: str, path_to_json_two: str) -> Dict[str, str]:
+    """
+    Exposes the logic to merge two json files by loading their contents from supplied paths.
+
+    :param path_to_json_one: Specifies the filepath of a .json file that is going to be merged.
+    :type path_to_json_one: str
+    :param path_to_json_two: Specifies the filepath of a .json file that is going to be merged.
+    :type path_to_json_two: str
+    :return: Returns a merged dictionary.
+    :rtype: dict
+    """
+
+    # Loading the supplied .json files and deserializing them:
+    json_one_file = open(path_to_json_one)
+    loaded_json_one = json.loads(json_one_file)
+    json_one_file.close()
+
+    json_two_file = open(path_to_json_two)
+    loaded_json_two = json.loads(json_two_file)
+    json_two_file.close()
+
+    # Merging the loaded dictionaries:
+    result_dict = loaded_json_one | loaded_json_two
+
+    return result_dict
+
+
+def save_output(output_filepath: str, output_dict: Dict[str, str]) -> None:
+    """
+    Exposes the logic for saving a dict to a .json file.
+
+    :param output_filepath: Speciifies the full output filepath which will be used, this includes the filename.
+    :type output_filepath: str
+    :param output_dict: Specifies the Python dictionary which will be serialized into a JSON.
+    :type output_dict: Dict[str, str]
+    """
+    with open(output_filepath, "w") as output_file:
+        json.dump(output_file, output_dict)
 
 
 if __name__ == "__main__":
@@ -23,14 +60,19 @@ if __name__ == "__main__":
         default="../processing/json_merger/json2.json",
     )
     parser.add_argument(
-        "--output_path",
+        "--output_filepath",
         type=str,
         help="Please provide output path where sc2 map files will be downloaded.",
-        default="../processing/json_merger",
+        default="../processing/json_merger/merged.json",
     )
 
     args = parser.parse_args()
-    args_input_dir = args.json_one
-    args_output_dir = args.json_two
+    args_path_json_one = args.json_one
+    args_path_json_two = args.json_two
+    args_output_filepath = args.output_filepath
 
-    json_merger()
+    output_dict = json_merger(
+        path_to_json_one=args_path_json_one, path_to_json_two=args_path_json_two
+    )
+
+    save_output(output_filepath=args_output_filepath, output_dict=output_dict)
