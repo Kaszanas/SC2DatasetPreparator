@@ -16,12 +16,12 @@ def json_merger(path_to_json_one: str, path_to_json_two: str) -> Dict[str, str]:
     """
 
     # Loading the supplied .json files and deserializing them:
-    json_one_file = open(path_to_json_one)
-    loaded_json_one = json.loads(json_one_file)
+    json_one_file = open(path_to_json_one, encoding="utf-8")
+    loaded_json_one = json.loads(json_one_file.read())
     json_one_file.close()
 
-    json_two_file = open(path_to_json_two)
-    loaded_json_two = json.loads(json_two_file)
+    json_two_file = open(path_to_json_two, encoding="utf-8")
+    loaded_json_two = json.loads(json_two_file.read())
     json_two_file.close()
 
     # Merging the loaded dictionaries:
@@ -40,7 +40,7 @@ def save_output(output_filepath: str, output_dict: Dict[str, str]) -> None:
     :type output_dict: Dict[str, str]
     """
     with open(output_filepath, "w") as output_file:
-        json.dump(output_file, output_dict)
+        json.dump(output_dict, output_file, indent=4)
 
 
 if __name__ == "__main__":
