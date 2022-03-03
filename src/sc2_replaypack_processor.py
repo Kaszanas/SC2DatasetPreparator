@@ -43,7 +43,7 @@ def multiprocessing_client(arguments: tuple) -> None:
             "-perform_validity_checks=false",
             "-perform_cleanup=true",
             "-number_of_packages=1",
-            "-localized_maps_file=F:\\Projects\\EsportDataset\\processed\\program\\new_maps_processed.json",
+            "-localized_maps_file=F:\\Projects\\SC2DatasetPreparator\\processing\\json_merger\\merged.json",
             "-max_procs=1",
             "-log_level=3",
             f"-log_dir={output_directory_filepath}/",
@@ -63,7 +63,11 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
     :type n_processes: int
     """
     multiprocessing_list = []
-    for directory, _, _ in tqdm(os.walk(input_dir)):
+    for directory in tqdm(os.listdir(input_dir)):
+
+        is_input_dir = os.path.abspath(os.path.join(input_dir, directory))
+        if not os.path.isdir(is_input_dir):
+            continue
 
         # Create the main output directory:
         if not os.path.exists(output_dir):
@@ -79,7 +83,7 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
         if not os.path.exists(output_directory_filepath):
             os.mkdir(output_directory_filepath)
 
-        multiprocessing_list.append((directory, output_directory_filepath))
+        multiprocessing_list.append((is_input_dir, output_directory_filepath))
 
     multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
@@ -92,7 +96,7 @@ if __name__ == "__main__":
         "--input_dir",
         type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed.",
-        default="../processing/sc2_replaypack_processor/input",
+        default="../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--output_dir",

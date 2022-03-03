@@ -5,6 +5,9 @@ from zipfile import ZipFile, ZIP_BZIP2
 
 def dir_file_packager(input_dir: str) -> None:
     for directory in os.listdir(path=input_dir):
+        if not os.path.isdir(os.path.join(input_dir, directory)):
+            continue
+
         nested_dir_path = os.path.join(input_dir, directory)
         with ZipFile(nested_dir_path + ".zip", "w") as zip_file:
             for file in os.listdir(nested_dir_path):
