@@ -1,5 +1,6 @@
 import os
 import argparse
+import shutil
 import subprocess
 from typing import List, Tuple
 from tqdm import tqdm
@@ -33,6 +34,15 @@ def multiprocessing_client(arguments: tuple) -> None:
     """
 
     directory, output_directory_filepath = arguments
+
+    # TODO: This needs to be verified
+    # Copying the mapping file that contains directory tree information:
+    directory_contents = os.listdir(directory)
+    if "processed_mapping.json" in directory_contents:
+        mapping_filepath = os.path.join(directory, "processed_mapping.json")
+        output_mapping_filepath = os.path.join(output_directory_filepath, "processed_mapping.json")
+        shutil.copy(mapping_filepath, output_mapping_filepath)
+
 
     subprocess.run(
         [
