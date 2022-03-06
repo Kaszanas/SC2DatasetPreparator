@@ -32,8 +32,6 @@ def mapping_copier(input_path: str, output_path: str) -> None:
                 )
                 shutil.copy(mapping_filepath, mapping_out_filepath)
 
-    pass
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
