@@ -40,9 +40,10 @@ def multiprocessing_client(arguments: tuple) -> None:
     directory_contents = os.listdir(directory)
     if "processed_mapping.json" in directory_contents:
         mapping_filepath = os.path.join(directory, "processed_mapping.json")
-        output_mapping_filepath = os.path.join(output_directory_filepath, "processed_mapping.json")
+        output_mapping_filepath = os.path.join(
+            output_directory_filepath, "processed_mapping.json"
+        )
         shutil.copy(mapping_filepath, output_mapping_filepath)
-
 
     subprocess.run(
         [
