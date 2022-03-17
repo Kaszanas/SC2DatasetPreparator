@@ -101,7 +101,7 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
+        description="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
     )
     parser.add_argument(
         "--input_dir",
