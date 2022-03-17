@@ -35,7 +35,7 @@ def mapping_copier(input_path: str, output_path: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Tool for copying the processed_mapping.json files that are required to define the dataset."
+        description="Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset."
     )
     parser.add_argument(
         "--input_path",

@@ -25,9 +25,7 @@ def replay_reader(
     :type lock: asyncio.Lock
     """
     try:
-        replay = sc2reader.load_replay(
-            replay_filepath, load_map=True
-        )
+        replay = sc2reader.load_replay(replay_filepath, load_map=True)
         replay_url = replay.map_file.url
         print(replay_url)
         replay_map_hash = replay.map_hash
@@ -68,16 +66,16 @@ def map_downloader(input_path: str, output_path: str) -> None:
                 filepath = os.path.join(root, file)
 
                 replay_reader(
-                        output_path=output_path,
-                        replay_root=root,
-                        replay_filepath=filepath,
-                        hash_set=replay_map_archive_hashes,
-                    )
+                    output_path=output_path,
+                    replay_root=root,
+                    replay_filepath=filepath,
+                    hash_set=replay_map_archive_hashes,
+                )
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Tool for downloading maps based on the data that is available within .SC2Replay file."
+        description="Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file."
     )
     parser.add_argument(
         "--input_path",

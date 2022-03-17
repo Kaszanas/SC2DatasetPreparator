@@ -77,7 +77,7 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools."
+        description="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools. Created primarily to define StarCraft 2 (SC2) datasets."
     )
     parser.add_argument(
         "--input_path",

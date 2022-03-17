@@ -19,12 +19,12 @@ def dir_file_packager(input_dir: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Tool used for processing SC2 datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
+        description="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
     )
     parser.add_argument(
         "--input_dir",
         type=str,
-        help="Please provide input path to the directory containing the dataset that is going to be processed.",
+        help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
         default="../processing/sc2_replaypack_processor/output",
     )
     args = parser.parse_args()
