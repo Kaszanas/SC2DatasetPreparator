@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3.10-alpine
 
 RUN mkdir /sc2-dataset-preparator
 
