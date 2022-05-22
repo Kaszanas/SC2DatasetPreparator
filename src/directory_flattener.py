@@ -3,6 +3,7 @@ import argparse
 import uuid
 import json
 import shutil
+import logging
 
 
 def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
@@ -59,14 +60,14 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
                         )
 
                         current_file = os.path.abspath(os.path.join(root, file))
-                        current_file = "\\\\?\\" + current_file
+                        logging.debug("Current file: %s", current_file)
 
                         # Copying files:
                         if os.path.exists(current_file):
                             shutil.copy(current_file, new_path_and_filename)
+                            logging.debug("File copied")
                         else:
-                            print(len(current_file))
-                            print("err")
+                            logging.error("File does not exist. Path len: %d", len(current_file))
 
                         # Add to a mapping
                         dir_structure_mapping[unique_filename_with_ext] = relative_file
@@ -97,7 +98,18 @@ if __name__ == "__main__":
         help="Please provide a file extension for files that will be moved and renamed.",
         default=".SC2Replay",
     )
+    parser.add_argument(
+        "--log",
+        type=str,
+        help="Log level (INFO, DEBUG, ERROR)",
+        default="WARN"
+    )
     args = parser.parse_args()
+
+    numeric_level = getattr(logging, args.log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+    logging.basicConfig(level=numeric_level)
 
     args_input_path = args.input_path
     args_output_path = args.output_path
