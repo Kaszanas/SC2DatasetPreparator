@@ -2,6 +2,7 @@ import os
 import argparse
 import shutil
 import subprocess
+import logging
 from typing import List, Tuple
 from tqdm import tqdm
 from multiprocessing import Pool
@@ -39,22 +40,26 @@ def multiprocessing_client(arguments: tuple) -> None:
     # Copying the mapping file that contains directory tree information:
     directory_contents = os.listdir(directory)
     if "processed_mapping.json" in directory_contents:
+        logging.debug("Found mapping json in %s", directory)
         mapping_filepath = os.path.join(directory, "processed_mapping.json")
         output_mapping_filepath = os.path.join(
             output_directory_filepath, "processed_mapping.json"
         )
         shutil.copy(mapping_filepath, output_mapping_filepath)
 
+    logging.debug("Running subprocess for %s with output to %s", directory, output_directory_filepath)
     subprocess.run(
         [
-            "SC2InfoExtractorGo.exe",
+            # FIXME hardcoded binary name
+            "/SC2InfoExtractorGo",
             f"-input={directory}/",
             f"-output={output_directory_filepath}/",
             "-perform_integrity_checks=true",
             "-perform_validity_checks=false",
             "-perform_cleanup=true",
             "-number_of_packages=1",
-            "-localized_maps_file=F:\\Projects\\SC2DatasetPreparator\\processing\\json_merger\\merged.json",
+            # FIXME hardcoded path
+            "-localized_maps_file=../processing/json_merger/merged.json",
             "-max_procs=1",
             "-log_level=3",
             f"-log_dir={output_directory_filepath}/",
@@ -76,19 +81,24 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
     multiprocessing_list = []
     for directory in tqdm(os.listdir(input_dir)):
 
+        logging.debug("Processing entry: %s", directory)
         is_input_dir = os.path.abspath(os.path.join(input_dir, directory))
         if not os.path.isdir(is_input_dir):
+            logging.debug("not dir, skipping")
             continue
 
+        logging.debug("Output dir: %s", output_dir)
         # Create the main output directory:
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
 
-        output_directory_name = directory.split("\\")[-1]
+        path, output_directory_name = os.path.split(directory)
+        logging.debug("Output dir name: %s", output_directory_name)
         if output_directory_name == "input":
             continue
 
         output_directory_filepath = os.path.join(output_dir, output_directory_name)
+        logging.debug("Output filepath: %s", output_directory_filepath)
 
         # Create the output subdirectories:
         if not os.path.exists(output_directory_filepath):
@@ -121,7 +131,19 @@ if __name__ == "__main__":
         help="Please provide the number of processes to be spawned for the dataset processing.",
         default=4,
     )
+    parser.add_argument(
+        "--log",
+        type=str,
+        help="Log level (INFO, DEBUG, ERROR)",
+        default="WARN"
+    )
     args = parser.parse_args()
+
+    numeric_level = getattr(logging, args.log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError('Invalid log level: %s' % loglevel)
+    logging.basicConfig(level=numeric_level)
+
     args_input_dir = args.input_dir
     args_output_dir = args.output_dir
     args_n_processes = args.n_processes
