@@ -34,7 +34,7 @@ def multiprocessing_client(arguments: tuple) -> None:
     :type arguments: tuple
     """
 
-    directory, output_directory_filepath = arguments
+    directory, output_directory_filepath, perform_chat_anonymization = arguments
 
     # TODO: This needs to be verified
     # Copying the mapping file that contains directory tree information:
@@ -47,7 +47,11 @@ def multiprocessing_client(arguments: tuple) -> None:
         )
         shutil.copy(mapping_filepath, output_mapping_filepath)
 
-    logging.debug("Running subprocess for %s with output to %s", directory, output_directory_filepath)
+    logging.debug(
+        "Running subprocess for %s with output to %s",
+        directory,
+        output_directory_filepath,
+    )
     subprocess.run(
         [
             # FIXME hardcoded binary name
@@ -57,6 +61,7 @@ def multiprocessing_client(arguments: tuple) -> None:
             "-perform_integrity_checks=true",
             "-perform_validity_checks=false",
             "-perform_cleanup=true",
+            f"-perform_chat_anonymization={perform_chat_anonymization}",
             "-number_of_packages=1",
             # FIXME hardcoded path
             "-localized_maps_file=../processing/json_merger/merged.json",
@@ -67,7 +72,12 @@ def multiprocessing_client(arguments: tuple) -> None:
     )
 
 
-def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes: int):
+def multiproc_replaypack_processor(
+    input_dir: str,
+    output_dir: str,
+    n_processes: int,
+    perform_chat_anonymization: str,
+):
     """
     Processes multiple StarCraft II replaypacks by using https://github.com/Kaszanas/SC2InfoExtractorGo
 
@@ -77,6 +87,8 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
     :type output_dir: str
     :param n_processes: Specifies the number of Python processes that will be spawned and used for replaypack processing.
     :type n_processes: int
+    :param perform_chat_anonymization: Specifies if the chat anonymization should be done.
+    :type perform_chat_anonymization: str
     """
     multiprocessing_list = []
     for directory in tqdm(os.listdir(input_dir)):
@@ -104,7 +116,9 @@ def multiproc_replaypack_processor(input_dir: str, output_dir: str, n_processes:
         if not os.path.exists(output_directory_filepath):
             os.mkdir(output_directory_filepath)
 
-        multiprocessing_list.append((is_input_dir, output_directory_filepath))
+        multiprocessing_list.append(
+            (is_input_dir, output_directory_filepath, perform_chat_anonymization)
+        )
 
     multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
@@ -126,29 +140,34 @@ if __name__ == "__main__":
         default="../processing/sc2_replaypack_processor/output",
     )
     parser.add_argument(
+        "--perform_chat_anonymization",
+        type=str,
+        help="Provide 'true' if chat should be anonymized, otherwise 'false'",
+        default="false",
+    )
+    parser.add_argument(
         "--n_processes",
         type=int,
         help="Please provide the number of processes to be spawned for the dataset processing.",
         default=4,
     )
     parser.add_argument(
-        "--log",
-        type=str,
-        help="Log level (INFO, DEBUG, ERROR)",
-        default="WARN"
+        "--log", type=str, help="Log level (INFO, DEBUG, ERROR)", default="WARN"
     )
     args = parser.parse_args()
 
     numeric_level = getattr(logging, args.log.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError('Invalid log level: %s' % loglevel)
+        raise ValueError("Invalid log level: %s" % loglevel)
     logging.basicConfig(level=numeric_level)
 
     args_input_dir = args.input_dir
     args_output_dir = args.output_dir
     args_n_processes = args.n_processes
+    perform_chat_anonymization = args.perform_chat_anonymization
     multiproc_replaypack_processor(
         input_dir=args_input_dir,
         output_dir=args_output_dir,
         n_processes=args_n_processes,
+        perform_chat_anonymization=perform_chat_anonymization,
     )
