@@ -14,7 +14,7 @@ def multiprocessing_scheduler(
     """
     Responsible for spawning the multiprocessing_client functions.
 
-    :param processing_arguments: Processing arguments argument holds a list of input and output directories for the https://github.com/Kaszanas/SC2InfoExtractorGo
+    :param processing_arguments: Processing arguments holds a list of input and output directories for the https://github.com/Kaszanas/SC2InfoExtractorGo
     :type processing_arguments: List[Tuple[str, str]]
     :param number_of_processes: Specifies how many processes will be spawned.
     :type number_of_processes: int

@@ -1,7 +1,7 @@
 
 PWD := ${CURDIR}
 
-all: flatten download_maps json_merge process_replaypack package_dataset
+all: flatten json_merge process_replaypack package_dataset
 
 flatten:
 	docker run \
@@ -17,11 +17,13 @@ json_merge:
 		--json_one=../processing/json_merger/map_translation.json \
 		--json_two=../processing/json_merger/new_maps_processed.json
 
+
 download_maps:
 	docker run \
 		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
 		sc2-dataset-preparator \
 		python3 sc2_map_downloader.py
+
 
 process_replaypack:
 	docker run \
