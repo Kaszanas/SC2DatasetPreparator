@@ -19,6 +19,13 @@ In order to specify different processing flags for https://github.com/Kaszanas/S
 
 ## Usage
 
+### Using Docker
+
+1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
+2. Run the commands as described in the ```Makefile```. But first make sure that all of the script parameters are set according to your needs.
+
+### Using Scripts
+
 Before using this software please install Python >= 3.10 and ```requirements.txt```.
 
 Please keep in mind that ```src/directory_flattener.py``` does not contain default flag values and can be customized with the following command line flags:
