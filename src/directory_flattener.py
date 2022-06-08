@@ -67,7 +67,9 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
                             shutil.copy(current_file, new_path_and_filename)
                             logging.debug("File copied")
                         else:
-                            logging.error("File does not exist. Path len: %d", len(current_file))
+                            logging.error(
+                                "File does not exist. Path len: %d", len(current_file)
+                            )
 
                         # Add to a mapping
                         dir_structure_mapping[unique_filename_with_ext] = relative_file
@@ -102,13 +104,13 @@ if __name__ == "__main__":
         "--log",
         type=str,
         help="Log level (INFO, DEBUG, ERROR)",
-        default="WARN"
+        default="WARN",
     )
     args = parser.parse_args()
 
     numeric_level = getattr(logging, args.log.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError('Invalid log level: %s' % loglevel)
+        raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)
 
     args_input_path = args.input_path

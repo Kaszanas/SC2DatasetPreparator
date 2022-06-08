@@ -158,7 +158,7 @@ if __name__ == "__main__":
 
     numeric_level = getattr(logging, args.log.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError("Invalid log level: %s" % loglevel)
+        raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)
 
     args_input_dir = args.input_dir
