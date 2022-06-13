@@ -139,15 +139,17 @@ options:
 
 ```
 @software{Białecki_2022_6366039,
-  author       = {Białecki, Andrzej},
-  title        = {{Kaszanas/SC2DatasetPreparator: 1.1.0 
-                   SC2DatasetPreparator Release}},
-  month        = mar,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {1.1.0},
-  doi          = {10.5281/zenodo.5296664},
-  url          = {https://doi.org/10.5281/zenodo.5296664}
+  author    = {Białecki, Andrzej and
+               Białecki, Piotr and
+               Krupiński, Leszek},
+  title     = {{Kaszanas/SC2DatasetPreparator: 1.2.0 
+               SC2DatasetPreparator Release}},
+  month     = {jun},
+  year      = {2022},
+  publisher = {Zenodo},
+  version   = {1.2.0},
+  doi       = {10.5281/zenodo.5296664},
+  url       = {https://doi.org/10.5281/zenodo.5296664}
 }
 
 ```
