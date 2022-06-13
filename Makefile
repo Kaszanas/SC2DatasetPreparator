@@ -33,6 +33,12 @@ process_replaypack:
 		--n_processes 8 \
 		--perform_chat_anonymization "true"
 
+package_reset_dataset:
+	docker run \
+		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
+		sc2-dataset-preparator \
+		python3 file_packager.py --input_dir ../processing/directory_flattener/output
+
 package_dataset:
 	docker run \
 		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
