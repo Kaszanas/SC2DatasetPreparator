@@ -141,6 +141,7 @@ options:
 
 # Citation
 
+## Software
 ```
 @software{Białecki_2022_6366039,
   author    = {Białecki, Andrzej and
@@ -156,4 +157,55 @@ options:
   url       = {https://doi.org/10.5281/zenodo.5296664}
 }
 
+```
+
+## Dataset Description Pre-print
+
+```
+@misc{https://doi.org/10.48550/arxiv.2207.03428,
+  doi       = {10.48550/ARXIV.2207.03428},
+  url       = {https://arxiv.org/abs/2207.03428},
+  author    = {Białecki, Andrzej and Jakubowska, Natalia and Dobrowolski, Paweł and Białecki, Piotr and Krupiński, Leszek and Szczap, Andrzej and Białecki, Robert and Gajewski, Jan},
+  keywords  = {Machine Learning (cs.LG), Artificial Intelligence (cs.AI), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title     = {SC2EGSet: StarCraft II Esport Replay and Game-state Dataset},
+  publisher = {arXiv},
+  year      = {2022},
+  copyright = {Creative Commons Attribution 4.0 International}
+}
+
+```
+
+## [SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)
+
+```
+@dataset{bialecki_andrzej_2022_5575797,
+  author       = {Białecki, Andrzej},
+  title        = {SC2ReSet: StarCraft II Esport Replaypack Set},
+  month        = jun,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {1.0.0},
+  doi          = {10.5281/zenodo.5575797},
+  url          = {https://doi.org/10.5281/zenodo.5575797}
+}
+```
+
+## [SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)
+
+```
+@dataset{bialecki_andrzej_2022_6629349,
+  author       = {Białecki, Andrzej and
+                  Jakubowska, Natalia and
+                  Dobrowolski, Paweł and
+                  Szczap, Andrzej and
+                  Białecki, Robert and
+                  Gajewski, Jan},
+  title        = {SC2EGSet: StarCraft II Esport Game State Dataset},
+  month        = jun,
+  year         = 2022,
+  publisher    = {Zenodo},
+  version      = {1.0.0},
+  doi          = {10.5281/zenodo.6629349},
+  url          = {https://doi.org/10.5281/zenodo.6629349}
+}
 ```
