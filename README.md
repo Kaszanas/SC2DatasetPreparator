@@ -139,7 +139,7 @@ options:
 ```
 
 
-# Citation
+# Citations
 
 ## Software
 ```
