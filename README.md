@@ -2,7 +2,18 @@
 
 # SC2DatasetPreparator
 
-This repository contains tools which can be used to create an StarCraft II dataset. The following steps are suggested:
+Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**.
+
+## Dataset Preparation Steps
+
+To reproduce our experience with defining a dataset and to be able to compare your results with our work we describe how to perform the processing below.
+
+### Using Docker
+
+1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
+2. Run the commands as described in the ```Makefile```. But first make sure that all of the script parameters are set according to your needs.
+
+### Using Python
 
 0. Obtain replays to process. This can be a replaypack or your own replay folder.
 1. Download latest version of [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo), or build it from source.
@@ -13,18 +24,11 @@ This repository contains tools which can be used to create an StarCraft II datas
 6. **Optional** Using the ```src/file_renamer.py```, rename the files that were generated in the previous step. This is not required and is done to increase the readibility of the directory structure for the output.
 7. Using the ```src/file_packager.py```, create .zip archives containing the datasets and the supplementary files. By finishing this stage, your dataset should be ready to upload.
 
-## Customization
+#### Customization
 
 In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```src/sc2_replaypack_processor``` file directly
 
-## Usage
-
-### Using Docker
-
-1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
-2. Run the commands as described in the ```Makefile```. But first make sure that all of the script parameters are set according to your needs.
-
-### Using Scripts
+## Scripts Command Line Arguments Usage
 
 Before using this software please install Python >= 3.10 and ```requirements.txt```.
 
