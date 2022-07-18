@@ -6,7 +6,6 @@ import argparse
 
 def replay_reader(
     output_path: str,
-    replay_root: str,
     replay_filepath: str,
     hash_set: set,
 ) -> None:
@@ -15,14 +14,10 @@ def replay_reader(
 
     :param output_path: Specifies where the final map file will be downloaded.
     :type output_path: str
-    :param replay_root: Specifies the root directory of a replay.
-    :type replay_root: str
     :param filepath: Specifies the path of a replay within the replay_root.
     :type filepath: str
     :param hash_set: Specifies a set that holds all of the previously seen maps.
     :type hash_set: set
-    :param lock: Specifies an asyncio.Lock
-    :type lock: asyncio.Lock
     """
     try:
         replay = sc2reader.load_replay(replay_filepath, load_map=True)
