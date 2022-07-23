@@ -41,6 +41,14 @@ def file_renamer(input_dir: str) -> None:
                         os.path.basename(directory) + "_processed_failed.log",
                     ),
                 )
+            if file.startswith("main_log"):
+                os.rename(
+                    os.path.join(directory, file),
+                    os.path.join(
+                        directory,
+                        os.path.basename(directory) + "_main_log.log",
+                    ),
+                )
 
 
 if __name__ == "__main__":
