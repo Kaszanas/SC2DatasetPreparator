@@ -1,7 +1,7 @@
 
 PWD := ${CURDIR}
 
-all: flatten json_merge process_replaypack package_dataset
+all: flatten json_merge process_replaypack rename_files package_dataset
 
 flatten:
 	docker run \
@@ -32,6 +32,14 @@ process_replaypack:
 		python3 sc2_replaypack_processor.py \
 		--n_processes 8 \
 		--perform_chat_anonymization "true"
+
+rename_files:
+	docker run \
+		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
+		sc2-dataset-preparator \
+		python3 file_renamer.py \
+		--input_dir ../processing/sc2_replaypack_processor/output
+
 
 package_reset_dataset:
 	docker run \
