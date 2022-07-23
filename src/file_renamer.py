@@ -18,11 +18,27 @@ def file_renamer(input_dir: str) -> None:
                     os.path.join(directory, file),
                     os.path.join(directory, os.path.basename(directory) + "_data.zip"),
                 )
-            if file.endswith(".json"):
+            if file.startswith("package_summary"):
                 os.rename(
                     os.path.join(directory, file),
                     os.path.join(
                         directory, os.path.basename(directory) + "_summary.json"
+                    ),
+                )
+            if file.startswith("processed_mapping"):
+                os.rename(
+                    os.path.join(directory, file),
+                    os.path.join(
+                        directory,
+                        os.path.basename(directory) + "_processed_mapping.json",
+                    ),
+                )
+            if file.startswith("processed_failed"):
+                os.rename(
+                    os.path.join(directory, file),
+                    os.path.join(
+                        directory,
+                        os.path.basename(directory) + "_processed_failed.log",
                     ),
                 )
 
