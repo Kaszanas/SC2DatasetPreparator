@@ -51,7 +51,7 @@ package_dataset:
 	docker run \
 		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
 		sc2-dataset-preparator \
-		python3 file_packager.py
+		python3 file_packager.py --input_dir ../processing/sc2_replaypack_processor/output
 
 build:
 	docker build . -t sc2-dataset-preparator

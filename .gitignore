@@ -4,6 +4,7 @@
 /processing
 
 *.SC2Replay
+*.zip
 
 NOTES.txt
 SC2InfoExtractorGo.exe
