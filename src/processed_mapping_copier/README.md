@@ -1,5 +1,7 @@
 # Processed Mapping Copier
 
+Utility script that enters each of the processed replaypack directories and copies the log files that are left after processing with `sc2_replaypack_processor`.
+
 # CLI Usage
 
 Please keep in mind that the  ```src/processed_mapping_copier.py``` contains default flag values and can be customized with the following command line flags:

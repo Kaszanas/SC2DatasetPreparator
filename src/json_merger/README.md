@@ -1,5 +1,7 @@
 # File Renamer
 
+Utility script that is merging two JSON files.
+
 # CLI Usage
 
 Please keep in mind that the  ```src/json_merger.py``` contains default flag values and can be customized with the following command line flags:

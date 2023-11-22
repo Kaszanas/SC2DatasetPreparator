@@ -1,5 +1,7 @@
 # Directory Flattener
 
+Utility script for entering each of the supplied replaypacks and flattening its structure.
+
 # CLI Usage
 
 Please keep in mind that ```src/directory_flattener.py``` does not contain default flag values and can be customized with the following command line flags:

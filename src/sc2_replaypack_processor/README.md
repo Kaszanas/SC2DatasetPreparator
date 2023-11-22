@@ -1,5 +1,7 @@
 # SC2 Replaypack Processor
 
+Utility script that leverages the [SC2InfoExtractorGo](https://github.com/Kaszanas/SC2InfoExtractorGo) and runs the program within multiple processes to parallelize the StarCraft 2 replay processing.
+
 # CLI Usage
 
 Please keep in mind that the ```src/sc2_replaypack_processor.py```  contains default flag values and can be customized with the following command line flags:
