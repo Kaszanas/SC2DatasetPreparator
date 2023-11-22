@@ -45,7 +45,6 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
             for root, _, filenames in os.walk(maybe_dir):
                 for file in filenames:
                     if file.endswith(file_extension):
-
                         # Get abspath from root
                         # Prepare relative paths:
                         root_abspath = os.path.join(os.path.abspath(root), file)
@@ -86,13 +85,13 @@ if __name__ == "__main__":
         "--input_path",
         type=str,
         help="Please provide input path to the dataset that is going to be processed.",
-        default="../processing/directory_flattener/input",
+        default="../../processing/directory_flattener/input",
     )
     parser.add_argument(
         "--output_path",
         type=str,
         help="Please provide output path where sc2 map files will be downloaded.",
-        default="../processing/directory_flattener/output",
+        default="../../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--file_extension",

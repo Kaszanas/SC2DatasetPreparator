@@ -15,9 +15,9 @@ file, and for later processing with other tools. Created primarily to define Sta
 
 options:
   -h, --help            show this help message and exit
-  --input_path INPUT_PATH (default = ../processing/directory_flattener/input)
+  --input_path INPUT_PATH (default = ../../processing/directory_flattener/input)
                         Please provide input path to the dataset that is going to be processed.
-  --output_path OUTPUT_PATH (default = ../processing/directory_flattener/output)
+  --output_path OUTPUT_PATH (default = ../../processing/directory_flattener/output)
                         Please provide output path where sc2 map files will be downloaded.
   --file_extension FILE_EXTENSION (default = .SC2Replay)
                         Please provide a file extension for files that will be moved and renamed.

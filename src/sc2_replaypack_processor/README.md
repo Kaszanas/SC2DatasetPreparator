@@ -13,9 +13,9 @@ Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kas
 
 options:
   -h, --help            show this help message and exit
-  --input_dir INPUT_DIR (default = ../processing/directory_flattener/output)
+  --input_dir INPUT_DIR (default = ../../processing/directory_flattener/output)
                         Please provide input path to the directory containing the dataset that is going to be processed.
-  --output_dir OUTPUT_DIR (default = ../processing/sc2_replaypack_processor/output)
+  --output_dir OUTPUT_DIR (default = ../../processing/sc2_replaypack_processor/output)
                         Please provide an output directory for the resulting files.
   --n_processes N_PROCESSES (default = 4)
                         Please provide the number of processes to be spawned for the dataset processing.

@@ -51,19 +51,19 @@ if __name__ == "__main__":
         "--json_one",
         type=str,
         help="Please provide the path to the first .json file that is going to be merged.",
-        default="../processing/json_merger/json1.json",
+        default="../../processing/json_merger/json1.json",
     )
     parser.add_argument(
         "--json_two",
         type=str,
         help="Please provide the path to the second .json file that is going to be merged.",
-        default="../processing/json_merger/json2.json",
+        default="../../processing/json_merger/json2.json",
     )
     parser.add_argument(
         "--output_filepath",
         type=str,
         help="Please provide output path where sc2 map files will be downloaded.",
-        default="../processing/json_merger/merged.json",
+        default="../../processing/json_merger/merged.json",
     )
 
     args = parser.parse_args()

@@ -25,7 +25,7 @@ if __name__ == "__main__":
         "--input_dir",
         type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
-        default="../processing/sc2_replaypack_processor/output",
+        default="../../processing/sc2_replaypack_processor/output",
     )
     args = parser.parse_args()
     dir_file_packager(input_dir=args.input_dir)

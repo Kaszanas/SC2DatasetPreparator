@@ -41,13 +41,13 @@ if __name__ == "__main__":
         "--input_path",
         type=str,
         help="Please provide input path to the flattened replaypacks that contain procesed_mapping.json files.",
-        default="../processing/directory_flattener/output",
+        default="../../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--output_path",
         type=str,
         help="Please provide output path where processed_mapping.json will be copied.",
-        default="../processing/sc2_replaypack_processor/output",
+        default="../../processing/sc2_replaypack_processor/output",
     )
 
     args = parser.parse_args()

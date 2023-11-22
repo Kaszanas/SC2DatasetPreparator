@@ -13,10 +13,10 @@ https://github.com/Kaszanas/SC2MapLocaleExtractor
 
 options:
   -h, --help            show this help message and exit
-  --json_one JSON_ONE (default = ../processing/json_merger/json1.json)
+  --json_one JSON_ONE (default = ../../processing/json_merger/json1.json)
                     Please provide the path to the first .json file that is going to be merged.
-  --json_two JSON_TWO (default = ../processing/json_merger/json2.json)
+  --json_two JSON_TWO (default = ../../processing/json_merger/json2.json)
                     Please provide the path to the second .json file that is going to be merged.
-  --output_filepath OUTPUT_FILEPATH (default = ../processing/json_merger/merged.json)
+  --output_filepath OUTPUT_FILEPATH (default = ../../processing/json_merger/merged.json)
                         Please provide output path where sc2 map files will be downloaded.
 ```

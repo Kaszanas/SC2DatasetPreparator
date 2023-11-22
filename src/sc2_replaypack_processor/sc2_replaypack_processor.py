@@ -92,7 +92,6 @@ def multiproc_replaypack_processor(
     """
     multiprocessing_list = []
     for directory in tqdm(os.listdir(input_dir)):
-
         logging.debug("Processing entry: %s", directory)
         is_input_dir = os.path.abspath(os.path.join(input_dir, directory))
         if not os.path.isdir(is_input_dir):
@@ -131,13 +130,13 @@ if __name__ == "__main__":
         "--input_dir",
         type=str,
         help="Please provide input path to the directory containing the dataset that is going to be processed.",
-        default="../processing/directory_flattener/output",
+        default="../../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--output_dir",
         type=str,
         help="Please provide an output directory for the resulting files.",
-        default="../processing/sc2_replaypack_processor/output",
+        default="../../processing/sc2_replaypack_processor/output",
     )
     parser.add_argument(
         "--perform_chat_anonymization",

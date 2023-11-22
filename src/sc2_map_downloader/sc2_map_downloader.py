@@ -81,13 +81,13 @@ if __name__ == "__main__":
         "--input_path",
         type=str,
         help="Please provide input path to the dataset that is going to be processed.",
-        default="../processing/directory_flattener/output",
+        default="../../processing/directory_flattener/output",
     )
     parser.add_argument(
         "--output_path",
         type=str,
         help="Please provide output path where sc2 map files will be downloaded.",
-        default="../processing/sc2_map_downloader/output",
+        default="../../processing/sc2_map_downloader/output",
     )
 
     args = parser.parse_args()
