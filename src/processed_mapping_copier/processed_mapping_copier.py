@@ -1,6 +1,8 @@
-import argparse
 import os
+from pathlib import Path
 import shutil
+
+import click
 
 
 def mapping_copier(input_path: str, output_path: str) -> None:
@@ -33,25 +35,24 @@ def mapping_copier(input_path: str, output_path: str) -> None:
                 shutil.copy(mapping_filepath, mapping_out_filepath)
 
 
+@click.command(
+    help="Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset."
+)
+@click.option(
+    "--input_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide input path to the flattened replaypacks that contain procesed_mapping.json files.",
+)
+@click.option(
+    "--output_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide output path where processed_mapping.json will be copied.",
+)
+def main(input_path: Path, output_path: Path):
+    mapping_copier(input_path=input_path, output_path=output_path)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset."
-    )
-    parser.add_argument(
-        "--input_path",
-        type=str,
-        help="Please provide input path to the flattened replaypacks that contain procesed_mapping.json files.",
-        default="../../processing/directory_flattener/output",
-    )
-    parser.add_argument(
-        "--output_path",
-        type=str,
-        help="Please provide output path where processed_mapping.json will be copied.",
-        default="../../processing/sc2_replaypack_processor/output",
-    )
-
-    args = parser.parse_args()
-
-    args_input_path = args.input_path
-    args_output_path = args.output_path
-    mapping_copier(input_path=args_input_path, output_path=args_output_path)
+    main()
