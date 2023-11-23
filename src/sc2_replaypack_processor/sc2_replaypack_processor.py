@@ -1,9 +1,10 @@
 import os
-import argparse
+from pathlib import Path
 import shutil
 import subprocess
 import logging
 from typing import List, Tuple
+import click
 from tqdm import tqdm
 from multiprocessing import Pool
 
@@ -73,8 +74,8 @@ def multiprocessing_client(arguments: tuple) -> None:
 
 
 def multiproc_replaypack_processor(
-    input_dir: str,
-    output_dir: str,
+    input_path: str,
+    output_path: str,
     n_processes: int,
     perform_chat_anonymization: str,
 ):
@@ -91,24 +92,24 @@ def multiproc_replaypack_processor(
     :type perform_chat_anonymization: str
     """
     multiprocessing_list = []
-    for directory in tqdm(os.listdir(input_dir)):
+    for directory in tqdm(os.listdir(input_path)):
         logging.debug("Processing entry: %s", directory)
-        is_input_dir = os.path.abspath(os.path.join(input_dir, directory))
+        is_input_dir = os.path.abspath(os.path.join(input_path, directory))
         if not os.path.isdir(is_input_dir):
             logging.debug("not dir, skipping")
             continue
 
-        logging.debug("Output dir: %s", output_dir)
+        logging.debug("Output dir: %s", output_path)
         # Create the main output directory:
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        if not os.path.exists(output_path):
+            os.mkdir(output_path)
 
         path, output_directory_name = os.path.split(directory)
         logging.debug("Output dir name: %s", output_directory_name)
         if output_directory_name == "input":
             continue
 
-        output_directory_filepath = os.path.join(output_dir, output_directory_name)
+        output_directory_filepath = os.path.join(output_path, output_directory_name)
         logging.debug("Output filepath: %s", output_directory_filepath)
 
         # Create the output subdirectories:
@@ -122,51 +123,60 @@ def multiproc_replaypack_processor(
     multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
-    )
-    parser.add_argument(
-        "--input_dir",
-        type=str,
-        help="Please provide input path to the directory containing the dataset that is going to be processed.",
-        default="../../processing/directory_flattener/output",
-    )
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        help="Please provide an output directory for the resulting files.",
-        default="../../processing/sc2_replaypack_processor/output",
-    )
-    parser.add_argument(
-        "--perform_chat_anonymization",
-        type=str,
-        help="Provide 'true' if chat should be anonymized, otherwise 'false'",
-        default="false",
-    )
-    parser.add_argument(
-        "--n_processes",
-        type=int,
-        help="Please provide the number of processes to be spawned for the dataset processing.",
-        default=4,
-    )
-    parser.add_argument(
-        "--log", type=str, help="Log level (INFO, DEBUG, ERROR)", default="WARN"
-    )
-    args = parser.parse_args()
-
-    numeric_level = getattr(logging, args.log.upper(), None)
+@click.command(
+    help="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo."
+)
+@click.option(
+    "--input_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide an output directory for the resulting files.",
+)
+@click.option(
+    "--output_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide output path where StarCraft 2 (SC2) map files will be downloaded.",
+)
+@click.option(
+    "--perform_chat_anonymization",
+    type=bool,
+    default=False,
+    required=True,
+    help="Provide 'True' if chat should be anonymized, otherwise 'False'.",
+)
+@click.option(
+    "--n_processes",
+    type=int,
+    default=4,
+    required=True,
+    help="Please provide the number of processes to be spawned for the dataset processing.",
+)
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
+def main(
+    input_path: Path,
+    output_path: Path,
+    n_processes: int,
+    perform_chat_anonymization: bool,
+    log: str,
+) -> None:
+    numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)
 
-    args_input_dir = args.input_dir
-    args_output_dir = args.output_dir
-    args_n_processes = args.n_processes
-    perform_chat_anonymization = args.perform_chat_anonymization
     multiproc_replaypack_processor(
-        input_dir=args_input_dir,
-        output_dir=args_output_dir,
-        n_processes=args_n_processes,
+        input_path=input_path,
+        output_path=output_path,
+        n_processes=n_processes,
         perform_chat_anonymization=perform_chat_anonymization,
     )
+
+
+if __name__ == "__main__":
+    main()
