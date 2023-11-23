@@ -13,3 +13,7 @@ command.txt
 launch.json
 
 processing_backup/
+
+*.egg-info
+
+__pycache__
