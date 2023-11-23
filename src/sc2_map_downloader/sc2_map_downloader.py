@@ -1,3 +1,6 @@
+from pathlib import Path
+
+import click
 import sc2reader
 import os
 import requests
@@ -73,25 +76,24 @@ def map_downloader(input_path: str, output_path: str) -> None:
                 )
 
 
+@click.command(
+    help="Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file."
+)
+@click.option(
+    "--input_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide input path to the dataset that is going to be processed.",
+)
+@click.option(
+    "--output_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide output path where StarCraft 2 (SC2) map files will be downloaded.",
+)
+def main(input_path: Path, output_path: Path) -> None:
+    map_downloader(input_path=input_path, output_path=output_path)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file."
-    )
-    parser.add_argument(
-        "--input_path",
-        type=str,
-        help="Please provide input path to the dataset that is going to be processed.",
-        default="../../processing/directory_flattener/output",
-    )
-    parser.add_argument(
-        "--output_path",
-        type=str,
-        help="Please provide output path where sc2 map files will be downloaded.",
-        default="../../processing/sc2_map_downloader/output",
-    )
-
-    args = parser.parse_args()
-
-    args_input_path = args.input_path
-    args_output_path = args.output_path
-    map_downloader(input_path=args_input_path, output_path=args_output_path)
+    main()

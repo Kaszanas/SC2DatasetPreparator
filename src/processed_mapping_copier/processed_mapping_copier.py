@@ -50,7 +50,7 @@ def mapping_copier(input_path: str, output_path: str) -> None:
     required=True,
     help="Please provide output path where processed_mapping.json will be copied.",
 )
-def main(input_path: Path, output_path: Path):
+def main(input_path: Path, output_path: Path) -> None:
     mapping_copier(input_path=input_path, output_path=output_path)
 
 
