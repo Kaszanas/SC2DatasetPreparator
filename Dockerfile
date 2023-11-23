@@ -1,5 +1,7 @@
 # Built .exe replay parsing tool is required to run sc2_replaypack_processor
 # https://github.com/Kaszanas/SC2InfoExtractorGo
+
+# TODO: This should be on DockerHub:
 FROM sc2-info-extractor
 
 FROM python:3.10-alpine
