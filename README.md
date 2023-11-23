@@ -4,6 +4,13 @@
 
 Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**.
 
+# Installation
+
+To install current version of the toolset as separate CLI tools run the following command:
+```
+pip install sc2datasetpreparator[all]
+```
+
 ## Dataset Preparation Steps
 
 To reproduce our experience with defining a dataset and to be able to compare your results with our work we describe how to perform the processing below.
