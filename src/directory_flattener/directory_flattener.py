@@ -1,5 +1,4 @@
 import os
-import argparse
 import uuid
 import json
 import shutil
@@ -99,7 +98,7 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
     type=str,
     default=".SC2Replay",
     required=True,
-    help="Please provide output path where the tool will put files after processing.",
+    help="Specify file extension for the files that will be put to the top level directory.",
 )
 @click.option(
     "--log",
@@ -108,7 +107,7 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
     help="Log level (INFO, DEBUG, ERROR)",
 )
 def main(input_path: str, output_path: str, file_extension: str, log: str) -> None:
-    numeric_level = getattr(logging, args.log.upper(), None)
+    numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)

@@ -1,14 +1,16 @@
 import os
-import argparse
+from pathlib import Path
 from zipfile import ZipFile, ZIP_BZIP2
 
+import click
 
-def dir_file_packager(input_dir: str) -> None:
-    for directory in os.listdir(path=input_dir):
-        if not os.path.isdir(os.path.join(input_dir, directory)):
+
+def dir_file_packager(input_path: str) -> None:
+    for directory in os.listdir(path=input_path):
+        if not os.path.isdir(os.path.join(input_path, directory)):
             continue
 
-        nested_dir_path = os.path.join(input_dir, directory)
+        nested_dir_path = os.path.join(input_path, directory)
         with ZipFile(nested_dir_path + ".zip", "w") as zip_file:
             for file in os.listdir(nested_dir_path):
                 abs_filepath = os.path.join(nested_dir_path, file)
@@ -17,15 +19,18 @@ def dir_file_packager(input_dir: str) -> None:
                 )
 
 
+@click.command(
+    help="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
+)
+@click.option(
+    "--input_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
+)
+def main(input_path: Path):
+    dir_file_packager(input_path=input_path)
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo"
-    )
-    parser.add_argument(
-        "--input_dir",
-        type=str,
-        help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
-        default="../../processing/sc2_replaypack_processor/output",
-    )
-    args = parser.parse_args()
-    dir_file_packager(input_dir=args.input_dir)
+    main()
