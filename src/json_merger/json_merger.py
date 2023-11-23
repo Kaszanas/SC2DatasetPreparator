@@ -1,9 +1,11 @@
-import argparse
 import json
+from pathlib import Path
 from typing import Dict
 
+import click
 
-def json_merger(path_to_json_one: str, path_to_json_two: str) -> Dict[str, str]:
+
+def merge_files(path_to_json_one: str, path_to_json_two: str) -> Dict[str, str]:
     """
     Exposes the logic to merge two json files by loading their contents from supplied paths.
 
@@ -43,36 +45,42 @@ def save_output(output_filepath: str, output_dict: Dict[str, str]) -> None:
         json.dump(output_dict, output_file, indent=4)
 
 
+def json_merger(
+    path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path
+) -> None:
+    merge_files(path_to_json_one=path_to_json_one, path_to_json_two=path_to_json_two)
+
+    save_output(output_filepath=output_filepath)
+
+
+@click.command(
+    help="Tool used for merging two .json files. Created in order to merge two mappings created by https://github.com/Kaszanas/SC2MapLocaleExtractor"
+)
+@click.option(
+    "--json_one",
+    type=click.Path(exists=True, dir_okay=False, file_okay=True, resolve_path=True),
+    required=True,
+    help="Please provide the path to the first .json file that is going to be merged.",
+)
+@click.option(
+    "--json_two",
+    type=click.Path(writable=True, dir_okay=False, file_okay=True, resolve_path=True),
+    required=True,
+    help="Please provide the path to the second .json file that is going to be merged.",
+)
+@click.option(
+    "--output_filepath",
+    type=click.Path(dir_okay=False, file_okay=True, resolve_path=True),
+    required=True,
+    help="Please provide a filepath to which the result JSON file will be saved, note that any existing file of the same name will be overwriten.",
+)
+def main(path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path) -> None:
+    json_merger(
+        path_to_json_one=path_to_json_one,
+        path_to_json_two=path_to_json_two,
+        output_filepath=output_filepath,
+    )
+
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Tool used for merging two .json files. Created in order to merge two mappings created by https://github.com/Kaszanas/SC2MapLocaleExtractor"
-    )
-    parser.add_argument(
-        "--json_one",
-        type=str,
-        help="Please provide the path to the first .json file that is going to be merged.",
-        default="../../processing/json_merger/json1.json",
-    )
-    parser.add_argument(
-        "--json_two",
-        type=str,
-        help="Please provide the path to the second .json file that is going to be merged.",
-        default="../../processing/json_merger/json2.json",
-    )
-    parser.add_argument(
-        "--output_filepath",
-        type=str,
-        help="Please provide output path where sc2 map files will be downloaded.",
-        default="../../processing/json_merger/merged.json",
-    )
-
-    args = parser.parse_args()
-    args_path_json_one = args.json_one
-    args_path_json_two = args.json_two
-    args_output_filepath = args.output_filepath
-
-    output_dict = json_merger(
-        path_to_json_one=args_path_json_one, path_to_json_two=args_path_json_two
-    )
-
-    save_output(output_filepath=args_output_filepath, output_dict=output_dict)
+    main()
