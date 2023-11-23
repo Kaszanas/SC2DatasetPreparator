@@ -5,6 +5,8 @@ import json
 import shutil
 import logging
 
+import click
+
 
 def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
     """
@@ -77,46 +79,44 @@ def directory_flattener(input_path: str, output_path: str, file_extension: str) 
             )
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools. Created primarily to define StarCraft 2 (SC2) datasets."
-    )
-    parser.add_argument(
-        "--input_path",
-        type=str,
-        help="Please provide input path to the dataset that is going to be processed.",
-        default="../../processing/directory_flattener/input",
-    )
-    parser.add_argument(
-        "--output_path",
-        type=str,
-        help="Please provide output path where sc2 map files will be downloaded.",
-        default="../../processing/directory_flattener/output",
-    )
-    parser.add_argument(
-        "--file_extension",
-        type=str,
-        help="Please provide a file extension for files that will be moved and renamed.",
-        default=".SC2Replay",
-    )
-    parser.add_argument(
-        "--log",
-        type=str,
-        help="Log level (INFO, DEBUG, ERROR)",
-        default="WARN",
-    )
-    args = parser.parse_args()
-
+@click.command(
+    help="Directory restructuring tool used in order to flatten the structure, map the old structure to a separate file, and for later processing with other tools. Created primarily to define StarCraft 2 (SC2) datasets."
+)
+@click.option(
+    "--input_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide input path to the dataset that is going to be processed.",
+)
+@click.option(
+    "--output_path",
+    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    required=True,
+    help="Please provide output path where the tool will put files after processing.",
+)
+@click.option(
+    "--file_extension",
+    type=str,
+    default=".SC2Replay",
+    required=True,
+    help="Please provide output path where the tool will put files after processing.",
+)
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
+def main(input_path: str, output_path: str, file_extension: str, log: str) -> None:
     numeric_level = getattr(logging, args.log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)
 
-    args_input_path = args.input_path
-    args_output_path = args.output_path
-    args_file_extension = args.file_extension
     directory_flattener(
-        input_path=args_input_path,
-        output_path=args_output_path,
-        file_extension=args_file_extension,
+        input_path=input_path, output_path=output_path, file_extension=file_extension
     )
+
+
+if __name__ == "__main__":
+    main()
