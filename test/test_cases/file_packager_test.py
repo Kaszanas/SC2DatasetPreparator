@@ -1,5 +1,7 @@
 import unittest
 
+from sc2datasetpreparator.file_packager import file_packager
+
 
 class FilePackagerTest(unittest.TestCase):
     def setUpClass(cls) -> None:
