@@ -1,6 +1,8 @@
+import functools
 import os
 import logging
 from pathlib import Path
+import shutil
 
 TEST_DIR_NAME = "test"
 
@@ -167,28 +169,34 @@ def delete_test_output(script_name: str) -> None:
         f"Detected that test_output exists, \
             performing removal by calling shutil.rmtree({test_dir})"
     )
-    # shutil.rmtree(test_output)
+    shutil.rmtree(test_dir.as_posix())
 
 
-class AssetError(Exception):
-    pass
-
-
-# TODO:This needs to take into consideration the script name.
-def dir_test_create_cleanup(func):
+def dir_test_create_cleanup(script_name: str, delete_output: bool):
     """
     Decorator that is creating output directories for tests,
     and deletes them along with the output after the tests are finished.
+
+    Parameters
+    ----------
+    script_name : str
+        Specifies the script name for which the directories will be created and deleted.
+    delete_output : bool
+        Specifies if the test output directory will be removed.
     """
 
-    def wrapper(*args, **kwargs):
-        create_test_output_dir()
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            create_test_output_dir(script_name=script_name)
 
-        try:
-            exit_value = func(*args, **kwargs)
-        finally:
-            logging.info("Deleting output dir in decorator is turned off")
-            # delete_test_output_dir()
-        return exit_value
+            try:
+                exit_value = func(*args, **kwargs)
+            finally:
+                if delete_output:
+                    delete_test_output(script_name=script_name)
+            return exit_value
 
-    return wrapper
+        return wrapper
+
+    return decorator
