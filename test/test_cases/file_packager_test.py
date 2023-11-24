@@ -1,12 +1,16 @@
 import unittest
 
-from sc2datasetpreparator.file_packager import file_packager
+from sc2datasetpreparator.file_packager.file_packager import file_packager
+
+from test.test_utils import dir_test_create_cleanup
+
+SCRIPT_NAME = "file_packager"
 
 
+@dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class FilePackagerTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         # TODO: Create a sample directory containing some files to package:
-
         pass
 
     def test_file_packager(self) -> None:

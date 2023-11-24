@@ -1,7 +1,14 @@
 import unittest
-from sc2datasetpreparator.directory_flattener import directory_flattener
+from sc2datasetpreparator.directory_flattener.directory_flattener import (
+    directory_flattener,
+)
+
+from test.test_utils import dir_test_create_cleanup
+
+SCRIPT_NAME = "directory_flattener"
 
 
+@dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class DirectoryFlattenerTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         # TODO: Create nested directory structure mimicking how real replaypacks look like:
@@ -16,5 +23,7 @@ class DirectoryFlattenerTest(unittest.TestCase):
         # TODO: Assert the final directory have the same number of files with the selected extension.
         # TODO: Assert the final flattened directory to have one .json file
         # containing mapping of the files.
+
+        directory_flattener()
 
         pass
