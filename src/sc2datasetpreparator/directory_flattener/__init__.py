@@ -1,0 +1,1 @@
+from directory_flattener.directory_flattener import main

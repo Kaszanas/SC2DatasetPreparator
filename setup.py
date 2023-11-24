@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 
 PACKAGE_VERSION = "1.2.0"
 
-
 PACKAGE_NAME = "sc2datasetpreparator"
 
 DIRECTORY_FLATTENER = "directory_flattener"

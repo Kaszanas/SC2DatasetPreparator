@@ -17,3 +17,5 @@ processing_backup/
 *.egg-info
 
 __pycache__
+
+build/
