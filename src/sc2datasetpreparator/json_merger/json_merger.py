@@ -9,12 +9,17 @@ def merge_files(path_to_json_one: str, path_to_json_two: str) -> Dict[str, str]:
     """
     Exposes the logic to merge two json files by loading their contents from supplied paths.
 
-    :param path_to_json_one: Specifies the filepath of a .json file that is going to be merged.
-    :type path_to_json_one: str
-    :param path_to_json_two: Specifies the filepath of a .json file that is going to be merged.
-    :type path_to_json_two: str
-    :return: Returns a merged dictionary.
-    :rtype: dict
+    Parameters
+    ----------
+    path_to_json_one : str
+        Specifies the filepath of a .json file that is going to be merged.
+    path_to_json_two : str
+        Specifies the filepath of a .json file that is going to be merged.
+
+    Returns
+    -------
+    Dict[str, str]
+        Returns a merged dictionary.
     """
 
     # Loading the supplied .json files and deserializing them:
@@ -36,11 +41,15 @@ def save_output(output_filepath: str, output_dict: Dict[str, str]) -> None:
     """
     Exposes the logic for saving a dict to a .json file.
 
-    :param output_filepath: Speciifies the full output filepath which will be used, this includes the filename.
-    :type output_filepath: str
-    :param output_dict: Specifies the Python dictionary which will be serialized into a JSON.
-    :type output_dict: Dict[str, str]
+    Parameters
+    ----------
+    output_filepath : str
+        Speciifies the full output filepath which will be used, \
+        this includes the filename.
+    output_dict : Dict[str, str]
+        Specifies the Python dictionary which will be serialized into a JSON.
     """
+
     with open(output_filepath, "w") as output_file:
         json.dump(output_dict, output_file, indent=4)
 
@@ -49,7 +58,6 @@ def json_merger(
     path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path
 ) -> None:
     merge_files(path_to_json_one=path_to_json_one, path_to_json_two=path_to_json_two)
-
     save_output(output_filepath=output_filepath)
 
 

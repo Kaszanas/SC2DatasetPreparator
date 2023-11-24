@@ -15,10 +15,13 @@ def multiprocessing_scheduler(
     """
     Responsible for spawning the multiprocessing_client functions.
 
-    :param processing_arguments: Processing arguments holds a list of input and output directories for the https://github.com/Kaszanas/SC2InfoExtractorGo
-    :type processing_arguments: List[Tuple[str, str]]
-    :param number_of_processes: Specifies how many processes will be spawned.
-    :type number_of_processes: int
+    Parameters
+    ----------
+    processing_arguments : List[Tuple[str, str]]
+        Processing arguments holds a list of input and output directories \
+        for the https://github.com/Kaszanas/SC2InfoExtractorGo
+    number_of_processes : int
+        Specifies how many processes will be spawned.
     """
 
     with Pool(processes=number_of_processes) as pool:
@@ -29,10 +32,13 @@ def multiprocessing_scheduler(
 
 def multiprocessing_client(arguments: tuple) -> None:
     """
-    Responsible for running a single process that will extract data from a replaypack.
+    Responsible for running a single process that will
+    extract data from a replaypack.
 
-    :param arguments: Arguments tuple containing the input and output directory.
-    :type arguments: tuple
+    Parameters
+    ----------
+    arguments : tuple
+        Arguments tuple containing the input and output directory.
     """
 
     directory, output_directory_filepath, perform_chat_anonymization = arguments
@@ -80,17 +86,24 @@ def multiproc_replaypack_processor(
     perform_chat_anonymization: str,
 ):
     """
-    Processes multiple StarCraft II replaypacks by using https://github.com/Kaszanas/SC2InfoExtractorGo
+    Processes multiple StarCraft II replaypacks 
+    by using https://github.com/Kaszanas/SC2InfoExtractorGo
 
-    :param input_dir: Input directory which contains the replaypacks in separate folders. The replay folders should have their replays at the top level.
-    :type input_dir: str
-    :param output_dir: Output directory which will contain all of the output produced by the https://github.com/Kaszanas/SC2InfoExtractorGo
-    :type output_dir: str
-    :param n_processes: Specifies the number of Python processes that will be spawned and used for replaypack processing.
-    :type n_processes: int
-    :param perform_chat_anonymization: Specifies if the chat anonymization should be done.
-    :type perform_chat_anonymization: str
+    Parameters
+    ----------
+    input_path : str
+        Input directory which contains the replaypacks in separate folders. \
+        The replay folders should have their replays at the top level.
+    output_path : str
+        Output directory which will contain all of the output produced by \
+        the https://github.com/Kaszanas/SC2InfoExtractorGo
+    n_processes : int
+        Specifies the number of Python processes that will be spawned \
+        and used for replaypack processing.
+    perform_chat_anonymization : str
+        Specifies if the chat anonymization should be done.
     """
+
     multiprocessing_list = []
     for directory in tqdm(os.listdir(input_path)):
         logging.debug("Processing entry: %s", directory)

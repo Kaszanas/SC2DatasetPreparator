@@ -11,10 +11,12 @@ def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
     """
     Saves a JSON file containing the mapping of the directory structure before it was "flattened".
 
-    :param output_path: Specifies the path where the mapping will be saved.
-    :type output_path: str
-    :param dir_mapping: Specifies the directory mapping dict.
-    :type dir_mapping: dict
+    Parameters
+    ----------
+    output_path : str
+        Specifies the path where the mapping will be saved.
+    dir_mapping : dict
+        Specifies the directory mapping dict.
     """
     with open(os.path.join(output_path, "processed_mapping.json"), "w") as json_file:
         json.dump(dir_mapping, json_file)
@@ -22,14 +24,23 @@ def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
 
 def directory_flattener(input_path: str, output_path: str, file_extension: str) -> None:
     """
-    Provides the main logic for "directory flattening". Detects a files that end with a specific extension,
-    and moves them to the top of the input path. This function returns a file mapping for all of the files that were moved.
-    This file mapping represents the relative directory structure before the processing occured.
+    Provides the main logic for "directory flattening".
+    Detects a files that end with a specific extension,
+    and moves them to the top of the input path.
+    This function returns a file mapping for all of the files that were moved.
+    This file mapping represents the relative
+    directory structure before the processing occured.
 
-    :param input_path: Specifies the path that will be searched for files.
-    :type input_path: str
-    :param output_path: Specifies the path where directories will be created and files will be copied in a flat directory structure.
-    :type output_path: dict
+    Parameters
+    ----------
+    input_path : str
+        Specifies the path that will be searched for files.
+    output_path : str
+        Specifies the path where directories will be created and files will \
+        be copied in a flat directory structure.
+    file_extension : str
+        Specifies extension for which the detected files will be brought \
+        up to the top level of the "flattened" directory
     """
 
     # Iterate over directories:

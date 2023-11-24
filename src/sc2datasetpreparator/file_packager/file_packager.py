@@ -6,6 +6,14 @@ import click
 
 
 def dir_file_packager(input_path: str) -> None:
+    """
+    Packages the specified directory into a .zip archive.
+
+    Parameters
+    ----------
+    input_path : str
+        Specifies the path which will be turned into a .zip archive.
+    """
     for directory in os.listdir(path=input_path):
         if not os.path.isdir(os.path.join(input_path, directory)):
             continue

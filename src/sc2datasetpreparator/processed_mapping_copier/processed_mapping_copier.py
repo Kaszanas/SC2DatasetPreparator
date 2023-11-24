@@ -10,10 +10,14 @@ def mapping_copier(input_path: str, output_path: str) -> None:
     Exposes logic for copying a specific file from all of the immediate subdirectories
     of the input path to the matching immediate subdirectories in the output path.
 
-    :param input_path: Specifies the input path that contains subdirectories with the desired file to be copied.
-    :type input_path: str
-    :param output_path: Specifies the output path that contains matching subdirectories which will be the destination of the copied file.
-    :type output_path: str
+    Parameters
+    ----------
+    input_path : str
+        Specifies the input path that contains subdirectories with the \
+        desired file to be copied.
+    output_path : str
+        Specifies the output path that contains matching subdirectories which \
+        will be the destination of the copied file.
     """
 
     # Iterating over the input path to find all of the immediate directories:

@@ -6,13 +6,19 @@ import click
 
 def file_renamer(input_path: Path) -> None:
     """
-    Provides logic for renaming files with .zip and .json files that are contained within a directory.
-    Contains hardcoded rules: if the file is of .zip extension it adds "_data" prefix to the filename.
-    And if the file is of .json extension it adds "_summary" prefix to the filename.
+    Provides logic for renaming files with .zip and .json files
+    that are contained within a directory.
+    Contains hardcoded rules: if the file is of .zip extension
+    it adds "_data" prefix to the filename.
+    And if the file is of .json extension
+    it adds "_summary" prefix to the filename.
 
-    :param input_dir: Specifies the input directory where the files will be renamed.
-    :type input_dir: Path
+    Parameters
+    ----------
+    input_path : Path
+        Specifies the input directory where the files will be renamed.
     """
+
     # TODO: This can be done with iterdir:
     for directory, _, file_list in os.walk(input_path.as_posix()):
         for file in file_list:

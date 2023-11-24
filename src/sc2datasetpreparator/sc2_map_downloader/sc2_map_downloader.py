@@ -4,7 +4,6 @@ import click
 import sc2reader
 import os
 import requests
-import argparse
 
 
 def replay_reader(
@@ -14,19 +13,21 @@ def replay_reader(
     hash_set: set,
 ) -> None:
     """
-    Contains logic to try to read and download a map based on the information that is held within .SC2Replay file.
+    Contains logic to try to read and download a map based on the
+    information that is held within .SC2Replay file.
 
-    :param output_path: Specifies where the final map file will be downloaded.
-    :type output_path: str
-    :param replay_root: Specifies the root directory of a replay.
-    :type replay_root: str
-    :param filepath: Specifies the path of a replay within the replay_root.
-    :type filepath: str
-    :param hash_set: Specifies a set that holds all of the previously seen maps.
-    :type hash_set: set
-    :param lock: Specifies an asyncio.Lock
-    :type lock: asyncio.Lock
+    Parameters
+    ----------
+    output_path : str
+        Specifies where the final map file will be downloaded.
+    replay_root : str
+        Specifies the root directory of a replay.
+    replay_filepath : str
+        Specifies the path of a replay within the replay_root.
+    hash_set : set
+        Specifies a set that holds all of the previously seen maps.
     """
+
     try:
         replay = sc2reader.load_replay(replay_filepath, load_map=True)
         replay_url = replay.map_file.url
@@ -54,11 +55,15 @@ def map_downloader(input_path: str, output_path: str) -> None:
     """
     Holds the main loop for asynchronous map downloading logic.
 
-    :param input_path: Specifies the input path that contains .SC2Replay files which will be used for map detection.
-    :type input_path: str
-    :param output_path: Specifies the output path where the downloaded maps will be placed.
-    :type output_path: str
+    Parameters
+    ----------
+    input_path : str
+        Specifies the input path that contains .SC2Replay files \
+        which will be used for map detection.
+    output_path : str
+        Specifies the output path where the downloaded maps will be placed.
     """
+
     replay_map_archive_hashes = set()
 
     for root, _, filename in os.walk(input_path):
