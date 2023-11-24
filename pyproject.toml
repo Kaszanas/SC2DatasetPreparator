@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "sc2datasetpreparator"
+version = "1.2.0"
+description = "Tools for dataset processing."
+authors = ["Andrzej 'Kaszanas' Białecki"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sc2reader = "^1.8.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+black = "^23.11.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
