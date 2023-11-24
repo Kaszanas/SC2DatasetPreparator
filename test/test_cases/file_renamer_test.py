@@ -2,14 +2,22 @@ import unittest
 
 from sc2datasetpreparator.file_renamer.file_renamer import file_renamer
 
-from test.test_utils import dir_test_create_cleanup
+from test.test_utils import (
+    dir_test_create_cleanup,
+    get_test_input_dir,
+    get_test_output_dir,
+)
 
 SCRIPT_NAME = "file_renamer"
 
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class FileRenamerTest(unittest.TestCase):
-    def setUpClass(cls) -> None:
+    def setUp(self) -> None:
+        # Get test directory input and output:
+        self.input_path = get_test_input_dir(script_name=SCRIPT_NAME)
+        self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
+
         # TODO: Mock the directory structure:
         pass
 
