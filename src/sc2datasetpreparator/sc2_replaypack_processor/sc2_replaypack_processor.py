@@ -79,11 +79,11 @@ def multiprocessing_client(arguments: tuple) -> None:
     )
 
 
-def multiproc_replaypack_processor(
-    input_path: str,
-    output_path: str,
+def sc2_replaypack_processor(
+    input_path: Path,
+    output_path: Path,
     n_processes: int,
-    perform_chat_anonymization: str,
+    perform_chat_anonymization: bool,
 ):
     """
     Processes multiple StarCraft II replaypacks 
@@ -91,16 +91,16 @@ def multiproc_replaypack_processor(
 
     Parameters
     ----------
-    input_path : str
+    input_path : Path
         Input directory which contains the replaypacks in separate folders. \
         The replay folders should have their replays at the top level.
-    output_path : str
+    output_path : Path
         Output directory which will contain all of the output produced by \
         the https://github.com/Kaszanas/SC2InfoExtractorGo
     n_processes : int
         Specifies the number of Python processes that will be spawned \
         and used for replaypack processing.
-    perform_chat_anonymization : str
+    perform_chat_anonymization : bool
         Specifies if the chat anonymization should be done.
     """
 
@@ -183,7 +183,7 @@ def main(
         raise ValueError("Invalid log level: %s" % numeric_level)
     logging.basicConfig(level=numeric_level)
 
-    multiproc_replaypack_processor(
+    sc2_replaypack_processor(
         input_path=input_path,
         output_path=output_path,
         n_processes=n_processes,
