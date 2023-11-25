@@ -8,12 +8,20 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-sc2reader = "^1.8.0"
-
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
 black = "^23.11.0"
+
+[tool.poetry.extras.all]
+dependencies = ["sc2reader"]
+
+[tool.poetry.extras.sc2_map_downloader]
+dependencies = ["sc2reader"]
+
+[tool.poetry.dependencies.sc2reader]
+# Version constraint for sc2reader within sc2_map_downloader
+version = "^1.8.0"
 
 [build-system]
 requires = ["poetry-core"]
