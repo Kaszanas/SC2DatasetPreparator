@@ -18,6 +18,7 @@ class DirectoryFlattenerTest(unittest.TestCase):
         # Get test directory input and output:
         self.input_path = get_test_input_dir(script_name=SCRIPT_NAME)
         self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
+        self.file_extension = ".SC2Replay"
 
         # TODO: Create nested directory structure mimicking how real replaypacks look like:
         # TODO: Use one replay placed in these nested directories.
@@ -27,11 +28,12 @@ class DirectoryFlattenerTest(unittest.TestCase):
         pass
 
     def test_directory_flattener(self) -> None:
+        directory_flattener(
+            input_path=self.input_path,
+            output_path=self.output_path,
+            file_extension=self.file_extension,
+        )
         # TODO: Assert the final directory not to contain any other nested directories.
         # TODO: Assert the final directory have the same number of files with the selected extension.
         # TODO: Assert the final flattened directory to have one .json file
         # containing mapping of the files.
-
-        directory_flattener()
-
-        pass

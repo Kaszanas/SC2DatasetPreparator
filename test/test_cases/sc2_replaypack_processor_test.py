@@ -25,11 +25,13 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
 
         # TODO: Set up a test directory with at least
         # two replaypacks with at least one SC2Replay file within.
-        pass
 
     def test_sc2_replaypack_processor(self):
+        sc2_replaypack_processor(
+            input_path=self.input_path,
+            output_path=self.output_path,
+            n_processes=1,
+            perform_chat_anonymization=False,
+        )
         # TODO: Check if output contains the same directories as for input.
         # TODO: Check if outputs contain extracted JSON files with valid fields.
-
-        sc2_replaypack_processor()
-        pass

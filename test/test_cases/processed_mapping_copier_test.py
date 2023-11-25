@@ -21,9 +21,9 @@ class ProcessedMappingCopierTest(unittest.TestCase):
         self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
 
         # TODO: Define test directory structure
-        pass
 
     def test_processed_mapping_copier(self):
+        processed_mapping_copier(
+            input_path=self.input_path, output_path=self.output_path
+        )
         # TODO: Check if the
-
-        pass

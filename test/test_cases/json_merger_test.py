@@ -19,9 +19,15 @@ class JSONMergerTest(unittest.TestCase):
         self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
 
         # TODO: Create two json files with some overlapping keys and values
-        pass
+
+        self.path_to_json_one = ""
+        self.path_to_json_two = ""
 
     def test_json_merger(self):
+        json_merger(
+            path_to_json_one=self.path_to_json_one,
+            path_to_json_two=self.path_to_json_two,
+            output_filepath=self.output_filepath,
+        )
         # TODO: Assert that the json files were merged.
         # TODO: Validate what should be the desired behavior for overlapping keys.
-        pass

@@ -21,8 +21,7 @@ class SC2MapDownloaderTest(unittest.TestCase):
         self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
 
         # TODO: Have at least one valid SC2Replay to download its map.
-        pass
 
     def test_sc2_map_downloader_test(self):
+        sc2_map_downloader(input_path=self.input_path, output_path=self.output_path)
         # TODO: Assert that map was downloaded succseefully.
-        pass

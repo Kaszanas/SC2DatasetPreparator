@@ -22,6 +22,6 @@ class FileRenamerTest(unittest.TestCase):
         pass
 
     def test_file_renamer(self) -> None:
+        file_renamer(input_path=self.input_path)
         # TODO: Assert that the files with old name do not exist.
         # TODO: Assert that files with new names exist.
-        pass
