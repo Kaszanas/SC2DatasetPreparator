@@ -51,7 +51,7 @@ def replay_reader(
         return
 
 
-def map_downloader(input_path: str, output_path: str) -> None:
+def sc2_map_downloader(input_path: str, output_path: str) -> None:
     """
     Holds the main loop for asynchronous map downloading logic.
 
@@ -97,7 +97,7 @@ def map_downloader(input_path: str, output_path: str) -> None:
     help="Please provide output path where StarCraft 2 (SC2) map files will be downloaded.",
 )
 def main(input_path: Path, output_path: Path) -> None:
-    map_downloader(input_path=input_path, output_path=output_path)
+    sc2_map_downloader(input_path=input_path, output_path=output_path)
 
 
 if __name__ == "__main__":

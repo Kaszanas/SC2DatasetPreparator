@@ -5,7 +5,7 @@ import shutil
 import click
 
 
-def mapping_copier(input_path: str, output_path: str) -> None:
+def processed_mapping_copier(input_path: str, output_path: str) -> None:
     """
     Exposes logic for copying a specific file from all of the immediate subdirectories
     of the input path to the matching immediate subdirectories in the output path.
@@ -55,7 +55,7 @@ def mapping_copier(input_path: str, output_path: str) -> None:
     help="Please provide output path where processed_mapping.json will be copied.",
 )
 def main(input_path: Path, output_path: Path) -> None:
-    mapping_copier(input_path=input_path, output_path=output_path)
+    processed_mapping_copier(input_path=input_path, output_path=output_path)
 
 
 if __name__ == "__main__":

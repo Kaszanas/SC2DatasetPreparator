@@ -5,7 +5,7 @@ from zipfile import ZipFile, ZIP_BZIP2
 import click
 
 
-def dir_file_packager(input_path: str) -> None:
+def dir_packager(input_path: str) -> None:
     """
     Packages the specified directory into a .zip archive.
 
@@ -37,7 +37,7 @@ def dir_file_packager(input_path: str) -> None:
     help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
 )
 def main(input_path: Path):
-    dir_file_packager(input_path=input_path)
+    dir_packager(input_path=input_path)
 
 
 if __name__ == "__main__":
