@@ -7,6 +7,7 @@ from test.test_utils import (
     dir_test_create_cleanup,
     get_test_input_dir,
     get_test_output_dir,
+    create_test_text_files,
 )
 
 SCRIPT_NAME = "directory_flattener"
@@ -24,8 +25,6 @@ class DirectoryFlattenerTest(unittest.TestCase):
         # TODO: Use one replay placed in these nested directories.
         # TODO: Place some additional files that will be scrapped in processing,
         # for example some_notes.txt
-
-        pass
 
     def test_directory_flattener(self) -> None:
         directory_flattener(

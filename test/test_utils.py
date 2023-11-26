@@ -3,6 +3,7 @@ import os
 import logging
 from pathlib import Path
 import shutil
+from typing import List
 
 TEST_DIR_NAME = "test"
 
@@ -170,6 +171,57 @@ def delete_test_output(script_name: str) -> None:
             performing removal by calling shutil.rmtree({test_dir})"
     )
     shutil.rmtree(test_dir.as_posix())
+
+
+def create_nested_test_directories(input_path: Path, n_dirs: int) -> List[Path]:
+    """
+    Created multiple nested directories for testing.
+
+    Parameters
+    ----------
+    input_path : Path
+        Input path in which the nested directories will be created.
+    n_dirs : int
+        Number of directories that will be created
+
+    Returns
+    -------
+    List[Path]
+        Returns the list of created directories.
+    """
+    created_nested_dirs = []
+
+    for i in range(n_dirs):
+        nested_dir = Path(input_path, f"dir_{i}")
+
+        if not nested_dir.exists():
+            nested_dir.mkdir()
+            created_nested_dirs.append(nested_dir)
+
+    return created_nested_dirs
+
+
+def create_test_text_files(
+    input_path: Path, n_files: int, extension: str = ".SC2Replay"
+):
+    """
+    Creates example text files with a specified extension.
+
+    Parameters
+    ----------
+    input_path : Path
+        Specifies the input path where the test files will be created.
+    n_files : int
+        Number of files which will be created.
+    extension : str
+        Extension which will be used to create the test files.
+    """
+    for i in range(n_files):
+        example_file = Path(input_path, f"example_file_{i}.{extension}")
+
+        if not example_file.exists():
+            with example_file.open(mode="w", encoding="utf-8") as ef:
+                ef.write(f"Example Content {i}")
 
 
 def dir_test_create_cleanup(script_name: str, delete_output: bool):
