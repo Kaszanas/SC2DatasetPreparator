@@ -225,10 +225,10 @@ def create_test_text_files(
                 ef.write(f"Example Content {i}")
 
 
-# TODO: This can be done more generic:
 def create_test_json_files(
     input_path: Path,
     test_key: str = "test_key",
+    test_key_other: str = "test_key_other",
     test_key_content: str = "test_key_data",
 ) -> List[Path]:
     """
@@ -257,6 +257,7 @@ def create_test_json_files(
         # One of the keys will be different to verify if the merging logic works:
         if i == 1:
             data[f"{test_key}"] = test_key_content
+        data[f"{test_key_other}"] = test_key_content
 
         if not json_path.exists():
             with json_path.open(mode="w", encoding="utf-8") as json_f:
