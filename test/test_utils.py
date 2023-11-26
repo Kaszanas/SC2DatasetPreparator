@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 import shutil
 from typing import List
+import json
 
 TEST_DIR_NAME = "test"
 
@@ -222,6 +223,48 @@ def create_test_text_files(
         if not example_file.exists():
             with example_file.open(mode="w", encoding="utf-8") as ef:
                 ef.write(f"Example Content {i}")
+
+
+# TODO: This can be done more generic:
+def create_test_json_files(
+    input_path: Path,
+    test_key: str = "test_key",
+    test_key_content: str = "test_key_data",
+) -> List[Path]:
+    """
+    Creates JSON files for test purposes.
+
+    Parameters
+    ----------
+    input_path : Path
+        Path at which the JSON files will be created.
+    test_key : str
+        Additional key which will be used to verify merging logic.
+    test_key_content : str
+        Content for the additional test key.
+
+    Returns
+    -------
+    List[Path]
+        Returns a list of paths to tje JSON files that were created.
+    """
+
+    json_files = []
+    for i in range(2):
+        json_path = Path(input_path, f"json_{i}.json")
+
+        data = {f"key_{i}": f"{i}" for i in range(10)}
+        # One of the keys will be different to verify if the merging logic works:
+        if i == 1:
+            data[f"{test_key}"] = test_key_content
+
+        if not json_path.exists():
+            with json_path.open(mode="w", encoding="utf-8") as json_f:
+                json.dump(data, json_f)
+
+            json_files.append(json_path)
+
+    return json_files
 
 
 def dir_test_create_cleanup(script_name: str, delete_output: bool):
