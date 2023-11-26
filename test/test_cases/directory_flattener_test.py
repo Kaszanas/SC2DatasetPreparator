@@ -8,6 +8,7 @@ from test.test_utils import (
     get_test_input_dir,
     get_test_output_dir,
     create_test_text_files,
+    create_nested_test_directories,
 )
 
 SCRIPT_NAME = "directory_flattener"
@@ -15,16 +16,21 @@ SCRIPT_NAME = "directory_flattener"
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class DirectoryFlattenerTest(unittest.TestCase):
-    def setUp(self) -> None:
+    def setUpClass(cls) -> None:
         # Get test directory input and output:
-        self.input_path = get_test_input_dir(script_name=SCRIPT_NAME)
-        self.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
-        self.file_extension = ".SC2Replay"
+        cls.input_path = get_test_input_dir(script_name=SCRIPT_NAME)
+        cls.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
+        cls.file_extension = ".SC2Replay"
 
-        # TODO: Create nested directory structure mimicking how real replaypacks look like:
-        # TODO: Use one replay placed in these nested directories.
-        # TODO: Place some additional files that will be scrapped in processing,
-        # for example some_notes.txt
+        # Create nested directory structure mimicking how real replaypacks look like:
+        nested_dirs = create_nested_test_directories(input_path=cls.input_path)
+        for directory in nested_dirs:
+            # Create multiple test files with the selected extension:.
+            create_test_text_files(
+                input_path=directory, n_files=4, extension=cls.file_extension
+            )
+            # Create additional files that should not be present in the output:,
+            create_test_text_files(input_path=directory, n_files=1, extension=".txt")
 
     def test_directory_flattener(self) -> None:
         directory_flattener(
