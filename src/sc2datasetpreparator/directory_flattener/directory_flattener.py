@@ -51,12 +51,14 @@ def directory_flattener(
 
     # input must be a directory:
     if not input_path.is_dir():
-        logging.error(f"Input path must be a directory! {input_path.resolve().as_posix()}")
+        logging.error(
+            f"Input path must be a directory! {input_path.resolve().as_posix()}"
+        )
         return (False, Path())
 
     # Input must exist:
     if not input_path.exists():
-        logging.error(f"Input path must exist!" {input_path.resolve().as_posix()})
+        logging.error(f"Input path must exist! {input_path.resolve().as_posix()}")
         return (False, Path())
 
     # Output path must be a directory:
@@ -69,7 +71,7 @@ def directory_flattener(
     # Iterate over directories:
     for item in os.listdir(input_path):
         # maybe_dir = os.path.join(input_path, item)
-        maybe_dir = Path(input_path, item)
+        maybe_dir = Path(input_path, item).resolve()
         if not maybe_dir.is_dir():
             continue
         # if os.path.isdir(maybe_dir):
@@ -82,37 +84,39 @@ def directory_flattener(
         dir_structure_mapping = {}
         for root, _, filenames in os.walk(maybe_dir.as_posix()):
             for file in filenames:
-                if file.endswith(file_extension):
-                    # Get abspath from root
-                    # Prepare relative paths:
-                    root_abspath = os.path.join(os.path.abspath(root), file)
-                    input_abspath = os.path.abspath(input_path)
-                    relative_file = root_abspath.removeprefix(input_abspath)
+                if not file.endswith(file_extension):
+                    continue
+                # Get abspath from root
+                # Prepare relative paths:
+                root_abspath = Path(root, file)
+                input_abspath = Path(input_path)
 
-                    # Get unique filename:
-                    unique_filename = uuid.uuid4().hex
-                    unique_filename_with_ext = unique_filename + file_extension
-                    new_path_and_filename = os.path.join(
-                        dir_output_path, unique_filename_with_ext
-                    )
+                # Get unique filename:
+                unique_filename = uuid.uuid4().hex
+                unique_filename_with_ext = unique_filename + file_extension
+                new_path_and_filename = Path(dir_output_path, unique_filename_with_ext)
+                logging.debug(
+                    f"New path and filename! {new_path_and_filename.resolve().as_posix()}"
+                )
 
-                    current_file = os.path.abspath(os.path.join(root, file))
-                    logging.debug("Current file: %s", current_file)
+                current_file = Path(root, file).resolve()
+                logging.debug(f"Current file: {current_file.as_posix()}")
 
-                    # Copying files:
-                    if os.path.exists(current_file):
-                        shutil.copy(current_file, new_path_and_filename)
-                        logging.debug("File copied")
-                    else:
-                        logging.error(
-                            "File does not exist. Path len: %d", len(current_file)
-                        )
+                # Copying files:
+                if not current_file.exists():
+                    logging.error(f"File does not exist. Path len: {len(current_file)}")
+                    continue
 
-                    # Add to a mapping
-                    dir_structure_mapping[unique_filename_with_ext] = relative_file
-        save_dir_mapping(
-            output_path=dir_output_path, dir_mapping=dir_structure_mapping
-        )
+                shutil.copy(current_file, new_path_and_filename)
+                logging.debug("File copied")
+
+                relative_file = os.path.relpath(root, current_file.as_posix())
+
+                # Add to a mapping
+                dir_structure_mapping[unique_filename_with_ext] = relative_file
+            save_dir_mapping(
+                output_path=dir_output_path, dir_mapping=dir_structure_mapping
+            )
 
 
 @click.command(
