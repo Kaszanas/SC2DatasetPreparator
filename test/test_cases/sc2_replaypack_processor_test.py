@@ -12,6 +12,9 @@ from test.test_utils import (
 
 SCRIPT_NAME = "sc2_replaypack_processor"
 
+# TODO: sc2_replaypack_processor by default uses another piece of software for parsing SC2 replays.
+# So it will be downloading the data from another repository.
+
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class SC2ReplaypackProcessorTest(unittest.TestCase):
