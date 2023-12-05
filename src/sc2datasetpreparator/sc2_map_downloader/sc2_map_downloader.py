@@ -96,7 +96,18 @@ def sc2_map_downloader(input_path: str, output_path: str) -> None:
     required=True,
     help="Please provide output path where StarCraft 2 (SC2) map files will be downloaded.",
 )
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
 def main(input_path: Path, output_path: Path) -> None:
+    numeric_level = getattr(logging, log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f"Invalid log level: {numeric_level}")
+    logging.basicConfig(level=numeric_level)
+
     sc2_map_downloader(input_path=input_path, output_path=output_path)
 
 

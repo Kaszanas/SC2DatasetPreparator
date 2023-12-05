@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -70,8 +71,19 @@ def file_renamer(input_path: Path) -> None:
     required=True,
     help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
 )
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
 def main(input_path: Path) -> None:
     # TODO: Add logging!
+    numeric_level = getattr(logging, log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f"Invalid log level: {numeric_level}")
+    logging.basicConfig(level=numeric_level)
+
     file_renamer(input_path=input_path)
 
 

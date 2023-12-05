@@ -180,7 +180,7 @@ def main(
 ) -> None:
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError("Invalid log level: %s" % numeric_level)
+        raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(level=numeric_level)
 
     sc2_replaypack_processor(

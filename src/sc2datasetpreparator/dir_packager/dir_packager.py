@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 from zipfile import ZipFile, ZIP_BZIP2
@@ -18,9 +19,11 @@ def dir_packager(input_path: str) -> None:
         if not os.path.isdir(os.path.join(input_path, directory)):
             continue
 
-        nested_dir_path = os.path.join(input_path, directory)
-        with ZipFile(nested_dir_path + ".zip", "w") as zip_file:
-            for file in os.listdir(nested_dir_path):
+        nested_dir_path = Path(input_path, directory).resolve()
+        final_archive_name = nested_dir_path.with_suffix(".zip")
+        logging.info(f"Set final archive name to: {final_archive_name.as_posix()}")
+        with ZipFile(final_archive_name.as_posix(), "w") as zip_file:
+            for file in os.listdir(nested_dir_path.as_posix()):
                 abs_filepath = os.path.join(nested_dir_path, file)
                 zip_file.write(
                     filename=abs_filepath, arcname=file, compress_type=ZIP_BZIP2
@@ -36,7 +39,18 @@ def dir_packager(input_path: str) -> None:
     required=True,
     help="Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.",
 )
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
 def main(input_path: Path):
+    numeric_level = getattr(logging, log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f"Invalid log level: {numeric_level}")
+    logging.basicConfig(level=numeric_level)
+
     dir_packager(input_path=input_path)
 
 

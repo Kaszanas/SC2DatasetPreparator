@@ -86,10 +86,6 @@ def directory_flattener(
             for file in filenames:
                 if not file.endswith(file_extension):
                     continue
-                # Get abspath from root
-                # Prepare relative paths:
-                root_abspath = Path(root, file)
-                input_abspath = Path(input_path)
 
                 # Get unique filename:
                 unique_filename = uuid.uuid4().hex
@@ -108,7 +104,9 @@ def directory_flattener(
                     continue
 
                 shutil.copy(current_file, new_path_and_filename)
-                logging.debug("File copied")
+                logging.debug(
+                    f"File copied to {new_path_and_filename.resolve().as_posix()}"
+                )
 
                 relative_file = os.path.relpath(root, current_file.as_posix())
 
@@ -117,6 +115,8 @@ def directory_flattener(
             save_dir_mapping(
                 output_path=dir_output_path, dir_mapping=dir_structure_mapping
             )
+
+    return (True, output_path)
 
 
 @click.command(
@@ -150,7 +150,7 @@ def directory_flattener(
 def main(input_path: str, output_path: str, file_extension: str, log: str) -> None:
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
-        raise ValueError("Invalid log level: %s" % numeric_level)
+        raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(level=numeric_level)
 
     directory_flattener(

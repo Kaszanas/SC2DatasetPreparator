@@ -1,4 +1,5 @@
 import json
+import logging
 from pathlib import Path
 from typing import Dict
 
@@ -110,7 +111,18 @@ def json_merger(
     required=True,
     help="Please provide a filepath to which the result JSON file will be saved, note that any existing file of the same name will be overwriten.",
 )
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
 def main(path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path) -> None:
+    numeric_level = getattr(logging, log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f"Invalid log level: {numeric_level}")
+    logging.basicConfig(level=numeric_level)
+
     json_merger(
         path_to_json_one=path_to_json_one,
         path_to_json_two=path_to_json_two,

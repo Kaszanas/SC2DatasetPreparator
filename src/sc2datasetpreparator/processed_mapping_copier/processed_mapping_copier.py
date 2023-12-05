@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 import shutil
@@ -54,7 +55,18 @@ def processed_mapping_copier(input_path: str, output_path: str) -> None:
     required=True,
     help="Please provide output path where processed_mapping.json will be copied.",
 )
+@click.option(
+    "--log",
+    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    default="WARN",
+    help="Log level (INFO, DEBUG, ERROR)",
+)
 def main(input_path: Path, output_path: Path) -> None:
+    numeric_level = getattr(logging, log.upper(), None)
+    if not isinstance(numeric_level, int):
+        raise ValueError(f"Invalid log level: {numeric_level}")
+    logging.basicConfig(level=numeric_level)
+
     processed_mapping_copier(input_path=input_path, output_path=output_path)
 
 
