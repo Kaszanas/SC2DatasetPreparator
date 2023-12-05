@@ -7,7 +7,7 @@ from zipfile import ZipFile, ZIP_BZIP2
 import click
 
 
-def dir_packager(input_path: str) -> List[Path]:
+def multiple_dir_packager(input_path: str) -> List[Path]:
     """
     Packages the specified directory into a .zip archive.
 
@@ -28,12 +28,12 @@ def dir_packager(input_path: str) -> List[Path]:
         if not directory_path.is_dir():
             continue
 
-        output_archives.append(package_directory(directory_path=directory_path))
+        output_archives.append(dir_packager(directory_path=directory_path))
 
     return output_archives
 
 
-def package_directory(directory_path: Path) -> Path:
+def dir_packager(directory_path: Path) -> Path:
     """
     Archives a single input directory.
     Archive is stored in the same directory as the input.
@@ -80,7 +80,7 @@ def main(input_path: Path):
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(level=numeric_level)
 
-    dir_packager(input_path=input_path)
+    multiple_dir_packager(input_path=input_path)
 
 
 if __name__ == "__main__":
