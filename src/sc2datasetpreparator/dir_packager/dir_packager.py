@@ -1,12 +1,13 @@
 import logging
 import os
 from pathlib import Path
+from typing import List
 from zipfile import ZipFile, ZIP_BZIP2
 
 import click
 
 
-def dir_packager(input_path: str) -> None:
+def dir_packager(input_path: str) -> List[Path]:
     """
     Packages the specified directory into a .zip archive.
 
@@ -14,20 +15,48 @@ def dir_packager(input_path: str) -> None:
     ----------
     input_path : str
         Specifies the path which will be turned into a .zip archive.
+
+    Returns
+    -------
+    List[Path]
+        Returns a list of Paths to packaged archives.
     """
+
+    output_archives = []
     for directory in os.listdir(path=input_path):
-        if not os.path.isdir(os.path.join(input_path, directory)):
+        directory_path = Path(input_path, directory).resolve()
+        if not directory_path.is_dir():
             continue
 
-        nested_dir_path = Path(input_path, directory).resolve()
-        final_archive_name = nested_dir_path.with_suffix(".zip")
-        logging.info(f"Set final archive name to: {final_archive_name.as_posix()}")
-        with ZipFile(final_archive_name.as_posix(), "w") as zip_file:
-            for file in os.listdir(nested_dir_path.as_posix()):
-                abs_filepath = os.path.join(nested_dir_path, file)
-                zip_file.write(
-                    filename=abs_filepath, arcname=file, compress_type=ZIP_BZIP2
-                )
+        output_archives.append(package_directory(directory_path=directory_path))
+
+    return output_archives
+
+
+def package_directory(directory_path: Path) -> Path:
+    """
+    Archives a single input directory.
+    Archive is stored in the same directory as the input.
+
+    Parameters
+    ----------
+    directory_path : Path
+        Specifies the path to the directory that will be archived.
+
+    Returns
+    -------
+    Path
+        Returns a Path to the archive.
+    """
+
+    final_archive_path = directory_path.with_suffix(".zip")
+    logging.info(f"Set final archive name to: {final_archive_path.as_posix()}")
+    with ZipFile(final_archive_path.as_posix(), "w") as zip_file:
+        for file in directory_path.iterdir():
+            abs_filepath = os.path.join(directory_path, file)
+            zip_file.write(filename=abs_filepath, arcname=file, compress_type=ZIP_BZIP2)
+
+    return final_archive_path
 
 
 @click.command(
