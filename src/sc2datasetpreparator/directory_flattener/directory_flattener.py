@@ -195,7 +195,7 @@ def main(input_path: str, output_path: str, file_extension: str, log: str) -> No
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     multiple_directory_flattener(
         input_path=input_path, output_path=output_path, file_extension=file_extension

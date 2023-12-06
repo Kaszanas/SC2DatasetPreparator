@@ -1,9 +1,12 @@
+import logging
 from pathlib import Path
 
 import click
 import sc2reader
 import os
 import requests
+
+from sc2datasetpreparator.settings import LOGGING_FORMAT
 
 
 def replay_reader(
@@ -102,11 +105,11 @@ def sc2_map_downloader(input_path: str, output_path: str) -> None:
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
-def main(input_path: Path, output_path: Path) -> None:
+def main(input_path: Path, output_path: Path, log: str) -> None:
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     sc2_map_downloader(input_path=input_path, output_path=output_path)
 

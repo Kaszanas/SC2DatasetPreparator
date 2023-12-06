@@ -5,6 +5,8 @@ from typing import Dict
 
 import click
 
+from sc2datasetpreparator.settings import LOGGING_FORMAT
+
 
 def merge_files(path_to_json_one: Path, path_to_json_two: Path) -> Dict[str, str]:
     """
@@ -117,11 +119,13 @@ def json_merger(
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
-def main(path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path) -> None:
+def main(
+    path_to_json_one: Path, path_to_json_two: Path, output_filepath: Path, log: str
+) -> None:
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     json_merger(
         path_to_json_one=path_to_json_one,

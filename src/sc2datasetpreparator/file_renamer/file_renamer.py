@@ -4,6 +4,8 @@ from pathlib import Path
 
 import click
 
+from sc2datasetpreparator.settings import LOGGING_FORMAT
+
 
 def file_renamer(input_path: Path) -> None:
     """
@@ -77,12 +79,11 @@ def file_renamer(input_path: Path) -> None:
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
-def main(input_path: Path) -> None:
-    # TODO: Add logging!
+def main(input_path: Path, log: str) -> None:
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     file_renamer(input_path=input_path)
 

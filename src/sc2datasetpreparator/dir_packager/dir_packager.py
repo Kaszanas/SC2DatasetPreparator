@@ -78,7 +78,7 @@ def main(input_path: Path):
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     multiple_dir_packager(input_path=input_path)
 

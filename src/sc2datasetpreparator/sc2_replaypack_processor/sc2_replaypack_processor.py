@@ -8,6 +8,8 @@ import click
 from tqdm import tqdm
 from multiprocessing import Pool
 
+from sc2datasetpreparator.settings import LOGGING_FORMAT
+
 
 def multiprocessing_scheduler(
     processing_arguments: List[Tuple[str, str]], number_of_processes: int
@@ -181,7 +183,7 @@ def main(
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
-    logging.basicConfig(level=numeric_level)
+    logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     sc2_replaypack_processor(
         input_path=input_path,
