@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Tuple
+from typing import Dict, List, Tuple
 import uuid
 import json
 import shutil
@@ -11,7 +11,8 @@ import click
 
 def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
     """
-    Saves a JSON file containing the mapping of the directory structure before it was "flattened".
+    Saves a JSON file containing the mapping of the
+    directory structure before it was "flattened".
 
     Parameters
     ----------
@@ -24,9 +25,71 @@ def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
         json.dump(dir_mapping, json_file)
 
 
-def directory_flattener(
+def directory_flatten(
+    dir_to_flatten: Path,
+    dir_output_path: Path,
+    file_extension: str,
+) -> Dict[str, str]:
+    """
+    Flattens a single directory and copies the contents
+    to the specified output directory.
+
+    Parameters
+    ----------
+    dir_to_flatten : Path
+        Path to the directory that will be flattened.
+    dir_output_path : Path
+        Path to the output directory where the files will be copied.
+    file_extension : str
+        File extension which will be used to filter
+        out the files that are supposed to be copied.
+
+    Returns
+    -------
+    Dict[str, str]
+        Returns a directory mapping from the current unique filename
+        to the previous path relative to the root of the not-flattened directory.
+    """
+
+    # Walk over the directory
+    dir_structure_mapping = {}
+    for root, _, filenames in os.walk(dir_to_flatten.as_posix()):
+        for file in filenames:
+            if not file.endswith(file_extension):
+                continue
+
+            # Get unique filename:
+            unique_filename = uuid.uuid4().hex
+            unique_filename_with_ext = unique_filename + file_extension
+            new_path_and_filename = Path(dir_output_path, unique_filename_with_ext)
+            logging.debug(
+                f"New path and filename! {new_path_and_filename.resolve().as_posix()}"
+            )
+
+            current_file = Path(root, file).resolve()
+            logging.debug(f"Current file: {current_file.as_posix()}")
+
+            # Copying files:
+            if not current_file.exists():
+                logging.error(f"File does not exist. Path len: {len(current_file)}")
+                continue
+
+            shutil.copy(current_file, new_path_and_filename)
+            logging.debug(
+                f"File copied to {new_path_and_filename.resolve().as_posix()}"
+            )
+
+            relative_file = os.path.relpath(root, current_file.as_posix())
+
+            # Add to a mapping
+            dir_structure_mapping[unique_filename_with_ext] = relative_file
+
+    return dir_structure_mapping
+
+
+def multiple_directory_flattener(
     input_path: Path, output_path: Path, file_extension: str
-) -> Tuple[bool, Path]:
+) -> Tuple[bool, List[Path]]:
     """
     Provides the main logic for "directory flattening".
     Iterates all of the directories found in the input path, and
@@ -47,6 +110,12 @@ def directory_flattener(
     file_extension : str
         Specifies extension for which the detected files will be brought \
         up to the top level of the "flattened" directory
+
+    Returns
+    -------
+    Tuple[bool, List[Path]]
+        Returns a tuple where the first element signifies if the processing was ok,
+        and a list of paths to the output directories which were flattened.
     """
 
     # input must be a directory:
@@ -68,6 +137,7 @@ def directory_flattener(
         )
         return (False, Path())
 
+    output_directories = []
     # Iterate over directories:
     for item in os.listdir(input_path):
         # maybe_dir = os.path.join(input_path, item)
@@ -80,43 +150,17 @@ def directory_flattener(
         if not dir_output_path.exists():
             dir_output_path.mkdir()
 
-        # Walk over the directory
-        dir_structure_mapping = {}
-        for root, _, filenames in os.walk(maybe_dir.as_posix()):
-            for file in filenames:
-                if not file.endswith(file_extension):
-                    continue
+        dir_structure_mapping = directory_flatten(
+            dir_to_flatten=maybe_dir,
+            dir_output_path=dir_output_path,
+            file_extension=file_extension,
+        )
 
-                # Get unique filename:
-                unique_filename = uuid.uuid4().hex
-                unique_filename_with_ext = unique_filename + file_extension
-                new_path_and_filename = Path(dir_output_path, unique_filename_with_ext)
-                logging.debug(
-                    f"New path and filename! {new_path_and_filename.resolve().as_posix()}"
-                )
+        save_dir_mapping(output_path=dir_output_path, dir_mapping=dir_structure_mapping)
 
-                current_file = Path(root, file).resolve()
-                logging.debug(f"Current file: {current_file.as_posix()}")
+        output_directories.append(dir_output_path)
 
-                # Copying files:
-                if not current_file.exists():
-                    logging.error(f"File does not exist. Path len: {len(current_file)}")
-                    continue
-
-                shutil.copy(current_file, new_path_and_filename)
-                logging.debug(
-                    f"File copied to {new_path_and_filename.resolve().as_posix()}"
-                )
-
-                relative_file = os.path.relpath(root, current_file.as_posix())
-
-                # Add to a mapping
-                dir_structure_mapping[unique_filename_with_ext] = relative_file
-            save_dir_mapping(
-                output_path=dir_output_path, dir_mapping=dir_structure_mapping
-            )
-
-    return (True, output_path)
+    return (True, output_directories)
 
 
 @click.command(
@@ -153,7 +197,7 @@ def main(input_path: str, output_path: str, file_extension: str, log: str) -> No
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(level=numeric_level)
 
-    directory_flattener(
+    multiple_directory_flattener(
         input_path=input_path, output_path=output_path, file_extension=file_extension
     )
 
