@@ -217,6 +217,7 @@ def create_test_text_files(
     extension : str
         Extension which will be used to create the test files.
     """
+
     for i in range(n_files):
         example_file = Path(input_path, f"example_file_{i}.{extension}")
 
