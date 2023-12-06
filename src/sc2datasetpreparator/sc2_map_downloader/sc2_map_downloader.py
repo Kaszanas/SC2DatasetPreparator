@@ -1,87 +1,106 @@
 import logging
 from pathlib import Path
+from typing import List, Set, Tuple
 
 import click
 import sc2reader
-import os
 import requests
 
 from sc2datasetpreparator.settings import LOGGING_FORMAT
 
 
-def replay_reader(
-    output_path: str,
-    replay_root: str,
-    replay_filepath: str,
-    hash_set: set,
-) -> None:
+def list_maps_to_download(replay_files: List[Path]) -> Set[Tuple[str, str]]:
+    """
+    Opens replay files and keeps only unique maps.
+
+    Parameters
+    ----------
+    replay_files : List[Path]
+        Specifies a list of the paths to replays for which
+        the unique maps will be detected.
+
+    Returns
+    -------
+    Set[Tuple[str, str]]
+        Returns a set that holds tuples with (map_hash, map_url) for all of
+        the unique maps.
+    """
+
+    replay_map_archive_hashes = set()
+    for replay_filepath in replay_files:
+        replay = sc2reader.load_replay(replay_filepath, load_map=True)
+        replay_map_url = replay.map_file.url
+        logging.info(f"Replay map url is: {replay_map_url}")
+        replay_map_hash = replay.map_hash
+
+        # Only download map if not previously donwloaded:
+        if (replay_map_hash, replay_map_url) not in replay_map_archive_hashes:
+            replay_map_archive_hashes.add((replay_map_hash, replay_map_url))
+
+    return replay_map_archive_hashes
+
+
+def download_maps(
+    output_path: Path,
+    hash_set: Set[Tuple[str, str]],
+) -> Path:
     """
     Contains logic to try to read and download a map based on the
     information that is held within .SC2Replay file.
 
     Parameters
     ----------
-    output_path : str
+    output_path : Path
         Specifies where the final map file will be downloaded.
-    replay_root : str
-        Specifies the root directory of a replay.
-    replay_filepath : str
-        Specifies the path of a replay within the replay_root.
-    hash_set : set
-        Specifies a set that holds all of the previously seen maps.
+    hash_set : Set[Tuple[str, str]]
+        Specifies a set that holds tuples with (map_hash, map_url) for all of
+        the maps that should be downloaded.
+
+    Returns
+    -------
+    Path
+        Returns a Path to the output directory.
     """
 
-    try:
-        replay = sc2reader.load_replay(replay_filepath, load_map=True)
-        replay_url = replay.map_file.url
-        print(replay_url)
-        replay_map_hash = replay.map_hash
-
-        download_replay = False
-
-        if replay_map_hash not in hash_set:
-            hash_set.add(replay_map_hash)
-            download_replay = True
-
-        if download_replay:
-            response = requests.get(replay_url, allow_redirects=True)
-            output_filepath = os.path.join(output_path, f"{replay_map_hash}.SC2Map")
-            with open(output_filepath, "wb") as output_map_file:
+    for map_hash, map_url in hash_set:
+        try:
+            response = requests.get(map_url, allow_redirects=True)
+            output_filepath = Path(output_path, f"{map_hash}.SC2Map").resolve()
+            with output_filepath.open(mode="wb") as output_map_file:
                 output_map_file.write(response.content)
-                return
-    except:
-        print("Error detected!")
-        return
+        except:
+            logging.error(
+                f"Error detected! Cannot process map: hash: {map_hash} url: {map_url}"
+            )
+            continue
+
+    return output_path
 
 
-def sc2_map_downloader(input_path: str, output_path: str) -> None:
+def sc2_map_downloader(input_path: Path, output_path: Path) -> Path:
     """
     Holds the main loop for asynchronous map downloading logic.
 
     Parameters
     ----------
-    input_path : str
+    input_path : Path
         Specifies the input path that contains .SC2Replay files \
         which will be used for map detection.
-    output_path : str
+    output_path : Path
         Specifies the output path where the downloaded maps will be placed.
     """
 
-    replay_map_archive_hashes = set()
+    glob_pattern = "**/*.SC2Replay"
 
-    for root, _, filename in os.walk(input_path):
-        # Performing action for every file that was detected
-        for file in filename:
-            if file.endswith(".SC2Replay"):
-                # Asynchronously download maps
-                filepath = os.path.join(root, file)
+    replay_files = input_path.glob(glob_pattern)
+    maps_to_download = list_maps_to_download(replay_files=replay_files)
 
-                replay_reader(
-                    output_path=output_path,
-                    replay_root=root,
-                    replay_filepath=filepath,
-                    hash_set=replay_map_archive_hashes,
-                )
+    output_directory = download_maps(
+        output_path=output_path,
+        hash_set=maps_to_download,
+    )
+
+    return output_directory
 
 
 @click.command(
@@ -111,7 +130,11 @@ def main(input_path: Path, output_path: Path, log: str) -> None:
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
-    sc2_map_downloader(input_path=input_path, output_path=output_path)
+    output_dir = sc2_map_downloader(
+        input_path=input_path, output_path=output_path.resolve()
+    )
+
+    logging.info(f"Finished donwloading maps to: {output_dir.as_posix()}")
 
 
 if __name__ == "__main__":
