@@ -10,7 +10,7 @@ WORKDIR /sc2-dataset-preparator
 COPY --from=0 /SC2InfoExtractorGo /SC2InfoExtractorGo
 
 # Installing Python dependencies:
-RUN pip install tqdm
+RUN pip install click tqdm
 
 # Copying all Python scripts
 COPY . .
