@@ -6,6 +6,8 @@ from zipfile import ZipFile, ZIP_BZIP2
 
 import click
 
+from sc2datasetpreparator.settings import LOGGING_FORMAT
+
 
 def multiple_dir_packager(input_path: str) -> List[Path]:
     """
@@ -74,7 +76,7 @@ def dir_packager(directory_path: Path) -> Path:
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
-def main(input_path: Path):
+def main(input_path: Path, log: str):
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")

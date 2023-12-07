@@ -142,11 +142,9 @@ def multiple_directory_flattener(
     output_directories = []
     # Iterate over directories:
     for item in os.listdir(input_path):
-        # maybe_dir = os.path.join(input_path, item)
         maybe_dir = Path(input_path, item).resolve()
         if not maybe_dir.is_dir():
             continue
-        # if os.path.isdir(maybe_dir):
         # Output directory is created if it doesn't exist:
         dir_output_path = Path(output_path, item).resolve()
         if not dir_output_path.exists():
