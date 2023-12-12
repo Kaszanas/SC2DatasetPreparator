@@ -32,10 +32,8 @@ def get_workspace_dir() -> Path:
     )
     return workspace_dir
 
-    # TODO: This should be creating input directory if it doesn't exist:
-    # TODO: Additionally, there should be a script that downloads test input files if they are not already available:
 
-
+# TODO: Additionally, there should be a script that downloads test input files if they are not already available:
 def get_test_input_dir(script_name: str) -> Path:
     """
     Getting path to the files required for testing.
