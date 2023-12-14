@@ -19,3 +19,5 @@ processing_backup/
 __pycache__
 
 build/
+
+reference/

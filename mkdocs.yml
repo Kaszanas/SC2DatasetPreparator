@@ -1,0 +1,67 @@
+site_name: "SC2 Dataset Preparator"
+repo_name: Kaszanas/SC2DatasetPreparator
+repo_url: https://github.com/Kaszanas/SC2DatasetPreparator
+nav:
+  - Home: "index.md"
+  - Contributing: "contributing.md"
+  - Code Reference: "reference/"
+theme:
+  name: "material"
+  # favicon: assets/images/logo.svg
+  # logo: assets/images/logo.svg
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.tabbed
+  - attr_list
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      linenums: true
+      use_pygments: true
+      pygments_lang_class: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - admonition
+  - toc:
+      baselevel: 2
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - meta
+plugins:
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+  - search
+  - include-markdown
+  - gen-files:
+      scripts:
+        - docs/gen_ref_pages.py
+  - literate-nav:
+      nav_file: SUMMARY.md
+  - section-index
+docs_dir: "docs"
