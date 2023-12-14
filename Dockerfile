@@ -10,7 +10,7 @@ FROM python:${PYTHON_VERSION}-alpine
 
 RUN mkdir /sc2-dataset-preparator
 
-WORKDIR /sc2-dataset-preparator
+WORKDIR /sc2_dataset_preparator
 
 # Copying the replay parsing tool:
 COPY --from=0 /SC2InfoExtractorGo /SC2InfoExtractorGo
@@ -22,7 +22,7 @@ RUN pip install -r requirements.txt
 # Copying all Python scripts
 COPY . .
 
-WORKDIR /sc2-dataset-preparator/src
+WORKDIR /sc2_dataset_preparator/src
 
 
 CMD ["python3", "sc2_replaypack_processor.py"]

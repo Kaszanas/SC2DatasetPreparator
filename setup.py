@@ -33,14 +33,3 @@ setup(
         ]
     },
 )
-
-
-# For future scripts:
-
-# setup(
-#     name="",
-#     version=PACKAGE_VERSION,
-#     py_modules=[""],
-#     install_requires=[""],
-#     entry_points={"console_scripts": ["script = script:cli"]},
-# )
