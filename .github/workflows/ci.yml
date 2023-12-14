@@ -1,0 +1,50 @@
+name: continuous integration (ci)
+
+on: [pull_request, workflow_dispatch]
+
+# To successfully find the files that are required for testing:
+env:
+  TEST_WORKSPACE: ${{ github.workspace }}
+
+jobs:
+  ci:
+    # Set up operating system
+    runs-on: ubuntu-latest
+
+    # Define job steps
+    steps:
+      - name: Set up Python 3.11.4
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11.4
+
+      - name: Check-out repository
+        uses: actions/checkout@v2
+
+      - name: Install poetry
+        uses: snok/install-poetry@v1
+
+      - name: Install the current project package
+        run: poetry install pre-commit
+
+      - name: Install pre-commit.
+        run: pre-commit install
+      - name: Run pre-commit on all files.
+        run: pre-commit run --all-files
+
+      - name: Build Docker Image With Compose
+        run: |
+          make action_compose_build
+
+      - name: Run Docker Tests With Compose
+        run: |
+          make action_compose_test
+
+        # REVIEW: Should this be replaced with Dockerized tests
+      - name: Test with pytest
+        run: poetry run pytest -m minor --ignore-glob='test_*.py' tests/test_cases/ --cov=datasetpreparator --cov-report term-missing --cov=xml
+
+      # TODO: This may be ran in docker:
+      # See if the documentation builds correctly:
+      - name: Build documentation
+        run: poetry run make html --directory docs/

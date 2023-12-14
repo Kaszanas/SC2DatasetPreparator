@@ -17,13 +17,11 @@ json_merge: ## Merges two JSON files.
 		--json_one=../processing/json_merger/map_translation.json \
 		--json_two=../processing/json_merger/new_maps_processed.json
 
-
 download_maps: ## Runs over directories with .SC2Replay files and downloads maps that were used in the games.
 	docker run \
 		-v "${PWD}/processing:/sc2-dataset-preparator/processing" \
 		sc2-dataset-preparator \
 		python3 sc2_map_downloader.py
-
 
 process_replaypack: ## Parses the raw (.SC2Replay) data into JSON files.
 	docker run \
@@ -39,7 +37,6 @@ rename_files: ## Renames the files after processing with SC2InfoExtractorGo.
 		sc2-dataset-preparator \
 		python3 file_renamer.py \
 		--input_dir ../processing/sc2_replaypack_processor/output
-
 
 package_reset_dataset: ## Packages the raw data. Used to prepare SC2ReSet Replaypack set.
 	docker run \
