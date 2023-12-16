@@ -1,7 +1,19 @@
 
 PWD := ${CURDIR}
 
-all: flatten json_merge process_replaypack rename_files package_dataset
+doc_serve: ## Serves the Mkdocs documentation locally.
+	poetry run mkdocs serve
+
+doc_build: ## Builds the Mkdocs documentation.
+	poetry run mkdocs build
+
+# Docker processing pipeline
+all: ## Runs the entire processing pipeline to recreate SC2ReSet and SC2EGSet or any other dataset using our standard tooling.
+	@make flatten
+	@make json_merge
+	@make process_replaypack
+	@make rename_files
+	@make package_dataset
 
 flatten: ## Flattens the directory if the files are held in nested directories. This helps with streamlining the processing.
 	docker run \
