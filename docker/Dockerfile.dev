@@ -3,15 +3,9 @@
 
 ARG PYTHON_VERSION=3.11
 
-# TODO: This should be on DockerHub:
-FROM sc2-info-extractor
-
 FROM python:${PYTHON_VERSION}-alpine
 
 WORKDIR /app
-
-# Copying the replay parsing tool:
-COPY --from=0 /SC2InfoExtractorGo /SC2InfoExtractorGo
 
 # Copy only what is required to install the project:
 COPY pyproject.toml poetry.lock /app/
