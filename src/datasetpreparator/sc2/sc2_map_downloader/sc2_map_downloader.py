@@ -6,7 +6,7 @@ import click
 import sc2reader
 import requests
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def list_maps_to_download(replay_files: List[Path]) -> Set[Tuple[str, str]]:

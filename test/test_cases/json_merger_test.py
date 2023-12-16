@@ -2,7 +2,7 @@ import unittest
 
 import json
 
-from sc2datasetpreparator.json_merger.json_merger import json_merger
+from datasetpreparator.json_merger.json_merger import json_merger
 
 from test.test_utils import (
     dir_test_create_cleanup,

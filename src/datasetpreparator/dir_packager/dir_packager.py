@@ -6,7 +6,7 @@ from zipfile import ZipFile, ZIP_BZIP2
 
 import click
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def multiple_dir_packager(input_path: str) -> List[Path]:

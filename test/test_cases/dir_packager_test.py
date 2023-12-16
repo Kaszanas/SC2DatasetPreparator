@@ -1,7 +1,7 @@
 import unittest
 import zipfile
 
-from sc2datasetpreparator.dir_packager.dir_packager import multiple_dir_packager
+from datasetpreparator.dir_packager.dir_packager import multiple_dir_packager
 
 from test.test_utils import (
     dir_test_create_cleanup,

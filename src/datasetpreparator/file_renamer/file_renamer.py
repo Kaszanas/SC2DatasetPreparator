@@ -4,7 +4,7 @@ from pathlib import Path
 
 import click
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def file_renamer(input_path: Path) -> None:

@@ -8,7 +8,7 @@ import logging
 
 import click
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:

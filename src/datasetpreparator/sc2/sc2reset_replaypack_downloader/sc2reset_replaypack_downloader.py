@@ -1,10 +1,10 @@
 import logging
 import click
 
-from sc2datasetpreparator.sc2.sc2reset_replaypack_downloader.available_replaypacks import (
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.available_replaypacks import (
     SC2RESET_REPLAYPACKS,
 )
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 @click.command(

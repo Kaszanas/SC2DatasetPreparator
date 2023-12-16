@@ -1,6 +1,6 @@
 import unittest
 
-from sc2datasetpreparator.processed_mapping_copier.processed_mapping_copier import (
+from datasetpreparator.processed_mapping_copier.processed_mapping_copier import (
     processed_mapping_copier,
 )
 

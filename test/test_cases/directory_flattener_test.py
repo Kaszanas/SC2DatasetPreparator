@@ -1,5 +1,5 @@
 import unittest
-from sc2datasetpreparator.directory_flattener.directory_flattener import (
+from datasetpreparator.directory_flattener.directory_flattener import (
     multiple_directory_flattener,
 )
 

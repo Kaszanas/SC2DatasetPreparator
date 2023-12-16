@@ -1,6 +1,6 @@
 import unittest
 
-from sc2datasetpreparator.sc2_replaypack_processor.sc2_replaypack_processor import (
+from datasetpreparator.sc2_replaypack_processor.sc2_replaypack_processor import (
     sc2_replaypack_processor,
 )
 

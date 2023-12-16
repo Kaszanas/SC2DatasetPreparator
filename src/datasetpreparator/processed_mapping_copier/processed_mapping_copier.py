@@ -5,7 +5,7 @@ import shutil
 
 import click
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def processed_mapping_copier(input_path: str, output_path: str) -> None:

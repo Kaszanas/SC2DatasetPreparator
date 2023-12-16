@@ -1,6 +1,6 @@
 import unittest
 
-from sc2datasetpreparator.file_renamer.file_renamer import file_renamer
+from datasetpreparator.file_renamer.file_renamer import file_renamer
 
 from test.test_utils import (
     dir_test_create_cleanup,

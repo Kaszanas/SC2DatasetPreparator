@@ -5,7 +5,7 @@ from typing import Dict
 
 import click
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def merge_files(path_to_json_one: Path, path_to_json_two: Path) -> Dict[str, str]:

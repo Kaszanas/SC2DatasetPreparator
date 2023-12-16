@@ -8,7 +8,7 @@ import click
 from tqdm import tqdm
 from multiprocessing import Pool
 
-from sc2datasetpreparator.settings import LOGGING_FORMAT
+from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def multiprocessing_scheduler(
