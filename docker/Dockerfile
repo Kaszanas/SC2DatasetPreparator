@@ -8,21 +8,19 @@ FROM sc2-info-extractor
 
 FROM python:${PYTHON_VERSION}-alpine
 
-RUN mkdir /sc2-dataset-preparator
-
-WORKDIR /sc2_dataset_preparator
+WORKDIR /app
 
 # Copying the replay parsing tool:
 COPY --from=0 /SC2InfoExtractorGo /SC2InfoExtractorGo
 
-# Installing Python dependencies:
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+# Copy only what is required to install the project:
+COPY pyproject.toml poetry.lock /app/
 
-# Copying all Python scripts
+# Install only dependencies without installing current project:
+RUN poetry config virtualenvs.create false && poetry install --no-root
+
+# Copy entire repository contents
 COPY . .
 
-WORKDIR /sc2_dataset_preparator/src
-
-
-CMD ["python3", "sc2_replaypack_processor.py"]
+# Install current project:
+RUN poetry install
