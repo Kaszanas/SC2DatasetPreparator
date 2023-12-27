@@ -2,7 +2,7 @@ FROM python:latest
 
 WORKDIR /app
 
-RUN pip install click requests
+RUN pip install click requests tqdm
 
 COPY . .
 
