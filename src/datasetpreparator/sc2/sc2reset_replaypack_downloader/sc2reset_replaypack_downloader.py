@@ -28,9 +28,10 @@ def sc2reset_replaypack_downloader(download_path: Path, unpack_path: Path):
 
     # Unpack replaypacks:
     for replaypack_name, downloaded_replaypack_path in downloaded_paths:
+        destination_subdir = Path(replaypack_name)
         unpack_zipfile(
             destination_dir=unpack_path,
-            subdir=replaypack_name,
+            destination_subdir=destination_subdir,
             zip_path=downloaded_replaypack_path,
             n_workers=6,
         )

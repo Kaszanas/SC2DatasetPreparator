@@ -12,7 +12,7 @@ import tqdm
 
 
 def unpack_zipfile(
-    destination_dir: Path, subdir: str, zip_path: Path, n_workers: int
+    destination_dir: Path, destination_subdir: Path, zip_path: Path, n_workers: int
 ) -> str:
     """
     Helper function that unpacks the content of .zip archive.
@@ -20,8 +20,8 @@ def unpack_zipfile(
     Parameters
     ----------
     destination_dir : Path
-        Specifies the path where the .zip file will be extracted.
-    subdir : str
+        Specifies the destination directory where multiple .zip archives are stored.
+    destination_subdir : Path
         Specifies the subdirectory where the content will be extracted.
     zip_path : Path
         Specifies the path to the zip file that will be extracted.
@@ -48,15 +48,16 @@ def unpack_zipfile(
 
     The parameters should be set as in the example below.
 
+    >>> from pathlib import Path
     >>> unpack_zipfile_object = unpack_zipfile(
-    ... destination_dir="./directory/destination_dir",
-    ... subdir="./directory/subdir",
-    ... zip_path="./directory/zip_path",
+    ... destination_dir=Path("./directory/destination_dir"),
+    ... subdir=Path("destination_subdir"),
+    ... zip_path=Path("./directory/zip_path"),
     ... n_workers=1)
 
-    >>> assert isinstance(destination_dir, str)
-    >>> assert isinstance(subdir, str)
-    >>> assert isinstance(zip_path, str)
+    >>> assert isinstance(destination_dir, Path)
+    >>> assert isinstance(subdir, Path)
+    >>> assert isinstance(zip_path, Path)
     >>> assert isinstance(n_workers, int)
     >>> assert n_workers >= 1
     """
@@ -65,7 +66,7 @@ def unpack_zipfile(
         raise Exception("Number of workers cannot be equal or less than zero!")
 
     file_list: List[str] = []
-    path_to_extract = Path(destination_dir, subdir)
+    path_to_extract = Path(destination_dir, destination_subdir)
     with zipfile.ZipFile(zip_path, "r") as zip_file:
         # Checking the existence of the extraction output directory
         # If it doesn't exist it will be created:
