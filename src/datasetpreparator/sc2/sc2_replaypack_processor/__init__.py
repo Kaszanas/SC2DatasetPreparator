@@ -1,1 +1,0 @@
-from sc2_replaypack_processor.sc2_replaypack_processor import main

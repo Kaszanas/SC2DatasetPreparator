@@ -1,1 +1,0 @@
-from sc2_map_downloader.sc2_map_downloader import main

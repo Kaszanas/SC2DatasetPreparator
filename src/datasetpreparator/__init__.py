@@ -1,7 +1,0 @@
-from datasetpreparator.directory_flattener import main
-from datasetpreparator.file_packager import main
-from datasetpreparator.file_renamer import main
-from datasetpreparator.json_merger import main
-from datasetpreparator.processed_mapping_copier import main
-from datasetpreparator.sc2_map_downloader import main
-from datasetpreparator.sc2_replaypack_processor import main
