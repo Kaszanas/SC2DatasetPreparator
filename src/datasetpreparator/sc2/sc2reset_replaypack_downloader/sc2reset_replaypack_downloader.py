@@ -20,11 +20,12 @@ def sc2reset_replaypack_downloader(
 ):
     # Download replaypacks:
     downloaded_paths: List[Tuple[str, str]] = []
-    for replaypack_name, replaypack_url in SC2RESET_REPLAYPACKS:
+    for replaypack_name, replaypack_url, file_md5 in SC2RESET_REPLAYPACKS:
         downloaded_replaypack_path = download_replaypack(
             destination_dir=download_path,
             replaypack_name=replaypack_name,
             replaypack_url=replaypack_url,
+            replaypack_md5=file_md5,
         )
         downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
 
