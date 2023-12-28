@@ -1,5 +1,6 @@
 from pathlib import Path
 import requests
+import tqdm
 
 
 def download_replaypack(
@@ -62,15 +63,37 @@ def download_replaypack(
     filename_with_ext = replaypack_name + ".zip"
     download_filepath = Path(destination_dir, filename_with_ext)
 
+    # REVIEW: Does this take into consideration
+    # comparing resolved to non-resolved paths?
     # The file was previously downloaded so return it immediately:
     if existing_files:
         if download_filepath in existing_files:
             return download_filepath
 
+    if not destination_dir.exists():
+        destination_dir.mkdir()
+
     # Send a request and save the response content into a .zip file.
     # The .zip file should be a replaypack:
     response = requests.get(url=replaypack_url)
-    with download_filepath.open(mode="wb") as output_zip_file:
-        output_zip_file.write(response.content)
+
+    with requests.get(url=replaypack_url, stream=True) as response:
+        response.raise_for_status()
+        total = int(response.headers.get("content-length", 0))
+
+        tqdm_params = {
+            "desc": replaypack_name,
+            "total": total,
+            "miniters": 1,
+            "unit": "B",
+            "unit_scale": True,
+            "unit_divisor": 1024,
+        }
+
+        with download_filepath.open(mode="wb") as output_zip_file:
+            with tqdm.tqdm(**tqdm_params) as pb:
+                for chunk in response.iter_content(chunk_size=8192):
+                    pb.update(len(chunk))
+                    output_zip_file.write(chunk)
 
     return download_filepath

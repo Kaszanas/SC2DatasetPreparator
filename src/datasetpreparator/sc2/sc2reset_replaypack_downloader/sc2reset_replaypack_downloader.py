@@ -41,19 +41,23 @@ def sc2reset_replaypack_downloader(download_path: Path, unpack_path: Path):
 )
 @click.option(
     "--download_path",
-    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    type=click.Path(
+        exists=False, dir_okay=True, file_okay=False, resolve_path=True, path_type=Path
+    ),
     required=True,
     help="Please provide a path to which the archives will be downloaded.",
 )
 @click.option(
     "--unpack_path",
-    type=click.Path(exists=True, dir_okay=True, file_okay=False, resolve_path=True),
+    type=click.Path(
+        exists=False, dir_okay=True, file_okay=False, resolve_path=True, path_type=Path
+    ),
     required=True,
     help="Please provide a path to which the archives will be unpacked.",
 )
 @click.option(
     "--log",
-    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    type=click.Choice(["INFO", "DEBUG", "ERROR", "WARN"], case_sensitive=False),
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
@@ -63,7 +67,9 @@ def main(download_path: Path, unpack_path: Path, log: str):
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
-    sc2reset_replaypack_downloader(download_path=download_path, unpack_path=unpack_path)
+    sc2reset_replaypack_downloader(
+        download_path=download_path.resolve(), unpack_path=unpack_path.resolve()
+    )
 
 
 if __name__ == "__main__":

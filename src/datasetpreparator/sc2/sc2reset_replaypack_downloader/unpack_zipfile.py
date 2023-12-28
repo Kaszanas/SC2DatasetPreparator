@@ -77,9 +77,9 @@ def unpack_zipfile(
     chunksize = math.ceil(len(file_list) / n_workers)
 
     with ProcessPoolExecutor(n_workers) as exe:
-        for index in tqdm(
+        for index in tqdm.tqdm(
             range(0, len(file_list), chunksize),
-            desc=f"Extracting {destination_dir.name}: ",
+            desc=f"Extracting {path_to_extract.name}: ",
         ):
             filenames = file_list[index : (index + chunksize)]
             _ = exe.submit(unpack_chunk, zip_path, filenames, path_to_extract)
