@@ -1,225 +1,280 @@
 from typing import List, Tuple
 
 
-SC2RESET_REPLAYPACKS: List[Tuple[str, str]] = [
+SC2RESET_REPLAYPACKS: List[Tuple[str, str, str]] = [
     (
         "2016_IEM_10_Taipei",
         "https://zenodo.org/record/5575797/files/2016_IEM_10_Taipei.zip?download=1",
+        "f9150577d08216ce5ec5de954d8d536c",
     ),
     (
         "2016_IEM_11_Shanghai",
         "https://zenodo.org/record/5575797/files/2016_IEM_11_Shanghai.zip?download=1",
+        "1a41831b5dfe2e0d41537e989f712c5a",
     ),
     (
         "2016_WCS_Winter",
         "https://zenodo.org/record/5575797/files/2016_WCS_Winter.zip?download=1",
+        "d3a0d2230d1f9d65f5aaaf698d08aa57",
     ),
     (
         "2017_HomeStory_Cup_XV",
         "https://zenodo.org/record/5575797/files/2017_HomeStory_Cup_XV.zip?download=1",
+        "f8a523cc216da3239315fea6047f110c",
     ),
     (
         "2017_HomeStory_Cup_XVI",
         "https://zenodo.org/record/5575797/files/2017_HomeStory_Cup_XVI.zip?download=1",
+        "fe12fdc158ed8bf48a9ef24607113c32",
     ),
     (
         "2017_IEM_Shanghai",
         "https://zenodo.org/record/5575797/files/2017_IEM_Shanghai.zip?download=1",
+        "ac8817ae86d244e8c6b40fb141d59144",
     ),
     (
         "2017_IEM_XI_World_Championship_Katowice",
         "https://zenodo.org/record/5575797/files/2017_IEM_XI_World_Championship_Katowice.zip?download=1",  # noqa
+        "7a97eafd12502fa54f587e1557a36d0f",
     ),
     (
         "2017_WCS_Austin",
         "https://zenodo.org/record/5575797/files/2017_WCS_Austin.zip?download=1",
+        "4d76a94896f7a4d2d2489da5091d55fc",
     ),
     (
         "2017_WCS_Global_Finals",
         "https://zenodo.org/record/5575797/files/2017_WCS_Global_Finals.zip?download=1",
+        "e77813d45eab9e6b8de3061cecd17a64",
     ),
     (
         "2017_WCS_Jonkoping",
         "https://zenodo.org/record/5575797/files/2017_WCS_Jonkoping.zip?download=1",
+        "cbc97943040874fae1a85542ef7e6059",
     ),
     (
         "2017_WCS_Montreal",
         "https://zenodo.org/record/5575797/files/2017_WCS_Montreal.zip?download=1",
+        "2d563963c2e4f025521af1bc26e60f2e",
     ),
     (
         "2017_WESG_Barcelona",
         "https://zenodo.org/record/5575797/files/2017_WESG_Barcelona.zip?download=1",
+        "a950bd4aa08a909a595d658517154762",
     ),
     (
         "2017_WESG_Haikou",
         "https://zenodo.org/record/5575797/files/2017_WESG_Haikou.zip?download=1",
+        "70036eda6f07f05e5ff9a8f6dce27a08",
     ),
     (
         "2018_Cheeseadelphia_8",
         "https://zenodo.org/record/5575797/files/2018_Cheeseadelphia_8.zip?download=1",
+        "babb5ef0d658697955d8894f2acc3719",
     ),
     (
         "2018_HomeStory_Cup_XVII",
         "https://zenodo.org/record/5575797/files/2018_HomeStory_Cup_XVII.zip?download=1",
+        "65a1d8f2bbdb2f8a98273d1c24e4a53e",
     ),
     (
         "2018_HomeStory_Cup_XVIII",
         "https://zenodo.org/record/5575797/files/2018_HomeStory_Cup_XVII.zip?download=1",
+        "65a1d8f2bbdb2f8a98273d1c24e4a53e",
     ),
     (
         "2018_IEM_Katowice",
         "https://zenodo.org/record/5575797/files/2018_IEM_Katowice.zip?download=1",
+        "3139b960c4d1af25b0386ce0e01dd679",
     ),
     (
         "2018_IEM_PyeongChang",
         "https://zenodo.org/record/5575797/files/2018_IEM_PyeongChang.zip?download=1",
+        "455ae4bce38dd5cc03f3ba7ec9f02263",
     ),
     (
         "2018_WCS_Austin",
         "https://zenodo.org/record/5575797/files/2018_WCS_Austin.zip?download=1",
+        "6308166bc8ac7cb7f0811741eb166a11",
     ),
     (
         "2018_WCS_Global_Finals",
         "https://zenodo.org/record/5575797/files/2018_WCS_Global_Finals.zip?download=1",
+        "eab8a2ba00e59d2154d47e5cc02f8c37",
     ),
     (
         "2018_WCS_Leipzig",
         "https://zenodo.org/record/5575797/files/2018_WCS_Leipzig.zip?download=1",
+        "7cfe8b2e9eeda6d90bf56e728c95d590",
     ),
     (
         "2018_WCS_Montreal",
         "https://zenodo.org/record/5575797/files/2018_WCS_Montreal.zip?download=1",
+        "e6eeb5a686ad016c349f8508a85b22ab",
     ),
     (
         "2018_WCS_Valencia",
         "https://zenodo.org/record/5575797/files/2018_WCS_Valencia.zip?download=1",
+        "4310238937c13009bc06a64631f44857",
     ),
     (
         "2018_WESG_Grand_Finals",
         "https://zenodo.org/record/5575797/files/2018_WESG_Grand_Finals.zip?download=1",
+        "45bcc091fc596f4eca1783cb0629bc40",
     ),
     (
         "2019_Assembly_Summer",
         "https://zenodo.org/record/5575797/files/2019_Assembly_Summer.zip?download=1",
+        "04319480149bbfdf35581480c2a6add9",
     ),
     (
         "2019_HomeStory_Cup_XIX",
         "https://zenodo.org/record/5575797/files/2019_HomeStory_Cup_XIX.zip?download=1",
+        "5ca97534367a1e27aa40f7359f616d51",
     ),
     (
         "2019_HomeStory_Cup_XX",
         "https://zenodo.org/record/5575797/files/2019_HomeStory_Cup_XX.zip?download=1",
+        "500266b0febbab5a5094ac055f32d89f",
     ),
     (
         "2019_IEM_Katowice",
         "https://zenodo.org/record/5575797/files/2019_IEM_Katowice.zip?download=1",
+        "8653e23b0a6d6daf6f04a06a6bc5be09",
     ),
     (
         "2019_WCS_Fall",
         "https://zenodo.org/record/5575797/files/2019_WCS_Fall.zip?download=1",
+        "ccb9ab2b34534e9f119f3156210f0983",
     ),
     (
         "2019_WCS_Grand_Finals",
         "https://zenodo.org/record/5575797/files/2019_WCS_Grand_Finals.zip?download=1",
+        "d207412c2864a9a509f446d3d0d6f6db",
     ),
     (
         "2019_WCS_Spring",
         "https://zenodo.org/record/5575797/files/2019_WCS_Spring.zip?download=1",
+        "3eb530f9668f7fc6d34e90196a54800e",
     ),
     (
         "2019_WCS_Summer",
         "https://zenodo.org/record/5575797/files/2019_WCS_Summer.zip?download=1",
+        "7b43fd5c2d977bb3842805b321491e09",
     ),
     (
         "2019_WCS_Winter",
         "https://zenodo.org/record/5575797/files/2019_WCS_Winter.zip?download=1",
+        "6ed669a995c13a6880dc3fb1114cde6c",
     ),
     (
         "2020_05_Dreamhack_Last_Chance",
         "https://zenodo.org/record/5575797/files/2020_05_Dreamhack_Last_Chance.zip?download=1",
+        "8f73abb71046ff49e4b3a6874c5ccc2e",
     ),
     (
         "2020_ASUS_ROG_Online",
         "https://zenodo.org/record/5575797/files/2020_ASUS_ROG_Online.zip?download=1",
+        "32b4fc686d94960b06d409f78dd2bf75",
     ),
     (
         "2020_Dreamhack_SC2_Masters_Fall",
         "https://zenodo.org/record/5575797/files/2020_Dreamhack_SC2_Masters_Fall.zip?download=1",
+        "9e21a401a58542ddce00bc3067c50d19",
     ),
     (
         "2020_Dreamhack_SC2_Masters_Summer",
         "https://zenodo.org/record/5575797/files/2020_Dreamhack_SC2_Masters_Summer.zip?download=1",
+        "b887f33c5dc943a1586cba1bd33fe8df",
     ),
     (
         "2020_Dreamhack_SC2_Masters_Winter",
         "https://zenodo.org/record/5575797/files/2020_Dreamhack_SC2_Masters_Summer.zip?download=1",
+        "b887f33c5dc943a1586cba1bd33fe8df",
     ),
     (
         "2020_IEM_Katowice",
         "https://zenodo.org/record/5575797/files/2020_IEM_Katowice.zip?download=1",
+        "7a586c59d68bbe6f6583992f9192b39e",
     ),
     (
         "2020_StayAtHome_Story_Cup_1",
         "https://zenodo.org/record/5575797/files/2020_StayAtHome_Story_Cup_1.zip?download=1",
+        "6bba98eac1b43c916221b8cc1b566a6d",
     ),
     (
         "2020_StayAtHome_Story_Cup_2",
         "https://zenodo.org/record/5575797/files/2020_StayAtHome_Story_Cup_2.zip?download=1",
+        "6bdd4f49c0857dfe6f447e53cdab286f",
     ),
     (
         "2020_TSL5",
         "https://zenodo.org/record/5575797/files/2020_TSL5.zip?download=1",
+        "db516d52742fbae17834e13ae0d316b8",
     ),
     (
         "2020_TSL6",
         "https://zenodo.org/record/5575797/files/2020_TSL6.zip?download=1",
+        "b491d719b28c1b68c8d0050fddeb140c",
     ),
     (
         "2021_ASUS_ROG_Fall",
         "https://zenodo.org/record/5575797/files/2021_ASUS_ROG_Fall.zip?download=1",
+        "669e4eaf710b1b153cdff72ef4c80075",
     ),
     (
         "2021_Cheeseadelphia_Winter_Championship",
         "https://zenodo.org/record/5575797/files/2021_Cheeseadelphia_Winter_Championship.zip?download=1",  # noqa
+        "0525648b1b44985b19ffab1192162348",
     ),
     (
         "2021_Dreamhack_SC2_Masters_Fall",
         "https://zenodo.org/record/5575797/files/2021_Dreamhack_SC2_Masters_Fall.zip?download=1",
+        "ebe6f43dac104a7765638f4ab98ee4aa",
     ),
     (
         "2021_Dreamhack_SC2_Masters_Summer",
         "https://zenodo.org/record/5575797/files/2021_Dreamhack_SC2_Masters_Summer.zip?download=1",
+        "79be892593be8c9ab4ba5d77c35772c0",
     ),
     (
         "2021_Dreamhack_SC2_Masters_Winter",
         "https://zenodo.org/record/5575797/files/2021_Dreamhack_SC2_Masters_Winter.zip?download=1",
+        "658aaecc1dfe49f8cb3c3aa1c65f0d9a",
     ),
     (
         "2021_IEM_Katowice",
         "https://zenodo.org/record/5575797/files/2021_IEM_Katowice.zip?download=1",
+        "0b208eff3787d8e7e46eea53e3444b03",
     ),
     (
         "2021_StayAtHome_Story_Cup_3",
         "https://zenodo.org/record/5575797/files/2021_StayAtHome_Story_Cup_3.zip?download=1",
+        "7410c019d1f33f41d2d08e720b89aa82",
     ),
     (
         "2021_StayAtHome_Story_Cup_4",
         "https://zenodo.org/record/5575797/files/2021_StayAtHome_Story_Cup_4.zip?download=1",
+        "0cc4855ffe28ab34c9de1905656ebffa",
     ),
     (
         "2021_TSL7",
         "https://zenodo.org/record/5575797/files/2021_TSL7.zip?download=1",
+        "d4c56a880346171439676cf6f3ae94bd",
     ),
     (
         "2021_TSL8",
         "https://zenodo.org/record/5575797/files/2021_TSL8.zip?download=1",
+        "cbf93c74102fd4653d59e94451457e42",
     ),
     (
         "2022_Dreamhack_SC2_Masters_Last_Chance2021",
         "https://zenodo.org/record/5575797/files/2022_Dreamhack_SC2_Masters_Last_Chance2021.zip?download=1",  # noqa
+        "de257c49c80277ba142c57313f11e2e5",
     ),
     (
         "2022_IEM_Katowice",
         "https://zenodo.org/record/5575797/files/2022_IEM_Katowice.zip?download=1",
+        "900862489a78248f29fcff3d7c6d5d3b",
     ),
 ]
