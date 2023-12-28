@@ -1,8 +1,9 @@
 from pathlib import Path
-import requests
-import tqdm
 
 from datasetpreparator.sc2.sc2reset_replaypack_downloader.get_md5 import get_md5
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.download_file import (
+    download_file,
+)
 
 
 def download_replaypack(
@@ -10,7 +11,7 @@ def download_replaypack(
     replaypack_name: str,
     replaypack_url: str,
     replaypack_md5: str,
-) -> str:
+) -> Path:
     """
     Exposes logic for downloading a single StarCraft II replaypack from an url.
 
@@ -27,8 +28,8 @@ def download_replaypack(
 
     Returns
     -------
-    str
-        Returns the filepath to the downloaded .zip archive.
+    Path
+        Returns the path to the downloaded .zip archive of a replaypack.
 
     Examples
     --------
@@ -76,27 +77,8 @@ def download_replaypack(
     if not destination_dir.exists():
         destination_dir.mkdir()
 
-    # Send a request and save the response content into a .zip file.
-    # The .zip file should be a replaypack:
-    response = requests.get(url=replaypack_url)
+    downloaded_replaypach_archive = download_file(
+        file_url=replaypack_url, download_filepath=download_filepath
+    )
 
-    with requests.get(url=replaypack_url, stream=True) as response:
-        response.raise_for_status()
-        total = int(response.headers.get("content-length", 0))
-
-        tqdm_params = {
-            "desc": replaypack_name,
-            "total": total,
-            "miniters": 1,
-            "unit": "B",
-            "unit_scale": True,
-            "unit_divisor": 1024,
-        }
-
-        with download_filepath.open(mode="wb") as output_zip_file:
-            with tqdm.tqdm(**tqdm_params) as pb:
-                for chunk in response.iter_content(chunk_size=8192):
-                    pb.update(len(chunk))
-                    output_zip_file.write(chunk)
-
-    return download_filepath
+    return downloaded_replaypach_archive
