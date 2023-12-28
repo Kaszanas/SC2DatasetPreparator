@@ -15,7 +15,9 @@ from datasetpreparator.sc2.sc2reset_replaypack_downloader.unpack_zipfile import 
 from datasetpreparator.settings import LOGGING_FORMAT
 
 
-def sc2reset_replaypack_downloader(download_path: Path, unpack_path: Path):
+def sc2reset_replaypack_downloader(
+    download_path: Path, unpack_path: Path, n_workers: int
+):
     # Download replaypacks:
     downloaded_paths: List[Tuple[str, str]] = []
     for replaypack_name, replaypack_url in SC2RESET_REPLAYPACKS:
@@ -33,7 +35,7 @@ def sc2reset_replaypack_downloader(download_path: Path, unpack_path: Path):
             destination_dir=unpack_path,
             destination_subdir=destination_subdir,
             zip_path=downloaded_replaypack_path,
-            n_workers=6,
+            n_workers=n_workers,
         )
 
 
@@ -57,19 +59,28 @@ def sc2reset_replaypack_downloader(download_path: Path, unpack_path: Path):
     help="Please provide a path to which the archives will be unpacked.",
 )
 @click.option(
+    "--n_workers",
+    type=int,
+    default=4,
+    required=True,
+    help="Number of workers used for extracting the .zip archives.",
+)
+@click.option(
     "--log",
     type=click.Choice(["INFO", "DEBUG", "ERROR", "WARN"], case_sensitive=False),
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
-def main(download_path: Path, unpack_path: Path, log: str):
+def main(download_path: Path, unpack_path: Path, n_workers: int, log: str):
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
     sc2reset_replaypack_downloader(
-        download_path=download_path.resolve(), unpack_path=unpack_path.resolve()
+        download_path=download_path.resolve(),
+        unpack_path=unpack_path.resolve(),
+        n_workers=n_workers,
     )
 
 
