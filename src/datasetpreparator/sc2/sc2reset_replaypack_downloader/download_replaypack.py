@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Tuple
 
 from datasetpreparator.sc2.sc2reset_replaypack_downloader.get_md5 import get_md5
 from datasetpreparator.sc2.sc2reset_replaypack_downloader.download_file import (
@@ -11,7 +12,7 @@ def download_replaypack(
     replaypack_name: str,
     replaypack_url: str,
     replaypack_md5: str,
-) -> Path:
+) -> Tuple[Path, bool]:
     """
     Exposes logic for downloading a single StarCraft II replaypack from an url.
 
@@ -28,8 +29,9 @@ def download_replaypack(
 
     Returns
     -------
-    Path
-        Returns the path to the downloaded .zip archive of a replaypack.
+    Tuple[Path, bool]
+        Returns the path to the downloaded .zip archive of a replaypack. The second element
+        of the tuple is a boolean value indicating whether the file was downloaded or not.
 
     Examples
     --------
@@ -81,4 +83,8 @@ def download_replaypack(
         file_url=replaypack_url, download_filepath=download_filepath
     )
 
-    return downloaded_replaypach_archive
+    md5_checksum = get_md5(file=download_filepath)
+    if md5_checksum != replaypack_md5:
+        return download_filepath, False
+
+    return downloaded_replaypach_archive, True

@@ -16,17 +16,67 @@ from datasetpreparator.settings import LOGGING_FORMAT
 
 
 def sc2reset_replaypack_downloader(
-    download_path: Path, unpack_path: Path, n_workers: int
-):
+    download_path: Path,
+    unpack_path: Path,
+    n_workers: int,
+    replaypack_list: List[Tuple[str, str, str]] = SC2RESET_REPLAYPACKS,
+) -> None:
+    """
+    Downloads and unpacks SC2ReSet: StarCraft II Esport Replaypack Set
+    (https://zenodo.org/doi/10.5281/zenodo.5575796). If the md5 of the downloaded
+    archive does not match the expected md5, the program will retry downloading the
+    archive.
+
+    Parameters
+    ----------
+    download_path : Path
+        Specifies the path to which the archives will be downloaded.
+    unpack_path : Path
+        Specifies the path to which the archives will be unpacked.
+    n_workers : int
+        Specifies the number of workers used for extracting the .zip archives.
+    replaypack_list : List[Tuple[str, str, str]]
+        Specifies the list of replaypacks to be downloaded. By default each of
+        the tuples is (replaypack_name, replaypack_url, archive_md5).
+    """
+
+    if replaypack_list is None:
+        return
+
+    if n_workers <= 0:
+        return
+
     # Download replaypacks:
     downloaded_paths: List[Tuple[str, str]] = []
-    for replaypack_name, replaypack_url, file_md5 in SC2RESET_REPLAYPACKS:
-        downloaded_replaypack_path = download_replaypack(
+    retry_list: List[Tuple[str, str, str]] = []
+    for replaypack_name, replaypack_url, file_md5 in replaypack_list:
+        downloaded_replaypack_path, ok = download_replaypack(
             destination_dir=download_path,
             replaypack_name=replaypack_name,
             replaypack_url=replaypack_url,
             replaypack_md5=file_md5,
         )
+        if not ok:
+            logging.error(
+                f"Replaypack {replaypack_name} could not be downloaded. Skipping..."
+            )
+            retry_list.append((replaypack_name, replaypack_url, file_md5))
+            continue
+        downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
+
+    # Retry replaypacks that failed to download:
+    for replaypack_name, replaypack_url, file_md5 in retry_list:
+        downloaded_replaypack_path, ok = download_replaypack(
+            destination_dir=download_path,
+            replaypack_name=replaypack_name,
+            replaypack_url=replaypack_url,
+            replaypack_md5=file_md5,
+        )
+        if not ok:
+            logging.error(
+                f"Replaypack {replaypack_name} could not be downloaded. Skipping..."
+            )
+            continue
         downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
 
     # Unpack replaypacks:

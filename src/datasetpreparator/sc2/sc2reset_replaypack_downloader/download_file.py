@@ -3,7 +3,27 @@ import requests
 import tqdm
 
 
-def download_file(file_url: str, download_filepath: Path, chunk_size: int = 8192):
+def download_file(
+    file_url: str, download_filepath: Path, chunk_size: int = 8192
+) -> Path:
+    """
+    Downloads a file from a url and saves it to the specified path by the chunk size.
+
+    Parameters
+    ----------
+    file_url : str
+        Specifies the url from which the file will be downloaded.
+    download_filepath : Path
+        Specifies the path to which the file will be downloaded.
+    chunk_size : int, optional
+        Specifies the chunk size in bytes for downloading the file, by default 8192
+
+    Returns
+    -------
+    Path
+        Returns the path to the downloaded file.
+    """
+
     with requests.get(url=file_url, stream=True) as response:
         response.raise_for_status()
         total = int(response.headers.get("content-length", 0))
