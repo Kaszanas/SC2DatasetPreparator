@@ -6,6 +6,11 @@ authors = ["Andrzej 'Kaszanas' Białecki"]
 license = "MIT License"
 readme = "README.md"
 
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "1.2.0"
+tag_format = "$version"
+
 [tool.poetry.dependencies]
 python = "^3.10"
 
@@ -24,6 +29,7 @@ mkdocs-autorefs = "^0.5.0"
 mkdocs-gen-files = "^0.5.0"
 mkdocs-literate-nav = "^0.6.1"
 mkdocs-section-index = "^0.3.8"
+commitizen = "^3.13.0"
 
 [tool.poetry.extras]
 all = ["sc2reader"]
