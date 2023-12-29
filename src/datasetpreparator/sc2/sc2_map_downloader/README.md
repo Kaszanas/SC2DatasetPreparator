@@ -8,7 +8,7 @@ Please keep in mind that the  ```src/sc2_map_downloader.py``` does not contain d
 ```
 usage: sc2_map_downloader.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
 
-Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file.       
+Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file.
 
 options:
   -h, --help            show this help message and exit

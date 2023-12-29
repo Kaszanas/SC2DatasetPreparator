@@ -88,7 +88,7 @@ def sc2_replaypack_processor(
     perform_chat_anonymization: bool,
 ):
     """
-    Processes multiple StarCraft II replaypacks 
+    Processes multiple StarCraft II replaypacks
     by using https://github.com/Kaszanas/SC2InfoExtractorGo
 
     Parameters

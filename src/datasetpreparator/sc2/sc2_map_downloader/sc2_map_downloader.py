@@ -68,7 +68,7 @@ def download_maps(
             output_filepath = Path(output_path, f"{map_hash}.SC2Map").resolve()
             with output_filepath.open(mode="wb") as output_map_file:
                 output_map_file.write(response.content)
-        except:
+        except:  # noqa: E722
             logging.error(
                 f"Error detected! Cannot process map: hash: {map_hash} url: {map_url}"
             )

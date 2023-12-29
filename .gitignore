@@ -23,3 +23,5 @@ build/
 reference/
 unpack/
 download/
+
+ruff_cache/

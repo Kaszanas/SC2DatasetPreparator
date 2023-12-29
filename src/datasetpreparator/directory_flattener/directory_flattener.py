@@ -96,7 +96,7 @@ def multiple_directory_flattener(
     Provides the main logic for "directory flattening".
     Iterates all of the directories found in the input path, and
     detects files that end with a specific extension,
-    moves the files to a new output path at the top of the directory 
+    moves the files to a new output path at the top of the directory
     named after the original input directory.
     This function returns a file mapping for all of the files that were moved.
     This file mapping represents the relative

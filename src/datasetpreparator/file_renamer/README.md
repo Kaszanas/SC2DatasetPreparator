@@ -6,7 +6,7 @@ Please keep in mind that the  ```src/file_renamer.py``` contains default flag va
 ```
 usage: file_renamer.py [-h] [--input_dir INPUT_DIR]
 
-Tool used for processing StarCraft 2 (SC2) datasets with https://github.com/Kaszanas/SC2InfoExtractorGo       
+Tool used for processing StarCraft 2 (SC2) datasets with https://github.com/Kaszanas/SC2InfoExtractorGo
 
 options:
   -h, --help            show this help message and exit

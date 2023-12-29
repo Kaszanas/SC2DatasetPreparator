@@ -2,7 +2,7 @@ FROM python:latest
 
 WORKDIR /app
 
-RUN pip install click requests sc2reader 
+RUN pip install click requests sc2reader
 
 COPY . .
 

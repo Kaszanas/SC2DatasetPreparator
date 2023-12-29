@@ -8,7 +8,7 @@ Please keep in mind that the  ```src/processed_mapping_copier.py``` contains def
 ```
 usage: processed_mapping_copier.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
 
-Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset.  
+Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset.
 
 options:
   -h, --help            show this help message and exit

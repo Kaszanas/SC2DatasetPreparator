@@ -44,14 +44,14 @@ If you are proposing a feature:
 
 If you wish to develop using Docker, there is a `Dockerfile.dev` defined. Please use the following commands:
 
-Build the Dockerfile (CPU):
+Build the Dockerfile:
 ```
-docker build --tag=datasetpreparator:dev -f .\docker\Dockerfile .
+docker build --tag=datasetpreparator:devcontainer -f .\docker\Dockerfile.dev .
 ```
 
 Run the Dockerfile:
 ```
-docker run -it -v .:/app datasetpreparator:dev
+docker run -it -v .:/app datasetpreparator:devcontainer
 ```
 
 ### Local Development

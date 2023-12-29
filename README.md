@@ -8,7 +8,7 @@ Tools in this repository were used to create the **[SC2ReSet: StarCraft II Espor
 
 To install current version of the toolset as separate CLI tools run the following command:
 ```
-pip install sc2datasetpreparator[all]
+pip install datasetpreparator[all]
 ```
 
 ## Dataset Preparation Steps
@@ -49,7 +49,7 @@ Each of the scripts has its usage described in their respective `README.md` file
   author    = {Białecki, Andrzej and
                Białecki, Piotr and
                Krupiński, Leszek},
-  title     = {{Kaszanas/SC2DatasetPreparator: 1.2.0 
+  title     = {{Kaszanas/SC2DatasetPreparator: 1.2.0
                SC2DatasetPreparator Release}},
   month     = {jun},
   year      = {2022},

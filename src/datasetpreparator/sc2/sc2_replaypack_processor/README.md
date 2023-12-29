@@ -9,7 +9,7 @@ Please keep in mind that the ```src/sc2_replaypack_processor.py```  contains def
 usage: sc2_replaypack_processor.py [-h] [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
                                    [--n_processes N_PROCESSES]
 
-Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo      
+Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo
 
 options:
   -h, --help            show this help message and exit
