@@ -90,17 +90,28 @@ docker_doc_build: ## Builds the Mkdocs documentation using Docker.
 		datasetpreparator:devcontainer \
 		poetry run mkdocs build
 
+# TODO: Catch errors for docker_doc_build_action:
+docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
+	docker run \
+		-v "${PWD}/docs:/docs" \
+		datasetpreparator:devcontainer \
+		poetry run mkdocs build
+
 ###################
 #### PRE-COMMIT ###
 ###################
-# TODO: This requires the image to be rebuilt every time anything is changed in code.
-# There should be a way of running this with a mounted volume on the current directory.
 docker_pre_commit: ## Runs pre-commit hooks using Docker.
 	docker run \
 		-v "${PWD}:/app" \
 		sc2_dataset_preparator:devcontainer \
 		pre-commit run --all-files
 
+# TODO: Catch errors:
+docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
+	docker run \
+		-v "${PWD}:/app" \
+		sc2_dataset_preparator:devcontainer \
+		pre-commit run --all-files
 
 .PHONY: help
 help: ## Show available make targets
