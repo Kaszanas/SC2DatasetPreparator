@@ -33,7 +33,7 @@ mkdocs-section-index = "^0.3.8"
 commitizen = "^3.13.0"
 
 [tool.poetry.extras]
-all = ["sc2reader", "click"]
+all = ["click", "requests", "tqdm", "sc2reader"]
 dir_packager = ["click"]
 directory_flattener = ["click"]
 file_renamer = ["click"]
