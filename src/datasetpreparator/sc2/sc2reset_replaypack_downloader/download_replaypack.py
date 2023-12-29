@@ -26,6 +26,8 @@ def download_replaypack(
     replaypack_url : str
         Specifies the url that is a direct link\
         to the .zip which will be downloaded.
+    replaypack_md5 : str
+        Specifies the md5 expected checksum of the .zip archive.
 
     Returns
     -------
@@ -67,7 +69,7 @@ def download_replaypack(
     >>> assert existing_files[0].endswith(".zip")
     """
 
-    filename_with_ext = replaypack_name + ".zip"
+    filename_with_ext = Path(replaypack_name).with_suffix(".zip")
     download_filepath = Path(destination_dir, filename_with_ext)
 
     # The file was previously downloaded so return it immediately:

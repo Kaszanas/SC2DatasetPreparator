@@ -48,36 +48,21 @@ def sc2reset_replaypack_downloader(
 
     # Download replaypacks:
     downloaded_paths: List[Tuple[str, str]] = []
-    retry_list: List[Tuple[str, str, str]] = []
     for replaypack_name, replaypack_url, file_md5 in replaypack_list:
-        downloaded_replaypack_path, ok = download_replaypack(
-            destination_dir=download_path,
-            replaypack_name=replaypack_name,
-            replaypack_url=replaypack_url,
-            replaypack_md5=file_md5,
-        )
-        if not ok:
-            logging.error(
-                f"Replaypack {replaypack_name} could not be downloaded. Skipping..."
+        for _ in range(2):
+            downloaded_replaypack_path, ok = download_replaypack(
+                destination_dir=download_path,
+                replaypack_name=replaypack_name,
+                replaypack_url=replaypack_url,
+                replaypack_md5=file_md5,
             )
-            retry_list.append((replaypack_name, replaypack_url, file_md5))
-            continue
-        downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
-
-    # Retry replaypacks that failed to download:
-    for replaypack_name, replaypack_url, file_md5 in retry_list:
-        downloaded_replaypack_path, ok = download_replaypack(
-            destination_dir=download_path,
-            replaypack_name=replaypack_name,
-            replaypack_url=replaypack_url,
-            replaypack_md5=file_md5,
-        )
-        if not ok:
+            # If the download was succesful, break out of the inner loop:
+            if ok:
+                downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
+                break
             logging.error(
-                f"Replaypack {replaypack_name} could not be downloaded. Skipping..."
+                f"Replaypack {replaypack_name} could not be downloaded. Adding to retry list..."
             )
-            continue
-        downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
 
     # Unpack replaypacks:
     for replaypack_name, downloaded_replaypack_path in downloaded_paths:
