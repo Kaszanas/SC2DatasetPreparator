@@ -1332,9 +1332,10 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 
 [extras]
 all = ["sc2reader"]
+dir-packager = []
 sc2-map-downloader = ["sc2reader"]
 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "1814d62c42fb9a9b41e96fc803d1916cdcb5139aca688c35eae5eeccd85afba0"
+content-hash = "ebdb8b619b7b8a1da24091cee4ab57bbf9a8ec802005f0a8a1acd13f5e1b9023"

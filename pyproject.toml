@@ -13,6 +13,7 @@ tag_format = "$version"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+click = "^8.1.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
@@ -32,8 +33,13 @@ mkdocs-section-index = "^0.3.8"
 commitizen = "^3.13.0"
 
 [tool.poetry.extras]
-all = ["sc2reader"]
-sc2_map_downloader = ["sc2reader"]
+all = ["sc2reader", "click"]
+dir_packager = ["click"]
+directory_flattener = ["click"]
+file_renamer = ["click"]
+json_merger = ["click"]
+processed_mapping_copier = ["click"]
+sc2 = ["click", "requests", "tqdm", "sc2reader"]
 
 [tool.poetry.dependencies.sc2reader]
 # Version constraint for sc2reader within sc2_map_downloader
