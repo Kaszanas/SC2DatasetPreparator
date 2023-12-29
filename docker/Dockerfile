@@ -4,7 +4,7 @@
 ARG PYTHON_VERSION=3.11
 
 # TODO: This should be on DockerHub:
-FROM sc2-info-extractor
+FROM kaszanas/sc2infoextractorgo:latest
 
 FROM python:${PYTHON_VERSION}-alpine
 

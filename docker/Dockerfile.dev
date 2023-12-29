@@ -3,9 +3,18 @@
 
 ARG PYTHON_VERSION=3.11
 
-FROM python:${PYTHON_VERSION}-alpine
+FROM python:${PYTHON_VERSION}
+
+# TODO: Install other dependencies such as git, etc. This is needed for
+# pre-commit hooks to work and other QOL stuff.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    make build-essential libssl-dev wget ca-certificates curl llvm git vim
+
 
 WORKDIR /app
+
+# Install poetry
+RUN pip install poetry
 
 # Copy only what is required to install the project:
 COPY pyproject.toml poetry.lock /app/
@@ -15,6 +24,8 @@ RUN poetry config virtualenvs.create false && poetry install --no-root
 
 # Copy entire repository contents
 COPY . .
+
+RUN poetry run pre-commit install
 
 # Install current project:
 RUN poetry install

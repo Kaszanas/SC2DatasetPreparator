@@ -1,4 +1,15 @@
-processing
-processing_backup
+processing/
+processing_backup/
 
 .vscode/
+
+*.egg-info/
+build/
+.ruff_cache/
+
+*.zip
+**/*.zip
+**/*.SC2Replay
+
+**/download/
+**/unpack/
