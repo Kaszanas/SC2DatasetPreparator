@@ -1,3 +1,6 @@
+DOCKER_DIR = ./docker
+TEST_COMPOSE = $(DOCKER_DIR)/docker-test-compose.yml
+
 PYTHON_VERSION = 3.11
 PWD := ${CURDIR}
 
@@ -75,6 +78,13 @@ build_dev: ## Builds the development image containing all of the tools.
 	-f ./docker/Dockerfile.dev . \
 	--tag=datasetpreparator:devcontainer
 
+run_dev: ## Runs the development image containing all of the tools.
+	docker run \
+		-v "${PWD}:/app" \
+		-it \
+		datasetpreparator:devcontainer \
+		sh
+
 ###################
 #### DOCS #########
 ###################
@@ -112,6 +122,17 @@ docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 		-v "${PWD}:/app" \
 		sc2_dataset_preparator:devcontainer \
 		pre-commit run --all-files
+
+###################
+#### TESTING ######
+###################
+action_compose_build:
+	docker-compose -f $(TEST_COMPOSE) build
+
+action_compose_test: ## Runs the tests using Docker.
+	docker-compose -f $(TEST_COMPOSE) run --rm datasetpreparator \
+	sh -c "poetry run pytest --ignore-glob='test_*.py' ./test/test_cases/ --cov=datasetpreparator --cov-report term-missing --cov-report html --cov=xml 2>&1"
+
 
 .PHONY: help
 help: ## Show available make targets
