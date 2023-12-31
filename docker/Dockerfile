@@ -23,6 +23,6 @@ RUN poetry config virtualenvs.create false && poetry install --no-root
 COPY . .
 
 # Install current project:
-RUN poetry install
+RUN poetry install --all-extras
 
 CMD ["bash"]

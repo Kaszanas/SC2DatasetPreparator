@@ -1,0 +1,14 @@
+version: '3'
+services:
+
+  datasetpreparator:
+    image: datasetpreparator:devcontainer
+    build:
+      context: '../'
+      dockerfile: './docker/Dockerfile.dev'
+    container_name: test_datasetpreparator
+    environment:
+      - TEST_WORKSPACE=/app
+
+volumes:
+  logs:

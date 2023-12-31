@@ -10,7 +10,6 @@ FROM python:${PYTHON_VERSION}
 RUN apt-get update && apt-get install -y --no-install-recommends \
     make build-essential libssl-dev wget ca-certificates curl llvm git vim
 
-
 WORKDIR /app
 
 # Install poetry
@@ -28,6 +27,6 @@ COPY . .
 RUN poetry run pre-commit install
 
 # Install current project:
-RUN poetry install
+RUN poetry install --all-extras
 
 CMD ["bash"]
