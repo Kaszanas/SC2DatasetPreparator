@@ -1,6 +1,6 @@
 import unittest
 
-from datasetpreparator.sc2_map_downloader.sc2_map_downloader import (
+from datasetpreparator.sc2.sc2_map_downloader.sc2_map_downloader import (
     sc2_map_downloader,
 )
 
