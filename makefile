@@ -4,6 +4,7 @@ TEST_COMPOSE = $(DOCKER_DIR)/docker-test-compose.yml
 PYTHON_VERSION = 3.11
 PWD := ${CURDIR}
 
+TEST_COMMAND = "poetry run pytest --durations=100 --ignore-glob='test_*.py' tests --cov=datasetpreparator --cov-report term-missing --cov-report html 2>&1 | tee /app/logs/test_output.log"
 
 ###################
 #### PIPELINE #####
@@ -66,24 +67,33 @@ package_dataset: ## Packages the pre-processed dataset from the output of sc2_da
 ###################
 #### DOCKER #######
 ###################
-build: ## Builds the image containing all of the tools.
+docker_build: ## Builds the image containing all of the tools.
 	docker build \
 	--build-arg="PYTHON_VERSION=$(PYTHON_VERSION)" \
 	-f ./docker/Dockerfile . \
 	--tag=datasetpreparator
 
-build_dev: ## Builds the development image containing all of the tools.
+docker_build_dev: ## Builds the development image containing all of the tools.
 	docker build \
 	--build-arg="PYTHON_VERSION=$(PYTHON_VERSION)" \
 	-f ./docker/Dockerfile.dev . \
 	--tag=datasetpreparator:devcontainer
 
-run_dev: ## Runs the development image containing all of the tools.
+docker_run_test:
+	docker run \
+		-v "${PWD}:/app" \
+		-e "TEST_WORKSPACE=/app" \
+		datasetpreparator:devcontainer \
+		sh -c \
+		$(TEST_COMMAND)
+
+docker_run_dev: ## Runs the development image containing all of the tools.
 	docker run \
 		-v "${PWD}:/app" \
 		-it \
+		-e "TEST_WORKSPACE=/app" \
 		datasetpreparator:devcontainer \
-		sh
+		bash
 
 ###################
 #### DOCS #########
@@ -100,7 +110,6 @@ docker_doc_build: ## Builds the Mkdocs documentation using Docker.
 		datasetpreparator:devcontainer \
 		poetry run mkdocs build
 
-# TODO: Catch errors for docker_doc_build_action:
 docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
 	docker run \
 		-v "${PWD}/docs:/docs" \
@@ -126,13 +135,17 @@ docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 ###################
 #### TESTING ######
 ###################
-action_compose_build:
+compose_build:
 	docker-compose -f $(TEST_COMPOSE) build
 
 action_compose_test: ## Runs the tests using Docker.
-	docker-compose -f $(TEST_COMPOSE) run --rm datasetpreparator \
-	sh -c "poetry run pytest --ignore-glob='test_*.py' ./test/test_cases/ --cov=datasetpreparator --cov-report term-missing --cov-report html --cov=xml 2>&1"
+	docker-compose -f $(TEST_COMPOSE) run --rm lib \
+	bash -c $(TEST_COMMAND)
 
+compose_remove:
+	docker-compose -f $(TEST_COMPOSE) down --volumes --remove-orphans
+
+compose_test: compose_build action_compose_test compose_remove
 
 .PHONY: help
 help: ## Show available make targets
