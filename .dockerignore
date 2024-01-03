@@ -15,3 +15,5 @@ build/
 **/unpack/
 
 **/venv*
+
+**/__pycache__/

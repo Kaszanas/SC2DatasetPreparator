@@ -25,3 +25,6 @@ unpack/
 download/
 
 ruff_cache/
+
+.coverage
+*.log
