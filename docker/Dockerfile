@@ -24,5 +24,3 @@ COPY . .
 
 # Install current project:
 RUN poetry install --all-extras
-
-CMD ["bash"]
