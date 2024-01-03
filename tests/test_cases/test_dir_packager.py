@@ -3,8 +3,11 @@ import zipfile
 
 from datasetpreparator.dir_packager.dir_packager import multiple_dir_packager
 
+from tests.test_settings import DELETE_INPUT
+
+
 from tests.test_utils import (
-    dir_test_create_cleanup,
+    delete_test_input,
     create_test_input_dir,
     create_test_text_files,
     create_nested_test_directories,
@@ -13,7 +16,6 @@ from tests.test_utils import (
 SCRIPT_NAME = "file_packager"
 
 
-@dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class TestDirPackagerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -47,3 +49,8 @@ class TestDirPackagerTest(unittest.TestCase):
 
         # Assert equal number of files in input vs output:
         self.assertEqual(self.n_files, files_in_archive)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if DELETE_INPUT:
+            delete_test_input(script_name=SCRIPT_NAME)

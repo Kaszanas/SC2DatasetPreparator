@@ -1,0 +1,2 @@
+DELETE_INPUT = True
+DELETE_OUTPUT = True

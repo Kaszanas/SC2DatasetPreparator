@@ -4,23 +4,27 @@ from datasetpreparator.sc2.sc2reset_replaypack_downloader.get_md5 import get_md5
 from datasetpreparator.sc2.sc2reset_replaypack_downloader.sc2reset_replaypack_downloader import (
     sc2reset_replaypack_downloader,
 )
+
+from tests.test_settings import DELETE_OUTPUT, DELETE_INPUT
+
+
 from tests.test_utils import (
-    dir_test_create_cleanup,
-    get_test_input_dir,
-    get_test_output_dir,
+    create_test_input_dir,
+    create_test_output_dir,
+    delete_test_input,
+    delete_test_output,
 )
 
 
 SCRIPT_NAME = "sc2reset_replaypack_downloader"
 
 
-@dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class TestSC2ReplaypackProcessor(unittest.TestCase):
     @classmethod
     def setUp(cls) -> None:
-        # Get test directory input and output:
-        cls.input_path = get_test_input_dir(script_name=SCRIPT_NAME)
-        cls.output_path = get_test_output_dir(script_name=SCRIPT_NAME)
+        # Create and get test input and output directories:
+        cls.input_path = create_test_input_dir(script_name=SCRIPT_NAME)
+        cls.output_path = create_test_output_dir(script_name=SCRIPT_NAME)
 
         cls.test_replaypack_list = [
             (
@@ -61,3 +65,10 @@ class TestSC2ReplaypackProcessor(unittest.TestCase):
         self.assertGreater(
             0, len(list(Path(self.output_path, replaypack_name).glob(".SC2Replay")))
         )
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        if DELETE_INPUT:
+            delete_test_input(script_name=SCRIPT_NAME)
+        if DELETE_OUTPUT:
+            delete_test_output(script_name=SCRIPT_NAME)

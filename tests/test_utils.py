@@ -172,6 +172,30 @@ def delete_test_output(script_name: str) -> None:
     shutil.rmtree(test_dir.as_posix())
 
 
+def delete_test_input(script_name: str) -> None:
+    """
+    Deletes output of tests.
+
+    Parameters
+    ----------
+    script_name : str
+        Script name for which the directory will be cleaned.
+    """
+
+    test_dir = get_test_input_dir(script_name=script_name)
+    logging.info(f"Successfully set {test_dir.as_posix()=}")
+
+    if not test_dir.exists():
+        logging.info("Did not detect test_output to exist, exiting function")
+        return
+
+    logging.info(
+        f"Detected that test_output exists, \
+            performing removal by calling shutil.rmtree({test_dir})"
+    )
+    shutil.rmtree(test_dir.as_posix())
+
+
 def create_nested_test_directories(input_path: Path, n_dirs: int) -> List[Path]:
     """
     Created multiple nested directories for testing.
