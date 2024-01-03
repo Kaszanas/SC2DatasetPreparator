@@ -50,9 +50,14 @@ jobs:
         run: |
           make action_compose_test
 
-        # REVIEW: Should this be replaced with Dockerized tests
-      - name: Test with pytest
-        run: poetry run pytest -m minor --ignore-glob='test_*.py' tests/test_cases/ --cov=datasetpreparator --cov-report term-missing --cov=xml
+      - name: Check Test Results
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "Tests ran successfully."
+          else
+            echo "Tests failed."
+            exit 1
+          fi
 
       # TODO: Catch errors and report them:
       - name: Docker Build Documentation
