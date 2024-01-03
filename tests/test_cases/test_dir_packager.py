@@ -3,7 +3,7 @@ import zipfile
 
 from datasetpreparator.dir_packager.dir_packager import multiple_dir_packager
 
-from test.test_utils import (
+from tests.test_utils import (
     dir_test_create_cleanup,
     create_test_input_dir,
     create_test_text_files,
@@ -14,7 +14,8 @@ SCRIPT_NAME = "file_packager"
 
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
-class DirPackagerTest(unittest.TestCase):
+class TestDirPackagerTest(unittest.TestCase):
+    @classmethod
     def setUpClass(cls) -> None:
         # Get test directory input and output:
         cls.input_path = create_test_input_dir(script_name=SCRIPT_NAME)

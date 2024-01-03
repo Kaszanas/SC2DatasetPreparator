@@ -1,10 +1,9 @@
 import unittest
-
 import json
 
 from datasetpreparator.json_merger.json_merger import json_merger
 
-from test.test_utils import (
+from tests.test_utils import (
     dir_test_create_cleanup,
     get_test_input_dir,
     get_test_output_dir,
@@ -16,6 +15,7 @@ SCRIPT_NAME = "json_merger"
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
 class JSONMergerTest(unittest.TestCase):
+    @classmethod
     def setUpClass(cls) -> None:
         # Get test directory input and output:
         cls.input_path = get_test_input_dir(script_name=SCRIPT_NAME)

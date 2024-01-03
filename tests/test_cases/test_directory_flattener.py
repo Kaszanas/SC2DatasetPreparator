@@ -3,7 +3,7 @@ from datasetpreparator.directory_flattener.directory_flattener import (
     multiple_directory_flattener,
 )
 
-from test.test_utils import (
+from tests.test_utils import (
     dir_test_create_cleanup,
     get_test_input_dir,
     get_test_output_dir,
@@ -15,7 +15,8 @@ SCRIPT_NAME = "directory_flattener"
 
 
 @dir_test_create_cleanup(script_name=SCRIPT_NAME, delete_output=False)
-class DirectoryFlattenerTest(unittest.TestCase):
+class TestDirectoryFlattenerTest(unittest.TestCase):
+    @classmethod
     def setUpClass(cls) -> None:
         # Get test directory input and output:
         cls.input_path = get_test_input_dir(script_name=SCRIPT_NAME)

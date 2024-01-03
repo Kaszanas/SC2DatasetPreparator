@@ -6,13 +6,13 @@ import logging
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from test.test_utils import get_workspace_dir  # noqa: E402
+from tests.test_utils import get_workspace_dir  # noqa: E402
 
 
 # TODO: Fix this file so that the tests can be run with debugger.
 def suite():
     suite = unittest.TestSuite()
-    start_dir = os.path.join(get_workspace_dir(), "test")
+    start_dir = os.path.join(get_workspace_dir(), "tests")
     suite = unittest.TestLoader().discover(
         start_dir=start_dir,
         pattern="*_test.py",  # *_test.py
