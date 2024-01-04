@@ -6,7 +6,7 @@ import shutil
 from typing import List
 import json
 
-TEST_DIR_NAME = "test"
+from tests.test_settings import TEST_DIR_NAME, TEST_FILES_NAME
 
 
 def get_workspace_dir() -> Path:
@@ -52,7 +52,7 @@ def get_test_input_dir(script_name: str) -> Path:
     logging.info(f"Successfully set workspace_dir = {workspace_dir}")
 
     input_dir = Path(
-        workspace_dir, f"{TEST_DIR_NAME}/test_files/{script_name}/input"
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/input"
     ).resolve()
     logging.info(f"Successfully set input_dir = {input_dir}, returning.")
 
@@ -77,11 +77,11 @@ def create_test_input_dir(script_name: str) -> Path:
     workspace_dir = get_workspace_dir()
 
     input_dir = Path(
-        workspace_dir, f"{TEST_DIR_NAME}/test_files/{script_name}/input"
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/input/"
     ).resolve()
 
     if not input_dir.exists():
-        input_dir.mkdir()
+        input_dir.mkdir(parents=True)
 
     return input_dir
 
@@ -105,7 +105,7 @@ def create_test_output_dir(script_name: str) -> Path:
     logging.info(f"Successfully set workspace_dir = {workspace_dir}")
 
     test_output_path = Path(
-        workspace_dir, f"{TEST_DIR_NAME}/test_files/{script_name}/output"
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/output"
     ).resolve()
 
     if not test_output_path.exists():
@@ -113,7 +113,7 @@ def create_test_output_dir(script_name: str) -> Path:
             f"Detected that output_path does not exist, \
             calling os.mkdir({test_output_path})"
         )
-        test_output_path.mkdir()
+        test_output_path.mkdir(parents=True)
 
     return test_output_path
 
@@ -142,7 +142,7 @@ def get_test_output_dir(script_name: str) -> Path:
         f"Successfully set workspace_dir = {workspace_dir}, returning output_dir = "
     )
     test_output_dir = Path(
-        workspace_dir, f"{TEST_DIR_NAME}/test_files/{script_name}/output"
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/output"
     ).resolve()
 
     return test_output_dir

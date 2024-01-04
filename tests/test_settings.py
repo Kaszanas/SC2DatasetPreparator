@@ -1,2 +1,5 @@
+TEST_DIR_NAME = "tests"
+TEST_FILES_NAME = "test_files"
+
 DELETE_INPUT = True
 DELETE_OUTPUT = True
