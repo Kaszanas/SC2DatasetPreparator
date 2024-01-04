@@ -1,4 +1,3 @@
-import functools
 import os
 import logging
 from pathlib import Path
@@ -33,33 +32,53 @@ def get_workspace_dir() -> Path:
     return workspace_dir
 
 
-# TODO: Additionally, there should be a script that downloads test input files if they are not already available:
-def get_test_input_dir(script_name: str) -> Path:
+def get_script_test_dir(script_name: str) -> Path:
     """
-    Getting path to the files required for testing.
+    Getting the path to a specific script test directory.
 
     Parameters
     ----------
     script_name : str
-        Script name for which the test input dir will be retrieved.
+        Script name for which the test dir will be retrieved.
 
     Returns
     -------
     Path
-        Returns an absolute path to the test input directory.
+        Returns the path to the script test directory.
     """
+
     workspace_dir = get_workspace_dir()
-    logging.info(f"Successfully set workspace_dir = {workspace_dir}")
 
-    input_dir = Path(
-        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/input"
+    test_dir = Path(
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}"
     ).resolve()
-    logging.info(f"Successfully set input_dir = {input_dir}, returning.")
 
-    return input_dir
+    if test_dir.exists():
+        return test_dir
+
+    return test_dir
 
 
-def create_test_input_dir(script_name: str) -> Path:
+def delete_script_test_dir(script_name: str) -> None:
+    """
+    Deletes the test directory for a specified script.
+
+    Parameters
+    ----------
+    script_name : str
+        Script name for which the test directory will be deleted.
+    """
+
+    script_test_dir = get_script_test_dir(script_name=script_name)
+
+    if not script_test_dir.exists():
+        logging.info(f"Did not detect {script_test_dir.as_posix()} to exist")
+        return
+
+    shutil.rmtree(script_test_dir.as_posix())
+
+
+def create_script_test_input_dir(script_name: str) -> Path:
     """
     Creates test input directory for tests.
 
@@ -86,7 +105,57 @@ def create_test_input_dir(script_name: str) -> Path:
     return input_dir
 
 
-def create_test_output_dir(script_name: str) -> Path:
+# TODO: Additionally, there should be a script that downloads test input files if they are not already available:
+def get_script_test_input_dir(script_name: str) -> Path:
+    """
+    Getting path to the files required for testing.
+
+    Parameters
+    ----------
+    script_name : str
+        Script name for which the test input dir will be retrieved.
+
+    Returns
+    -------
+    Path
+        Returns an absolute path to the test input directory.
+    """
+    workspace_dir = get_workspace_dir()
+    logging.info(f"Successfully set workspace_dir = {workspace_dir}")
+
+    input_dir = Path(
+        workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/input"
+    ).resolve()
+    logging.info(f"Successfully set input_dir = {input_dir}, returning.")
+
+    return input_dir
+
+
+def delete_test_input(script_name: str) -> None:
+    """
+    Deletes output of tests.
+
+    Parameters
+    ----------
+    script_name : str
+        Script name for which the directory will be cleaned.
+    """
+
+    test_dir = get_script_test_input_dir(script_name=script_name)
+    logging.info(f"Successfully set {test_dir.as_posix()=}")
+
+    if not test_dir.exists():
+        logging.info("Did not detect test_output to exist, exiting function")
+        return
+
+    logging.info(
+        f"Detected that test_output exists, \
+            performing removal by calling shutil.rmtree({test_dir})"
+    )
+    shutil.rmtree(test_dir.as_posix())
+
+
+def create_script_test_output_dir(script_name: str) -> Path:
     """
     Creates test output directories for tests.
 
@@ -118,7 +187,7 @@ def create_test_output_dir(script_name: str) -> Path:
     return test_output_path
 
 
-def get_test_output_dir(script_name: str) -> Path:
+def get_script_test_output_dir(script_name: str) -> Path:
     """
     Getting the path to the test output directory
     and to the thumbnail output directory.
@@ -148,7 +217,7 @@ def get_test_output_dir(script_name: str) -> Path:
     return test_output_dir
 
 
-def delete_test_output(script_name: str) -> None:
+def delete_script_test_output(script_name: str) -> None:
     """
     Deletes output of tests.
 
@@ -158,31 +227,7 @@ def delete_test_output(script_name: str) -> None:
         Script name for which the directory will be cleaned.
     """
 
-    test_dir = get_test_output_dir(script_name=script_name)
-    logging.info(f"Successfully set {test_dir.as_posix()=}")
-
-    if not test_dir.exists():
-        logging.info("Did not detect test_output to exist, exiting function")
-        return
-
-    logging.info(
-        f"Detected that test_output exists, \
-            performing removal by calling shutil.rmtree({test_dir})"
-    )
-    shutil.rmtree(test_dir.as_posix())
-
-
-def delete_test_input(script_name: str) -> None:
-    """
-    Deletes output of tests.
-
-    Parameters
-    ----------
-    script_name : str
-        Script name for which the directory will be cleaned.
-    """
-
-    test_dir = get_test_input_dir(script_name=script_name)
+    test_dir = get_script_test_output_dir(script_name=script_name)
     logging.info(f"Successfully set {test_dir.as_posix()=}")
 
     if not test_dir.exists():
@@ -291,31 +336,20 @@ def create_test_json_files(
     return json_files
 
 
-def dir_test_create_cleanup(script_name: str, delete_output: bool):
-    """
-    Decorator that is creating output directories for tests,
-    and deletes them along with the output after the tests are finished.
+def test_cleanup(
+    script_name: str,
+    delete_script_test_dir: bool,
+    delete_script_test_input: bool,
+    delete_script_test_output: bool,
+) -> None:
+    # Removes entire script test directory and returns as it
+    # contains both input and output directories:
+    if delete_script_test_dir:
+        delete_script_test_dir(script_name=script_name)
+        return
 
-    Parameters
-    ----------
-    script_name : str
-        Specifies the script name for which the directories will be created and deleted.
-    delete_output : bool
-        Specifies if the test output directory will be removed.
-    """
+    if delete_script_test_input:
+        delete_script_test_input(script_name=script_name)
 
-    def decorator(func):
-        @functools.wraps(func)
-        def wrapper(*args, **kwargs):
-            create_test_output_dir(script_name=script_name)
-
-            try:
-                exit_value = func(*args, **kwargs)
-            finally:
-                if delete_output:
-                    delete_test_output(script_name=script_name)
-            return exit_value
-
-        return wrapper
-
-    return decorator
+    if delete_script_test_output:
+        delete_script_test_output(script_name=script_name)

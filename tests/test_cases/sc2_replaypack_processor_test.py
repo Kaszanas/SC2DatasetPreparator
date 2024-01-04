@@ -4,14 +4,17 @@ from datasetpreparator.sc2.sc2_replaypack_processor.sc2_replaypack_processor imp
     sc2_replaypack_processor,
 )
 
-from tests.test_settings import DELETE_OUTPUT, DELETE_INPUT
+from tests.test_settings import (
+    DELETE_SCRIPT_TEST_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
+    DELETE_SCRIPT_TEST_INPUT_DIR,
+)
 
 
 from tests.test_utils import (
-    create_test_input_dir,
-    create_test_output_dir,
-    delete_test_input,
-    delete_test_output,
+    create_script_test_input_dir,
+    create_script_test_output_dir,
+    test_cleanup,
 )
 
 SCRIPT_NAME = "sc2_replaypack_processor"
@@ -24,8 +27,8 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Create and get test input and output directories:
-        cls.input_path = create_test_input_dir(script_name=SCRIPT_NAME)
-        cls.output_path = create_test_output_dir(script_name=SCRIPT_NAME)
+        cls.input_path = create_script_test_input_dir(script_name=SCRIPT_NAME)
+        cls.output_path = create_script_test_output_dir(script_name=SCRIPT_NAME)
 
         # TODO: Verify that SC2InfoExtractorGo is available in path.
         # If not available download from GitHub release page.
@@ -34,6 +37,13 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
         # two replaypacks with at least one SC2Replay file within.
 
     def test_sc2_replaypack_processor(self):
+        # REVIEW: Unfortunately this script depends on SC2InfoExtractorGo. This means that
+        # the dockerfile dev environment should be built with access to this executable.
+        # There should be a way to exclude this test somehow.
+        # This could be done either with another boolean set in the environment variables,
+        # Maybe a pytest marker to skip this test?
+        # Should this even be tested given that the SC2InfoExtractorGo will have its own tests?
+        # This script is only providing a multiprocessing wrapper for the SC2InfoExtractorGo.
         sc2_replaypack_processor(
             input_path=self.input_path,
             output_path=self.output_path,
@@ -45,7 +55,9 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        if DELETE_INPUT:
-            delete_test_input(script_name=SCRIPT_NAME)
-        if DELETE_OUTPUT:
-            delete_test_output(script_name=SCRIPT_NAME)
+        test_cleanup(
+            script_name=SCRIPT_NAME,
+            delete_script_test_dir=DELETE_SCRIPT_TEST_DIR,
+            delete_script_test_input=DELETE_SCRIPT_TEST_INPUT_DIR,
+            delete_script_test_output=DELETE_SCRIPT_TEST_OUTPUT_DIR,
+        )

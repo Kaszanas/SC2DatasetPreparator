@@ -3,14 +3,17 @@ import zipfile
 
 from datasetpreparator.dir_packager.dir_packager import multiple_dir_packager
 
-from tests.test_settings import DELETE_INPUT
+from tests.test_settings import (
+    DELETE_SCRIPT_TEST_DIR,
+    DELETE_SCRIPT_TEST_INPUT_DIR,
+)
 
 
 from tests.test_utils import (
-    delete_test_input,
-    create_test_input_dir,
+    create_script_test_input_dir,
     create_test_text_files,
     create_nested_test_directories,
+    test_cleanup,
 )
 
 SCRIPT_NAME = "file_packager"
@@ -20,7 +23,7 @@ class TestDirPackagerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         # Get test directory input and output:
-        cls.input_path = create_test_input_dir(script_name=SCRIPT_NAME)
+        cls.input_path = create_script_test_input_dir(script_name=SCRIPT_NAME)
 
         cls.n_dirs = 1
         # Create multiple nested directories:
@@ -52,5 +55,9 @@ class TestDirPackagerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        if DELETE_INPUT:
-            delete_test_input(script_name=SCRIPT_NAME)
+        test_cleanup(
+            script_name=SCRIPT_NAME,
+            delete_script_test_dir=DELETE_SCRIPT_TEST_DIR,
+            delete_script_test_input=DELETE_SCRIPT_TEST_INPUT_DIR,
+            delete_script_test_output=False,
+        )
