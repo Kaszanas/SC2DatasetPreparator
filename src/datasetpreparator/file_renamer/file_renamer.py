@@ -22,6 +22,17 @@ def file_renamer(input_path: Path) -> None:
         Specifies the input directory where the files will be renamed.
     """
 
+    if not input_path.exists():
+        raise FileNotFoundError(f"Input path {input_path.as_posix()} does not exist.")
+
+    if not input_path.is_dir():
+        raise NotADirectoryError(
+            f"Input path {input_path.as_posix()} is not a directory."
+        )
+
+    if not len(input_path.iterdir()) > 0:
+        raise ValueError(f"Input path {input_path.as_posix()} is empty.")
+
     # TODO: This can be done with iterdir:
     for directory, _, file_list in os.walk(input_path.as_posix()):
         for file in file_list:
