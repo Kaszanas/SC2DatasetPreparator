@@ -11,6 +11,8 @@ To install current version of the toolset as separate CLI tools run the followin
 pip install datasetpreparator[all]
 ```
 
+After that each of the scripts should be available to call from the command line directly.
+
 ## Dataset Preparation Steps
 
 To reproduce our experience with defining a dataset and to be able to compare your results with our work we describe how to perform the processing below.
@@ -18,7 +20,7 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 ### Using Docker
 
 1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
-2. Run the commands as described in the ```Makefile```. But first make sure that all of the script parameters are set according to your needs.
+2. Run the commands as described in the ```makefile```. But first make sure that all of the script parameters are set according to your needs.
 
 ### Using Python
 
@@ -35,9 +37,7 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 
 In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```src/sc2_replaypack_processor``` file directly
 
-## Scripts Command Line Arguments Usage
-
-Before using this software please install Python >= 3.10 and ```requirements.txt```.
+## Command Line Arguments Usage
 
 Each of the scripts has its usage described in their respective `README.md` files.
 
