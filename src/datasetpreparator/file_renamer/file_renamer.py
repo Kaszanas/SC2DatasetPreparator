@@ -30,7 +30,7 @@ def file_renamer(input_path: Path) -> None:
             f"Input path {input_path.as_posix()} is not a directory."
         )
 
-    if not len(input_path.iterdir()) > 0:
+    if not len(list(input_path.iterdir())) > 0:
         raise ValueError(f"Input path {input_path.as_posix()} is empty.")
 
     # TODO: This can be done with iterdir:
