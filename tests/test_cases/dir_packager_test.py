@@ -13,17 +13,16 @@ from tests.test_utils import (
     create_script_test_input_dir,
     create_test_text_files,
     create_nested_test_directories,
-    test_cleanup,
+    dir_test_cleanup,
 )
-
-SCRIPT_NAME = "file_packager"
 
 
 class TestDirPackagerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        cls.SCRIPT_NAME = "file_packager"
         # Get test directory input and output:
-        cls.input_path = create_script_test_input_dir(script_name=SCRIPT_NAME)
+        cls.input_path = create_script_test_input_dir(script_name=cls.SCRIPT_NAME)
 
         cls.n_dirs = 1
         # Create multiple nested directories:
@@ -55,9 +54,9 @@ class TestDirPackagerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        test_cleanup(
-            script_name=SCRIPT_NAME,
-            delete_script_test_dir=DELETE_SCRIPT_TEST_DIR,
-            delete_script_test_input=DELETE_SCRIPT_TEST_INPUT_DIR,
-            delete_script_test_output=False,
+        dir_test_cleanup(
+            script_name=cls.SCRIPT_NAME,
+            delete_script_test_dir_bool=DELETE_SCRIPT_TEST_DIR,
+            delete_script_test_input_bool=DELETE_SCRIPT_TEST_INPUT_DIR,
+            delete_script_test_output_bool=False,
         )

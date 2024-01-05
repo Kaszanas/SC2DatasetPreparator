@@ -11,19 +11,17 @@ from tests.test_settings import (
 from tests.test_utils import (
     create_script_test_input_dir,
     create_script_test_output_dir,
-    test_cleanup,
+    dir_test_cleanup,
 )
-
-
-SCRIPT_NAME = "file_renamer"
 
 
 class FileRenamerTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        cls.SCRIPT_NAME = "file_renamer"
         # Create and get test input and output directories:
-        cls.input_path = create_script_test_input_dir(script_name=SCRIPT_NAME)
-        cls.output_path = create_script_test_output_dir(script_name=SCRIPT_NAME)
+        cls.input_path = create_script_test_input_dir(script_name=cls.SCRIPT_NAME)
+        cls.output_path = create_script_test_output_dir(script_name=cls.SCRIPT_NAME)
 
         # TODO: Mock the directory structure:
 
@@ -34,9 +32,9 @@ class FileRenamerTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        test_cleanup(
-            script_name=SCRIPT_NAME,
-            delete_script_test_dir=DELETE_SCRIPT_TEST_DIR,
-            delete_script_test_input=DELETE_SCRIPT_TEST_INPUT_DIR,
-            delete_script_test_output=DELETE_SCRIPT_TEST_OUTPUT_DIR,
+        dir_test_cleanup(
+            script_name=cls.SCRIPT_NAME,
+            delete_script_test_dir_bool=DELETE_SCRIPT_TEST_DIR,
+            delete_script_test_input_bool=DELETE_SCRIPT_TEST_INPUT_DIR,
+            delete_script_test_output_bool=DELETE_SCRIPT_TEST_OUTPUT_DIR,
         )

@@ -131,7 +131,7 @@ def get_script_test_input_dir(script_name: str) -> Path:
     return input_dir
 
 
-def delete_test_input(script_name: str) -> None:
+def delete_script_test_input(script_name: str) -> None:
     """
     Deletes output of tests.
 
@@ -286,7 +286,7 @@ def create_test_text_files(
     """
 
     for i in range(n_files):
-        example_file = Path(input_path, f"example_file_{i}.{extension}")
+        example_file = Path(input_path, f"example_file_{i}").with_suffix(extension)
 
         if not example_file.exists():
             with example_file.open(mode="w", encoding="utf-8") as ef:
@@ -319,7 +319,7 @@ def create_test_json_files(
 
     json_files = []
     for i in range(2):
-        json_path = Path(input_path, f"json_{i}.json")
+        json_path = Path(input_path, f"json_{i}").with_suffix(".json")
 
         data = {f"key_{i}": f"{i}" for i in range(10)}
         # One of the keys will be different to verify if the merging logic works:
@@ -336,20 +336,20 @@ def create_test_json_files(
     return json_files
 
 
-def test_cleanup(
+def dir_test_cleanup(
     script_name: str,
-    delete_script_test_dir: bool,
-    delete_script_test_input: bool,
-    delete_script_test_output: bool,
+    delete_script_test_dir_bool: bool,
+    delete_script_test_input_bool: bool,
+    delete_script_test_output_bool: bool,
 ) -> None:
     # Removes entire script test directory and returns as it
     # contains both input and output directories:
-    if delete_script_test_dir:
+    if delete_script_test_dir_bool:
         delete_script_test_dir(script_name=script_name)
         return
 
-    if delete_script_test_input:
+    if delete_script_test_input_bool:
         delete_script_test_input(script_name=script_name)
 
-    if delete_script_test_output:
+    if delete_script_test_output_bool:
         delete_script_test_output(script_name=script_name)
