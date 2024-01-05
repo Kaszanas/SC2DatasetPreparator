@@ -28,9 +28,9 @@ def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
 
 
 def directory_flatten(
-    dir_to_flatten: Path,
+    root_directory: Path,
+    list_of_files: List[Path],
     dir_output_path: Path,
-    file_extension: str,
 ) -> Dict[str, str]:
     """
     Flattens a single directory and copies the contents
@@ -38,13 +38,10 @@ def directory_flatten(
 
     Parameters
     ----------
-    dir_to_flatten : Path
-        Path to the directory that will be flattened.
+    list_of_files : List[Path]
+        List of files which were detected to be moved.
     dir_output_path : Path
         Path to the output directory where the files will be copied.
-    file_extension : str
-        File extension which will be used to filter
-        out the files that are supposed to be copied.
 
     Returns
     -------
@@ -55,36 +52,32 @@ def directory_flatten(
 
     # Walk over the directory
     dir_structure_mapping = {}
-    for root, _, filenames in os.walk(dir_to_flatten.as_posix()):
-        for file in filenames:
-            if not file.endswith(file_extension):
-                continue
+    # TODO: This could be a glob to look for all files with the extension:
+    for file in list_of_files:
+        # Get unique filename:
+        unique_filename = uuid.uuid4().hex
+        original_extension = file.suffix
+        new_path_and_filename = Path(dir_output_path, unique_filename).with_suffix(
+            original_extension
+        )
+        logging.debug(f"New path and filename! {new_path_and_filename.as_posix()}")
 
-            # Get unique filename:
-            unique_filename = uuid.uuid4().hex
-            unique_filename_with_ext = unique_filename + file_extension
-            new_path_and_filename = Path(dir_output_path, unique_filename_with_ext)
-            logging.debug(
-                f"New path and filename! {new_path_and_filename.resolve().as_posix()}"
-            )
+        current_file = Path(root_directory, file).resolve()
+        logging.debug(f"Current file: {current_file.as_posix()}")
 
-            current_file = Path(root, file).resolve()
-            logging.debug(f"Current file: {current_file.as_posix()}")
+        # Copying files:
+        if not current_file.exists():
+            logging.error(f"File does not exist. Path len: {len(current_file)}")
+            continue
 
-            # Copying files:
-            if not current_file.exists():
-                logging.error(f"File does not exist. Path len: {len(current_file)}")
-                continue
+        shutil.copy(current_file, new_path_and_filename)
+        logging.debug(f"File copied to {new_path_and_filename.as_posix()}")
 
-            shutil.copy(current_file, new_path_and_filename)
-            logging.debug(
-                f"File copied to {new_path_and_filename.resolve().as_posix()}"
-            )
+        relative_file = os.path.relpath(root_directory, current_file.as_posix())
 
-            relative_file = os.path.relpath(root, current_file.as_posix())
-
-            # Add to a mapping
-            dir_structure_mapping[unique_filename_with_ext] = relative_file
+        # Add to a mapping
+        unique_filename_with_ext = f"{unique_filename}"
+        dir_structure_mapping[unique_filename_with_ext] = relative_file
 
     return dir_structure_mapping
 
@@ -125,19 +118,19 @@ def multiple_directory_flattener(
         logging.error(
             f"Input path must be a directory! {input_path.resolve().as_posix()}"
         )
-        return (False, Path())
+        return (False, [Path()])
 
     # Input must exist:
     if not input_path.exists():
         logging.error(f"Input path must exist! {input_path.resolve().as_posix()}")
-        return (False, Path())
+        return (False, [Path()])
 
     # Output path must be a directory:
     if not output_path.is_dir():
         logging.error(
             f"Output path must be a directory! {output_path.resolve().as_posix()}"
         )
-        return (False, Path())
+        return (False, [Path()])
 
     output_directories = []
     # Iterate over directories:
@@ -145,15 +138,19 @@ def multiple_directory_flattener(
         maybe_dir = Path(input_path, item).resolve()
         if not maybe_dir.is_dir():
             continue
-        # Output directory is created if it doesn't exist:
+
+        files_with_extension = list(maybe_dir.glob(f"*{file_extension}"))
+        if not files_with_extension:
+            continue
+
         dir_output_path = Path(output_path, item).resolve()
         if not dir_output_path.exists():
             dir_output_path.mkdir()
 
         dir_structure_mapping = directory_flatten(
-            dir_to_flatten=maybe_dir,
+            root_directory=maybe_dir,
+            list_of_files=files_with_extension,
             dir_output_path=dir_output_path,
-            file_extension=file_extension,
         )
 
         save_dir_mapping(output_path=dir_output_path, dir_mapping=dir_structure_mapping)
