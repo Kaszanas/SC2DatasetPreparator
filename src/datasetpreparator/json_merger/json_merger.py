@@ -85,9 +85,13 @@ def json_merger(
         Returns a path to the saved merged file.
     """
 
-    merge_files(path_to_json_one=path_to_json_one, path_to_json_two=path_to_json_two)
+    output_dict = merge_files(
+        path_to_json_one=path_to_json_one, path_to_json_two=path_to_json_two
+    )
 
-    final_out_filepath = save_output(output_filepath=output_filepath)
+    final_out_filepath = save_output(
+        output_filepath=output_filepath, output_dict=output_dict
+    )
 
     return final_out_filepath
 
