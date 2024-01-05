@@ -19,9 +19,9 @@ from tests.test_utils import (
 )
 
 
-class SC2ReplaypackProcessorTest(unittest.TestCase):
+class SC2ReSetDownloaderTest(unittest.TestCase):
     @classmethod
-    def setUp(cls) -> None:
+    def setUpClass(cls) -> None:
         cls.SCRIPT_NAME = "sc2reset_replaypack_downloader"
 
         # Create and get test input and output directories:
@@ -64,8 +64,8 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
             msg="The replaypack was not unpacked.",
         )
         # Check if the replaypack was unpacked correctly:
-        self.assertGreater(
-            0, len(list(Path(self.output_path, replaypack_name).glob(".SC2Replay")))
+        self.assertNotEqual(
+            0, len(list(Path(self.output_path, replaypack_name).glob("*.SC2Replay")))
         )
 
     @classmethod
