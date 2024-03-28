@@ -128,7 +128,6 @@ docker_pre_commit: ## Runs pre-commit hooks using Docker.
 # TODO: Catch errors:
 docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 	docker run \
-		-v "${PWD}:/app" \
 		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
