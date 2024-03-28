@@ -20,7 +20,7 @@ jobs:
 
       - name: Build Dev Docker Image
         run: |
-          make build_dev
+          make docker_build_dev
 
       - name: Docker Run pre-commit on all files.
         run: |
@@ -31,7 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.10, 3.11, 3.12]
+        # Quote this as strings... otherwise 3.10 will be interpreted as 3.1
+        python-version: ['3.10', '3.11', '3.12']
 
     # Define job steps
     steps:
@@ -40,11 +41,11 @@ jobs:
 
       - name: Build Dev Docker Image
         run: |
-          make build_dev PYTHON_VERSION=${{ matrix.python-version }}
+          make docker_build_dev PYTHON_VERSION=${{ matrix.python-version }}
 
       - name: Build Docker Image With Python ${{ matrix.python-version }}
         run: |
-          make build PYTHON_VERSION=${{ matrix.python-version }}
+          make docker_build PYTHON_VERSION=${{ matrix.python-version }}
 
       - name: Run Docker Tests With Python ${{ matrix.python-version }}
         run: |

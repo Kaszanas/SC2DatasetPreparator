@@ -16,17 +16,16 @@ all: ## Runs the entire processing pipeline to recreate SC2ReSet and SC2EGSet or
 	@make rename_files
 	@make package_dataset
 
-# TODO: Image name changed from sc2_dataset_preparator to datasetpreparator.
 flatten: ## Flattens the directory if the files are held in nested directories. This helps with streamlining the processing.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 directory_flattener.py
 
 json_merge: ## Merges two JSON files.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2-dataset-preparator \
+		datasetpreparator \
 		python3 json_merger.py \
 		--json_one=../processing/json_merger/map_translation.json \
 		--json_two=../processing/json_merger/new_maps_processed.json
@@ -34,13 +33,13 @@ json_merge: ## Merges two JSON files.
 download_maps: ## Runs over directories with .SC2Replay files and downloads maps that were used in the games.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 sc2_map_downloader.py
 
 process_replaypack: ## Parses the raw (.SC2Replay) data into JSON files.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 sc2_replaypack_processor.py \
 		--n_processes 8 \
 		--perform_chat_anonymization "true"
@@ -48,20 +47,20 @@ process_replaypack: ## Parses the raw (.SC2Replay) data into JSON files.
 rename_files: ## Renames the files after processing with SC2InfoExtractorGo.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 file_renamer.py \
 		--input_dir ../processing/sc2_replaypack_processor/output
 
 package_reset_dataset: ## Packages the raw data. Used to prepare SC2ReSet Replaypack set.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 file_packager.py --input_dir ../processing/directory_flattener/output
 
-package_dataset: ## Packages the pre-processed dataset from the output of sc2_dataset_preparator. Used to prepare SC2EGSet Dataset.
+package_dataset: ## Packages the pre-processed dataset from the output of datasetpreparator. Used to prepare SC2EGSet Dataset.
 	docker run \
 		-v "${PWD}/processing:/app/processing" \
-		sc2_dataset_preparator \
+		datasetpreparator \
 		python3 file_packager.py --input_dir ../processing/sc2_replaypack_processor/output
 
 ###################
@@ -122,14 +121,12 @@ docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
 docker_pre_commit: ## Runs pre-commit hooks using Docker.
 	docker run \
 		-v "${PWD}:/app" \
-		sc2_dataset_preparator:devcontainer \
+		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
-# TODO: Catch errors:
 docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 	docker run \
-		-v "${PWD}:/app" \
-		sc2_dataset_preparator:devcontainer \
+		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
 ###################
