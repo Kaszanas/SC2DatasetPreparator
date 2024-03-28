@@ -122,14 +122,14 @@ docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
 docker_pre_commit: ## Runs pre-commit hooks using Docker.
 	docker run \
 		-v "${PWD}:/app" \
-		sc2_dataset_preparator:devcontainer \
+		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
 # TODO: Catch errors:
 docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 	docker run \
 		-v "${PWD}:/app" \
-		sc2_dataset_preparator:devcontainer \
+		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
 ###################
