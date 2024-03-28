@@ -31,7 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.10, 3.11, 3.12]
+        # Quote this as strings... otherwise 3.10 will be interpreted as 3.1
+        python-version: ['3.10', '3.11', '3.12']
 
     # Define job steps
     steps:
