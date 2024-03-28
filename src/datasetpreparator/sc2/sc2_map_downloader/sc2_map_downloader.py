@@ -28,7 +28,7 @@ def list_maps_to_download(replay_files: List[Path]) -> Set[Tuple[str, str]]:
 
     replay_map_archive_hashes = set()
     for replay_filepath in replay_files:
-        replay = sc2reader.load_replay(replay_filepath, load_map=True)
+        replay = sc2reader.load_replay(str(replay_filepath), load_map=True)
         replay_map_url = replay.map_file.url
         logging.info(f"Replay map url is: {replay_map_url}")
         replay_map_hash = replay.map_hash
@@ -120,11 +120,14 @@ def sc2_map_downloader(input_path: Path, output_path: Path) -> Path:
 )
 @click.option(
     "--log",
-    type=click.Choice(["INFO", "DEBUG", "ERROR"], case_sensitive=False),
+    type=click.Choice(["INFO", "DEBUG", "ERROR", "WARN"], case_sensitive=False),
     default="WARN",
     help="Log level (INFO, DEBUG, ERROR)",
 )
 def main(input_path: Path, output_path: Path, log: str) -> None:
+    input_path = Path(input_path).resolve()
+    output_path = Path(output_path).resolve()
+
     numeric_level = getattr(logging, log.upper(), None)
     if not isinstance(numeric_level, int):
         raise ValueError(f"Invalid log level: {numeric_level}")

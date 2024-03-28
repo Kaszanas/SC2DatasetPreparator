@@ -52,7 +52,6 @@ def directory_flatten(
 
     # Walk over the directory
     dir_structure_mapping = {}
-    # TODO: This could be a glob to look for all files with the extension:
     for file in list_of_files:
         # Get unique filename:
         unique_filename = uuid.uuid4().hex
@@ -73,11 +72,9 @@ def directory_flatten(
         shutil.copy(current_file, new_path_and_filename)
         logging.debug(f"File copied to {new_path_and_filename.as_posix()}")
 
-        relative_file = os.path.relpath(root_directory, current_file.as_posix())
-
-        # Add to a mapping
-        unique_filename_with_ext = f"{unique_filename}"
-        dir_structure_mapping[unique_filename_with_ext] = relative_file
+        # Finding the relative path from the root directory to the file:
+        relative_file = os.path.relpath(current_file.as_posix(), root_directory)
+        dir_structure_mapping[new_path_and_filename.name] = relative_file
 
     return dir_structure_mapping
 

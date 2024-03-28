@@ -107,32 +107,37 @@ def sc2_replaypack_processor(
     """
 
     multiprocessing_list = []
-    for directory in tqdm(os.listdir(input_path)):
-        logging.debug("Processing entry: %s", directory)
-        is_input_dir = os.path.abspath(os.path.join(input_path, directory))
-        if not os.path.isdir(is_input_dir):
-            logging.debug("not dir, skipping")
+    for maybe_dir in tqdm(list(input_path.iterdir())):
+        logging.debug(f"Processing entry: {maybe_dir}")
+        processing_input_dir = Path(input_path, maybe_dir).resolve()
+        if not processing_input_dir.is_dir():
+            logging.debug("Entry is not a directory, skipping!")
             continue
 
-        logging.debug("Output dir: %s", output_path)
+        logging.debug(f"Output dir: {output_path}")
         # Create the main output directory:
-        if not os.path.exists(output_path):
-            os.mkdir(output_path)
+        if not output_path.exists():
+            output_path.mkdir()
 
-        path, output_directory_name = os.path.split(directory)
-        logging.debug("Output dir name: %s", output_directory_name)
+        # TODO: use pathlib:
+        path, output_directory_name = os.path.split(maybe_dir)
+        logging.debug(f"Output dir name: {output_directory_name}")
         if output_directory_name == "input":
             continue
 
-        output_directory_filepath = os.path.join(output_path, output_directory_name)
-        logging.debug("Output filepath: %s", output_directory_filepath)
+        output_directory_with_name = Path(output_path, output_directory_name).resolve()
+        logging.debug(f"Output filepath: {output_directory_with_name}")
 
         # Create the output subdirectories:
-        if not os.path.exists(output_directory_filepath):
-            os.mkdir(output_directory_filepath)
+        if not output_directory_with_name.exists():
+            output_directory_with_name.mkdir()
 
         multiprocessing_list.append(
-            (is_input_dir, output_directory_filepath, perform_chat_anonymization)
+            (
+                processing_input_dir,
+                output_directory_with_name,
+                perform_chat_anonymization,
+            )
         )
 
     multiprocessing_scheduler(multiprocessing_list, int(n_processes))

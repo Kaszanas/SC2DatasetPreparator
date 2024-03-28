@@ -135,14 +135,14 @@ docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 ###################
 #### TESTING ######
 ###################
-compose_build:
+compose_build: ## Builds the Docker Image with docker-compose.
 	docker-compose -f $(TEST_COMPOSE) build
 
 action_compose_test: ## Runs the tests using Docker.
 	docker-compose -f $(TEST_COMPOSE) run --rm lib \
 	bash -c $(TEST_COMMAND)
 
-compose_remove:
+compose_remove: ## Stops and removes the testing containers, images, volumes.
 	docker-compose -f $(TEST_COMPOSE) down --volumes --remove-orphans
 
 compose_test: compose_build action_compose_test compose_remove
