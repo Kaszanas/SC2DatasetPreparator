@@ -125,7 +125,6 @@ docker_pre_commit: ## Runs pre-commit hooks using Docker.
 		datasetpreparator:devcontainer \
 		pre-commit run --all-files
 
-# TODO: Catch errors:
 docker_pre_commit_action: ## Runs pre-commit hooks using Docker.
 	docker run \
 		datasetpreparator:devcontainer \
