@@ -30,3 +30,6 @@ ruff_cache/
 *.log
 *.json
 *.txt
+
+# PyCharm
+/.idea
