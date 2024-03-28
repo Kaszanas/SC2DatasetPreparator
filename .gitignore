@@ -4,6 +4,7 @@
 /processing
 
 *.SC2Replay
+*.zip
 
 NOTES.txt
 SC2InfoExtractorGo.exe
@@ -12,3 +13,23 @@ command.txt
 launch.json
 
 processing_backup/
+
+*.egg-info
+
+__pycache__
+
+build/
+
+reference/
+unpack/
+download/
+
+ruff_cache/
+
+.coverage
+*.log
+*.json
+*.txt
+
+# PyCharm
+/.idea

@@ -1,0 +1,63 @@
+import unittest
+
+from datasetpreparator.sc2.sc2_replaypack_processor.sc2_replaypack_processor import (
+    sc2_replaypack_processor,
+)
+
+from tests.test_settings import (
+    DELETE_SCRIPT_TEST_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
+    DELETE_SCRIPT_TEST_INPUT_DIR,
+)
+
+
+from tests.test_utils import (
+    create_script_test_input_dir,
+    create_script_test_output_dir,
+    dir_test_cleanup,
+)
+
+
+# TODO: sc2_replaypack_processor by default uses another piece of software for parsing SC2 replays.
+# So it will be downloading the data from another repository.
+
+
+class SC2ReplaypackProcessorTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.SCRIPT_NAME = "sc2_replaypack_processor"
+        # Create and get test input and output directories:
+        cls.input_path = create_script_test_input_dir(script_name=cls.SCRIPT_NAME)
+        cls.output_path = create_script_test_output_dir(script_name=cls.SCRIPT_NAME)
+
+        # TODO: Verify that SC2InfoExtractorGo is available in path.
+        # If not available download from GitHub release page.
+
+        # TODO: Set up a test directory with at least
+        # two replaypacks with at least one SC2Replay file within.
+
+    def test_sc2_replaypack_processor(self):
+        # REVIEW: Unfortunately this script depends on SC2InfoExtractorGo. This means that
+        # the dockerfile dev environment should be built with access to this executable.
+        # There should be a way to exclude this test somehow.
+        # This could be done either with another boolean set in the environment variables,
+        # Maybe a pytest marker to skip this test?
+        # Should this even be tested given that the SC2InfoExtractorGo will have its own tests?
+        # This script is only providing a multiprocessing wrapper for the SC2InfoExtractorGo.
+        sc2_replaypack_processor(
+            input_path=self.input_path,
+            output_path=self.output_path,
+            n_processes=1,
+            perform_chat_anonymization=False,
+        )
+        # TODO: Check if output contains the same directories as for input.
+        # TODO: Check if outputs contain extracted JSON files with valid fields.
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        dir_test_cleanup(
+            script_name=cls.SCRIPT_NAME,
+            delete_script_test_dir_bool=DELETE_SCRIPT_TEST_DIR,
+            delete_script_test_input_bool=DELETE_SCRIPT_TEST_INPUT_DIR,
+            delete_script_test_output_bool=DELETE_SCRIPT_TEST_OUTPUT_DIR,
+        )

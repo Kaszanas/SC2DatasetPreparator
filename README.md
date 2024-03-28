@@ -1,8 +1,17 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5296664.svg)](https://doi.org/10.5281/zenodo.5296664)
 
-# SC2DatasetPreparator
+# DatasetPreparator
 
 Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**.
+
+# Installation
+
+To install current version of the toolset as separate CLI tools run the following command:
+```
+pip install datasetpreparator[all]
+```
+
+After that each of the scripts should be available to call from the command line directly.
 
 ## Dataset Preparation Steps
 
@@ -11,7 +20,7 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 ### Using Docker
 
 1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
-2. Run the commands as described in the ```Makefile```. But first make sure that all of the script parameters are set according to your needs.
+2. Run the commands as described in the ```makefile```. But first make sure that all of the script parameters are set according to your needs.
 
 ### Using Python
 
@@ -28,126 +37,20 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 
 In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```src/sc2_replaypack_processor``` file directly
 
-## Scripts Command Line Arguments Usage
+## Command Line Arguments Usage
 
-Before using this software please install Python >= 3.10 and ```requirements.txt```.
-
-Please keep in mind that ```src/directory_flattener.py``` does not contain default flag values and can be customized with the following command line flags:
-
-```
-usage: directory_flattener.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
-                              [--file_extension FILE_EXTENSION]
-
-Directory restructuring tool used in order to flatten the structure, map the old structure to a separate
-file, and for later processing with other tools. Created primarily to define StarCraft 2 (SC2) datasets.
-
-options:
-  -h, --help            show this help message and exit
-  --input_path INPUT_PATH (default = ../processing/directory_flattener/input)
-                        Please provide input path to the dataset that is going to be processed.
-  --output_path OUTPUT_PATH (default = ../processing/directory_flattener/output)
-                        Please provide output path where sc2 map files will be downloaded.
-  --file_extension FILE_EXTENSION (default = .SC2Replay)
-                        Please provide a file extension for files that will be moved and renamed.
-```
-
-Please keep in mind that the  ```src/sc2_map_downloader.py``` does not contain default flag values and can be customized with the following command line flags:
-```
-usage: sc2_map_downloader.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
-
-Tool for downloading StarCraft 2 (SC2) maps based on the data that is available within .SC2Replay file.       
-
-options:
-  -h, --help            show this help message and exit
-  --input_path INPUT_PATH (default = ../processing/directory_flattener/output)
-                        Please provide input path to the dataset that is going to be processed.
-  --output_path OUTPUT_PATH (default = ../processing/sc2_map_downloader/output)
-                        Please provide output path where sc2 map files will be downloaded.
-```
-
-Please keep in mind that the ```src/sc2_replaypack_processor.py```  contains default flag values and can be customized with the following command line flags:
-```
-usage: sc2_replaypack_processor.py [-h] [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
-                                   [--n_processes N_PROCESSES]
-
-Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo      
-
-options:
-  -h, --help            show this help message and exit
-  --input_dir INPUT_DIR (default = ../processing/directory_flattener/output)
-                        Please provide input path to the directory containing the dataset that is going to be processed.
-  --output_dir OUTPUT_DIR (default = ../processing/sc2_replaypack_processor/output)
-                        Please provide an output directory for the resulting files.
-  --n_processes N_PROCESSES (default = 4)
-                        Please provide the number of processes to be spawned for the dataset processing.
-```
-
-Please keep in mind that the  ```src/file_renamer.py``` contains default flag values and can be customized with the following command line flags:
-```
-usage: file_renamer.py [-h] [--input_dir INPUT_DIR]
-
-Tool used for processing StarCraft 2 (SC2) datasets with https://github.com/Kaszanas/SC2InfoExtractorGo       
-
-options:
-  -h, --help            show this help message and exit
-  --input_dir INPUT_DIR (default = ../processing/sc2_replaypack_processor/output)
-                        Please provide input path to the directory containing the dataset that is going to be processed.
-```
-
-Please keep in mind that the  ```src/file_packager.py``` contains default flag values and can be customized with the following command line flags:
-```
-usage: file_packager.py [-h] [--input_dir INPUT_DIR]
-
-Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo      
-
-options:
-  -h, --help            show this help message and exit
-  --input_dir INPUT_DIR (default = ../processing/sc2_replaypack_processor/output)
-                        Please provide input path to the directory containing the dataset that is going to be processed by packaging into .zip archives.
-```
-
-Please keep in mind that the  ```src/json_merger.py``` contains default flag values and can be customized with the following command line flags:
-```
-usage: json_merger.py [-h] [--json_one JSON_ONE] [--json_two JSON_TWO] [--output_filepath OUTPUT_FILEPATH]
-
-Tool used for merging two .json files. Created in order to merge two mappings created by
-https://github.com/Kaszanas/SC2MapLocaleExtractor
-
-options:
-  -h, --help            show this help message and exit
-  --json_one JSON_ONE (default = ../processing/json_merger/json1.json)
-                    Please provide the path to the first .json file that is going to be merged.
-  --json_two JSON_TWO (default = ../processing/json_merger/json2.json)
-                    Please provide the path to the second .json file that is going to be merged.
-  --output_filepath OUTPUT_FILEPATH (default = ../processing/json_merger/merged.json)
-                        Please provide output path where sc2 map files will be downloaded.
-```
-
-Please keep in mind that the  ```src/processed_mapping_copier.py``` contains default flag values and can be customized with the following command line flags:
-```
-usage: processed_mapping_copier.py [-h] [--input_path INPUT_PATH] [--output_path OUTPUT_PATH]
-
-Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset.  
-
-options:
-  -h, --help            show this help message and exit
-  --input_path INPUT_PATH (default = ../processing/directory_flattener/output)
-                        Please provide input path to the flattened replaypacks that contain
-                        procesed_mapping.json files.
-  --output_path OUTPUT_PATH (default = ../processing/sc2_replaypack_processor/output)
-                        Please provide output path where processed_mapping.json will be copied.
-```
-
+Each of the scripts has its usage described in their respective `README.md` files.
 
 # Citations
 
-## Software
+## This Repository
+
 ```
 @software{Białecki_2022_6366039,
   author    = {Białecki, Andrzej and
                Białecki, Piotr and
                Krupiński, Leszek},
-  title     = {{Kaszanas/SC2DatasetPreparator: 1.2.0 
+  title     = {{Kaszanas/SC2DatasetPreparator: 1.2.0
                SC2DatasetPreparator Release}},
   month     = {jun},
   year      = {2022},
@@ -159,53 +62,28 @@ options:
 
 ```
 
-## [Dataset Description Pre-print](https://arxiv.org/abs/2207.03428)
+## [SC2EGSet: Dataset Description](https://arxiv.org/abs/2207.03428)
 
 ```
-@misc{https://doi.org/10.48550/arxiv.2207.03428,
-  doi       = {10.48550/ARXIV.2207.03428},
-  url       = {https://arxiv.org/abs/2207.03428},
-  author    = {Białecki, Andrzej and Jakubowska, Natalia and Dobrowolski, Paweł and Białecki, Piotr and Krupiński, Leszek and Szczap, Andrzej and Białecki, Robert and Gajewski, Jan},
-  keywords  = {Machine Learning (cs.LG), Artificial Intelligence (cs.AI), Machine Learning (stat.ML), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  title     = {SC2EGSet: StarCraft II Esport Replay and Game-state Dataset},
-  publisher = {arXiv},
-  year      = {2022},
-  copyright = {Creative Commons Attribution 4.0 International}
-}
-
-```
-
-## [SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)
-
-```
-@dataset{bialecki_andrzej_2022_5575797,
-  author       = {Białecki, Andrzej},
-  title        = {SC2ReSet: StarCraft II Esport Replaypack Set},
-  month        = jun,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {1.0.0},
-  doi          = {10.5281/zenodo.5575797},
-  url          = {https://doi.org/10.5281/zenodo.5575797}
-}
-```
-
-## [SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)
-
-```
-@dataset{bialecki_andrzej_2022_6629349,
-  author       = {Białecki, Andrzej and
-                  Jakubowska, Natalia and
-                  Dobrowolski, Paweł and
-                  Szczap, Andrzej and
-                  Białecki, Robert and
-                  Gajewski, Jan},
-  title        = {SC2EGSet: StarCraft II Esport Game State Dataset},
-  month        = jun,
-  year         = 2022,
-  publisher    = {Zenodo},
-  version      = {1.0.0},
-  doi          = {10.5281/zenodo.6629349},
-  url          = {https://doi.org/10.5281/zenodo.6629349}
+@article{Białecki2023,
+  author   = {Bia{\l}ecki, Andrzej
+              and Jakubowska, Natalia
+              and Dobrowolski, Pawe{\l}
+              and Bia{\l}ecki, Piotr
+              and Krupi{\'{n}}ski, Leszek
+              and Szczap, Andrzej
+              and Bia{\l}ecki, Robert
+              and Gajewski, Jan},
+  title    = {SC2EGSet: StarCraft II Esport Replay and Game-state Dataset},
+  journal  = {Scientific Data},
+  year     = {2023},
+  month    = {Sep},
+  day      = {08},
+  volume   = {10},
+  number   = {1},
+  pages    = {600},
+  issn     = {2052-4463},
+  doi      = {10.1038/s41597-023-02510-7},
+  url      = {https://doi.org/10.1038/s41597-023-02510-7}
 }
 ```
