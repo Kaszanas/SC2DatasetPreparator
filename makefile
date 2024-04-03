@@ -136,7 +136,7 @@ compose_build: ## Builds the Docker Image with docker-compose.
 	docker-compose -f $(TEST_COMPOSE) build
 
 action_compose_test: ## Runs the tests using Docker.
-	docker-compose -f $(TEST_COMPOSE) run --rm lib \
+	docker compose -f $(TEST_COMPOSE) run --rm lib \
 	bash -c $(TEST_COMMAND)
 
 compose_remove: ## Stops and removes the testing containers, images, volumes.
