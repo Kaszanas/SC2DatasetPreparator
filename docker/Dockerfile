@@ -3,24 +3,29 @@
 
 ARG PYTHON_VERSION=3.11
 
-# TODO: This should be on DockerHub:
-FROM kaszanas/sc2infoextractorgo:latest
+FROM kaszanas/sc2infoextractorgo:latest as extractor
 
 FROM python:${PYTHON_VERSION}-alpine
 
 WORKDIR /app
 
 # Copying the replay parsing tool:
-COPY --from=0 /SC2InfoExtractorGo /SC2InfoExtractorGo
+COPY --from=extractor /SC2InfoExtractorGo /SC2InfoExtractorGo
 
 # Copy only what is required to install the project:
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml poetry.lock ci/install_poetry.py /app/
+
+# Install poetry
+# TODO: this is rather ugly, we are installing poetry into the release Docker build. Use multi-stage builds instead.
+ENV POETRY_HOME=/opt/poetry
+RUN python3 install_poetry.py --version 1.8.2 && \
+    $POETRY_HOME/bin/poetry --version
 
 # Install only dependencies without installing current project:
-RUN poetry config virtualenvs.create false && poetry install --no-root
+RUN $POETRY_HOME/bin/poetry config virtualenvs.create false && $POETRY_HOME/bin/poetry install --no-root
 
 # Copy entire repository contents
 COPY . .
 
 # Install current project:
-RUN poetry install --all-extras
+RUN $POETRY_HOME/bin/poetry install --all-extras

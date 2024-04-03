@@ -27,5 +27,6 @@ exclude: |
         ^fonts/|
         ^charts/|
         ^old/|
-        ^signatures/
+        ^signatures/|
+        ^ci/
     )
