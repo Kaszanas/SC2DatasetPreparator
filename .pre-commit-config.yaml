@@ -26,5 +26,6 @@ exclude: |
         ^output/|
         ^fonts/|
         ^charts/|
-        ^old/
+        ^old/|
+        ^signatures/
     )
