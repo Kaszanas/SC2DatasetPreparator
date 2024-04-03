@@ -7,6 +7,7 @@ Tools in this repository were used to create the **[SC2ReSet: StarCraft II Espor
 # Installation
 
 To install current version of the toolset as separate CLI tools run the following command:
+
 ```
 pip install datasetpreparator[all]
 ```
