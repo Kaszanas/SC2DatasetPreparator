@@ -69,10 +69,10 @@ Please see **[CONTRIBUTING.md](https://github.com/Kaszanas/SC2DatasetPreparator/
 
 ```
 
-### [SC2EGSet: Dataset Description](https://arxiv.org/abs/2207.03428)
+### [SC2EGSet: Dataset Description](https://www.researchgate.net/publication/373767449_SC2EGSet_StarCraft_II_Esport_Replay_and_Game-state_Dataset)
 
 ```
-@article{Białecki2023,
+@article{Bialecki2023_SC2EGSet,
   author   = {Bia{\l}ecki, Andrzej
               and Jakubowska, Natalia
               and Dobrowolski, Pawe{\l}
