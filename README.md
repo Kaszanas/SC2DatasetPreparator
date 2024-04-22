@@ -4,9 +4,10 @@
 
 Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**.
 
-# Installation
+## Installation
 
 To install current version of the toolset as separate CLI tools run the following command:
+
 ```
 pip install datasetpreparator[all]
 ```
@@ -41,9 +42,15 @@ In order to specify different processing flags for https://github.com/Kaszanas/S
 
 Each of the scripts has its usage described in their respective `README.md` files.
 
-# Citations
+## Contributing and Reporting Issues
 
-## This Repository
+If you want to report a bug, request a feature, or open any other issue, please do so in the **[issue tracker](https://github.com/Kaszanas/SC2DatasetPreparator/issues/new/choose)**.
+
+Please see **[CONTRIBUTING.md](https://github.com/Kaszanas/SC2DatasetPreparator/blob/main/CONTRIBUTING.md)** for detailed development instructions and contribution guidelines.
+
+## Citing
+
+### This Repository
 
 ```
 @software{Białecki_2022_6366039,
@@ -62,7 +69,7 @@ Each of the scripts has its usage described in their respective `README.md` file
 
 ```
 
-## [SC2EGSet: Dataset Description](https://arxiv.org/abs/2207.03428)
+### [SC2EGSet: Dataset Description](https://arxiv.org/abs/2207.03428)
 
 ```
 @article{Białecki2023,
