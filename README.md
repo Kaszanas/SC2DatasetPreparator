@@ -36,7 +36,7 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 
 #### Customization
 
-In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```src/sc2_replaypack_processor``` file directly
+In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```sc2_replaypack_processor.py``` file directly
 
 ## Command Line Arguments Usage
 
