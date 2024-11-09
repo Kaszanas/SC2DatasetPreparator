@@ -1,91 +1,21 @@
 import os
 from pathlib import Path
-import shutil
-import subprocess
 import logging
-from typing import List, Tuple
 import click
 from tqdm import tqdm
-from multiprocessing import Pool
 
 from datasetpreparator.settings import LOGGING_FORMAT
-
-
-def multiprocessing_scheduler(
-    processing_arguments: List[Tuple[str, str]], number_of_processes: int
-) -> None:
-    """
-    Responsible for spawning the multiprocessing_client functions.
-
-    Parameters
-    ----------
-    processing_arguments : List[Tuple[str, str]]
-        Processing arguments holds a list of input and output directories \
-        for the https://github.com/Kaszanas/SC2InfoExtractorGo
-    number_of_processes : int
-        Specifies how many processes will be spawned.
-    """
-
-    with Pool(processes=number_of_processes) as pool:
-        pool.imap_unordered(multiprocessing_client, processing_arguments)
-        pool.close()
-        pool.join()
-
-
-def multiprocessing_client(arguments: tuple) -> None:
-    """
-    Responsible for running a single process that will
-    extract data from a replaypack.
-
-    Parameters
-    ----------
-    arguments : tuple
-        Arguments tuple containing the input and output directory.
-    """
-
-    directory, output_directory_filepath, perform_chat_anonymization = arguments
-
-    # TODO: This needs to be verified
-    # Copying the mapping file that contains directory tree information:
-    directory_contents = os.listdir(directory)
-    if "processed_mapping.json" in directory_contents:
-        logging.debug("Found mapping json in %s", directory)
-        mapping_filepath = os.path.join(directory, "processed_mapping.json")
-        output_mapping_filepath = os.path.join(
-            output_directory_filepath, "processed_mapping.json"
-        )
-        shutil.copy(mapping_filepath, output_mapping_filepath)
-
-    logging.debug(
-        "Running subprocess for %s with output to %s",
-        directory,
-        output_directory_filepath,
-    )
-    subprocess.run(
-        [
-            # FIXME hardcoded binary name
-            "/SC2InfoExtractorGo",
-            f"-input={directory}/",
-            f"-output={output_directory_filepath}/",
-            "-perform_integrity_checks=true",
-            "-perform_validity_checks=false",
-            "-perform_cleanup=true",
-            f"-perform_chat_anonymization={perform_chat_anonymization}",
-            "-number_of_packages=1",
-            # FIXME hardcoded path
-            "-localized_maps_file=../processing/json_merger/merged.json",
-            "-max_procs=1",
-            "-log_level=3",
-            f"-log_dir={output_directory_filepath}/",
-        ]
-    )
+from datasetpreparator.sc2.sc2_replaypack_processor.utils.replaypack_processor_args import (
+    ReplaypackProcessorArguments,
+    SC2InfoExtractorGoArguments,
+)
+from datasetpreparator.sc2.sc2_replaypack_processor.utils.multiprocess import (
+    multiprocessing_scheduler,
+)
 
 
 def sc2_replaypack_processor(
-    input_path: Path,
-    output_path: Path,
-    n_processes: int,
-    perform_chat_anonymization: bool,
+    arguments: ReplaypackProcessorArguments,
 ):
     """
     Processes multiple StarCraft II replaypacks
@@ -93,18 +23,13 @@ def sc2_replaypack_processor(
 
     Parameters
     ----------
-    input_path : Path
-        Input directory which contains the replaypacks in separate folders. \
-        The replay folders should have their replays at the top level.
-    output_path : Path
-        Output directory which will contain all of the output produced by \
-        the https://github.com/Kaszanas/SC2InfoExtractorGo
-    n_processes : int
-        Specifies the number of Python processes that will be spawned \
-        and used for replaypack processing.
-    perform_chat_anonymization : bool
-        Specifies if the chat anonymization should be done.
+    arguments : ReplaypackProcessorArguments
+        Specifies the arguments as per the ReplaypackProcessorArguments class fields.
     """
+
+    input_path = arguments.input_path
+    output_path = arguments.output_path
+    n_processes = arguments.n_processes
 
     multiprocessing_list = []
     for maybe_dir in tqdm(list(input_path.iterdir())):
@@ -132,13 +57,15 @@ def sc2_replaypack_processor(
         if not output_directory_with_name.exists():
             output_directory_with_name.mkdir()
 
-        multiprocessing_list.append(
-            (
-                processing_input_dir,
-                output_directory_with_name,
-                perform_chat_anonymization,
+        sc2_info_extractor_go_args = (
+            SC2InfoExtractorGoArguments.get_sc2egset_processing_args(
+                processing_input=processing_input_dir,
+                output=output_directory_with_name,
+                perform_chat_anonymization=arguments.perform_chat_anonymization,
             )
         )
+
+        multiprocessing_list.append(sc2_info_extractor_go_args)
 
     multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
@@ -190,12 +117,13 @@ def main(
         raise ValueError(f"Invalid log level: {numeric_level}")
     logging.basicConfig(format=LOGGING_FORMAT, level=numeric_level)
 
-    sc2_replaypack_processor(
+    arguments = ReplaypackProcessorArguments(
         input_path=input_path,
         output_path=output_path,
         n_processes=n_processes,
-        perform_chat_anonymization=perform_chat_anonymization,
     )
+
+    sc2_replaypack_processor(arguments=arguments)
 
 
 if __name__ == "__main__":
