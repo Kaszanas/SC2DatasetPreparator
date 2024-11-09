@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List
 import zipfile
 
-from datasetpreparator.sc2.sc2reset_replaypack_downloader.unpack_chunk import (
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.unpack_chunk import (
     unpack_chunk,
 )
 

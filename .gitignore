@@ -4,6 +4,7 @@
 /processing
 
 *.SC2Replay
+*.SC2Map
 *.zip
 
 NOTES.txt
