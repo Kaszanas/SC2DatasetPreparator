@@ -3,13 +3,13 @@ from pathlib import Path
 from typing import List, Tuple
 import click
 
-from datasetpreparator.sc2.sc2reset_replaypack_downloader.available_replaypacks import (
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.available_replaypacks import (
     SC2RESET_REPLAYPACKS,
 )
-from datasetpreparator.sc2.sc2reset_replaypack_downloader.download_replaypack import (
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.download_replaypack import (
     download_replaypack,
 )
-from datasetpreparator.sc2.sc2reset_replaypack_downloader.unpack_zipfile import (
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.unpack_zipfile import (
     unpack_zipfile,
 )
 from datasetpreparator.settings import LOGGING_FORMAT
