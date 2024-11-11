@@ -37,16 +37,16 @@ docker run -v "./processing:/app/processing" datasetpreparator python3 directory
 Each of the scripts has its usage described in their respective `README.md` files, you can find the table of contents below.
 
 #### CLI Usage Generic scripts
-1. [dir_packager: README](src/dir_packager/README.md)
-2. [directory_flattener: README](src/directory_flattener/README.md)
-3. [file_renamer: README](src/file_renamer/README.md)
-4. [json_merger: README](src/json_merger/README.md)
-5. [processed_mapping_copier: README](src/processed_mapping_copier/README.md)
+1. [Directory Packager (dir_packager): README](src/dir_packager/README.md)
+2. [Directory Flattener (directory_flattener): README](src/directory_flattener/README.md)
+3. [File Renamer (file_renamer): README](src/file_renamer/README.md)
+4. [JSON Merger (json_merger): README](src/json_merger/README.md)
+5. [Processed Mapping Copier (processed_mapping_copier): README](src/processed_mapping_copier/README.md)
 
 #### CLI Usage StarCraft 2 Specific Scripts
-1. [sc2_map_downloader: README](src/sc2/sc2_map_downloader/README.md)
-2. [sc2_replaypack_processor: README](src/sc2/sc2_replaypack_processor/README.md)
-3. [sc2reset_replaypack_downloader: README](src/sc2/sc2reset_replaypack_downloader/README.md)
+1. [SC2 Map Downloader (sc2_map_downloader): README](src/sc2/sc2_map_downloader/README.md)
+2. [SC2 Replaypack Processor (sc2_replaypack_processor): README](src/sc2/sc2_replaypack_processor/README.md)
+3. [SC2ReSet Replaypack Downloader (sc2reset_replaypack_downloader): README](src/sc2/sc2reset_replaypack_downloader/README.md)
 
 ## SC2EGSet Dataset Preparation Steps
 
