@@ -11,7 +11,6 @@ TEST_COMMAND = "poetry run pytest --durations=100 --ignore-glob='test_*.py' test
 ###################
 all: ## Runs the entire processing pipeline to recreate SC2ReSet and SC2EGSet or any other dataset using our standard tooling.
 	@make flatten
-	@make json_merge
 	@make process_replaypack
 	@make rename_files
 	@make package_dataset
@@ -78,7 +77,7 @@ docker_build_dev: ## Builds the development image containing all of the tools.
 	-f ./docker/Dockerfile.dev . \
 	--tag=datasetpreparator:devcontainer
 
-docker_run_test:
+docker_run_test: ## Runs the test command using Docker.
 	docker run \
 		-v "${PWD}:/app" \
 		-e "TEST_WORKSPACE=/app" \

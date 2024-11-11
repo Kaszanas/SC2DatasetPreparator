@@ -6,19 +6,55 @@ Tools in this repository were used to create the **[SC2ReSet: StarCraft II Espor
 
 ## Installation
 
-To install current version of the toolset as separate CLI tools run the following command:
+Our prefered way of distributing the toolset is through DockerHub. We Use the Docker Image to provide a fully reproducible environment for our scripts.
+
+To build the image please run the following command:
+
+```bash
+make docker_build
+```
+
+After building the image, please refer to the **[Command Line Arguments Usage](#command-line-arguments-usage)** section for the usage of the scripts.
+
+<!-- To install current version of the toolset as separate CLI tools run the following command:
 
 ```
 pip install datasetpreparator[all]
 ```
 
-After that each of the scripts should be available to call from the command line directly.
+After that each of the scripts should be available to call from the command line directly. -->
 
-## Dataset Preparation Steps
+## Command Line Arguments Usage
+
+When using Docker, you will have to pass the arguments through the `docker run` command and mount the input/output directory. Below is an example of how to run the `directory_flattener` script using Docker. For ease of use we have prepared example directory structure in the `processing` directory. The command below uses that to issue a command to flatten the directory structure:
+
+```bash
+docker run -v "./processing:/app/processing" datasetpreparator python3 directory_flattener.py --input_path /app/processing/directory_flattener/input --output_path /app/processing/directory_flattener/output
+```
+
+Each of the scripts has its usage described in their respective `README.md` files, you can find the table of contents below.
+
+### Table of Contents
+
+#### Generic scripts
+1. [dir_packager](src/dir_packager/README.md)
+2. [directory_flattener](src/directory_flattener/README.md)
+3. [file_renamer](src/file_renamer/README.md)
+4. [json_merger](src/json_merger/README.md)
+5. [processed_mapping_copier](src/processed_mapping_copier/README.md)
+
+#### StarCraft 2 specific scripts
+1. [sc2_map_downloader](src/sc2/sc2_map_downloader/README.md)
+2. [sc2_replaypack_processor](src/sc2/sc2_replaypack_processor/README.md)
+3. [sc2reset_replaypack_downloader](src/sc2/sc2reset_replaypack_downloader/README.md)
+
+## SC2EGSet Dataset Preparation Steps
 
 To reproduce our experience with defining a dataset and to be able to compare your results with our work we describe how to perform the processing below.
 
 ### Using Docker
+
+We provide a release image containing all of the scripts. To see the usage of these scripts please refer to their respective ``README.md`` files.
 
 1. Build the docker image from: https://github.com/Kaszanas/SC2InfoExtractorGo
 2. Run the commands as described in the ```makefile```. But first make sure that all of the script parameters are set according to your needs.
@@ -38,9 +74,7 @@ To reproduce our experience with defining a dataset and to be able to compare yo
 
 In order to specify different processing flags for https://github.com/Kaszanas/SC2InfoExtractorGo please modify the ```sc2_replaypack_processor.py``` file directly
 
-## Command Line Arguments Usage
 
-Each of the scripts has its usage described in their respective `README.md` files.
 
 ## Contributing and Reporting Issues
 
