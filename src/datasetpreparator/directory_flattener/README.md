@@ -1,6 +1,6 @@
 # Directory Flattener
 
-Utility script for entering each of the supplied replaypacks and flattening its structure.
+Utility script for entering each of the supplied replaypacks and flattening its structure. Please note that in the process of flattening the structure, the script will also rename the files using their hash values. Hashing of filenames is done to alleviate the potential files with the same name in different directories.
 
 # CLI Usage
 
