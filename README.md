@@ -32,21 +32,21 @@ When using Docker, you will have to pass the arguments through the `docker run` 
 docker run -v "./processing:/app/processing" datasetpreparator python3 directory_flattener.py --input_path /app/processing/directory_flattener/input --output_path /app/processing/directory_flattener/output
 ```
 
-Each of the scripts has its usage described in their respective `README.md` files, you can find the table of contents below.
-
 ### Table of Contents
 
-#### Generic scripts
-1. [dir_packager](src/dir_packager/README.md)
-2. [directory_flattener](src/directory_flattener/README.md)
-3. [file_renamer](src/file_renamer/README.md)
-4. [json_merger](src/json_merger/README.md)
-5. [processed_mapping_copier](src/processed_mapping_copier/README.md)
+Each of the scripts has its usage described in their respective `README.md` files, you can find the table of contents below.
 
-#### StarCraft 2 specific scripts
-1. [sc2_map_downloader](src/sc2/sc2_map_downloader/README.md)
-2. [sc2_replaypack_processor](src/sc2/sc2_replaypack_processor/README.md)
-3. [sc2reset_replaypack_downloader](src/sc2/sc2reset_replaypack_downloader/README.md)
+#### CLI Usage Generic scripts
+1. [dir_packager: README](src/dir_packager/README.md)
+2. [directory_flattener: README](src/directory_flattener/README.md)
+3. [file_renamer: README](src/file_renamer/README.md)
+4. [json_merger: README](src/json_merger/README.md)
+5. [processed_mapping_copier: README](src/processed_mapping_copier/README.md)
+
+#### CLI Usage StarCraft 2 Specific Scripts
+1. [sc2_map_downloader: README](src/sc2/sc2_map_downloader/README.md)
+2. [sc2_replaypack_processor: README](src/sc2/sc2_replaypack_processor/README.md)
+3. [sc2reset_replaypack_downloader: README](src/sc2/sc2reset_replaypack_downloader/README.md)
 
 ## SC2EGSet Dataset Preparation Steps
 
