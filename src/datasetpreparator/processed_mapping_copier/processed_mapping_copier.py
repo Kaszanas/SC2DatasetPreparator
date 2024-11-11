@@ -43,7 +43,7 @@ def processed_mapping_copier(input_path: str, output_path: str) -> None:
 
 
 @click.command(
-    help="Tool for copying the processed_mapping.json files that are required to define the StarCraft 2 (SC2) dataset."
+    help="Tool for copying the processed_mapping.json files to the matching directory after processing the replaypack into a JSON dataset. This step is required to define the StarCraft 2 (SC2) dataset."
 )
 @click.option(
     "--input_path",
