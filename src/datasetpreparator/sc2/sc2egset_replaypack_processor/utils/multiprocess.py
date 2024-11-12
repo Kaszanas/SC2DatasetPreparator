@@ -6,7 +6,7 @@ from multiprocessing import Pool
 
 from typing import List
 
-from datasetpreparator.sc2.sc2_replaypack_processor.utils.replaypack_processor_args import (
+from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_processor_args import (
     SC2InfoExtractorGoArguments,
 )
 

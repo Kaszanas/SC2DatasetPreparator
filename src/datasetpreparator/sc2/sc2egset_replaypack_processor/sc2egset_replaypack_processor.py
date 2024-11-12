@@ -5,11 +5,11 @@ import click
 from tqdm import tqdm
 
 from datasetpreparator.settings import LOGGING_FORMAT
-from datasetpreparator.sc2.sc2_replaypack_processor.utils.replaypack_processor_args import (
+from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_processor_args import (
     ReplaypackProcessorArguments,
     SC2InfoExtractorGoArguments,
 )
-from datasetpreparator.sc2.sc2_replaypack_processor.utils.multiprocess import (
+from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.multiprocess import (
     process_single_replaypack,
 )
 

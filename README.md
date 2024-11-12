@@ -45,7 +45,7 @@ Each of the scripts has its usage described in their respective `README.md` file
 
 #### CLI Usage StarCraft 2 Specific Scripts
 1. [SC2 Map Downloader (sc2_map_downloader): README](src/sc2/sc2_map_downloader/README.md)
-2. [SC2 Replaypack Processor (sc2_replaypack_processor): README](src/sc2/sc2_replaypack_processor/README.md)
+2. [SC2EGSet Replaypack Processor (sc2egset_replaypack_processor): README](src/sc2/sc2egset_replaypack_processor/README.md)
 3. [SC2ReSet Replaypack Downloader (sc2reset_replaypack_downloader): README](src/sc2/sc2reset_replaypack_downloader/README.md)
 
 ## SC2EGSet Dataset Preparation Steps
