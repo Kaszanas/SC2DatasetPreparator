@@ -10,7 +10,7 @@ from datasetpreparator.sc2.sc2_replaypack_processor.utils.replaypack_processor_a
     SC2InfoExtractorGoArguments,
 )
 from datasetpreparator.sc2.sc2_replaypack_processor.utils.multiprocess import (
-    multiprocessing_scheduler,
+    process_single_replaypack,
 )
 
 
@@ -29,7 +29,7 @@ def sc2_replaypack_processor(
 
     input_path = arguments.input_path
     output_path = arguments.output_path
-    n_processes = arguments.n_processes
+    # n_processes = arguments.n_processes
 
     multiprocessing_list = []
     for maybe_dir in tqdm(list(input_path.iterdir())):
@@ -67,11 +67,15 @@ def sc2_replaypack_processor(
 
         multiprocessing_list.append(sc2_info_extractor_go_args)
 
-    multiprocessing_scheduler(multiprocessing_list, int(n_processes))
+    for args in multiprocessing_list:
+        logging.debug(f"Processing: {args}")
+        process_single_replaypack(arguments=args)
+
+    # multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
 
 @click.command(
-    help="Tool used for processing StarCraft 2 (SC2) datasets. with https://github.com/Kaszanas/SC2InfoExtractorGo."
+    help="Tool used to execute SC2InfoExtractorGo (https://github.com/Kaszanas/SC2InfoExtractorGo) on multiple replaypack directories. Assists in processing StarCraft 2 (SC2) datasets."
 )
 @click.option(
     "--input_path",

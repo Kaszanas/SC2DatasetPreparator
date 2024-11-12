@@ -27,12 +27,12 @@ def multiprocessing_scheduler(
     """
 
     with Pool(processes=number_of_processes) as pool:
-        pool.imap_unordered(multiprocessing_client, processing_arguments)
+        pool.imap_unordered(process_single_replaypack, processing_arguments)
         pool.close()
         pool.join()
 
 
-def multiprocessing_client(arguments: SC2InfoExtractorGoArguments) -> None:
+def process_single_replaypack(arguments: SC2InfoExtractorGoArguments) -> None:
     """
     Responsible for running a single process that will
     extract data from a replaypack.
