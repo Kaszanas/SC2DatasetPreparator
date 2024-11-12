@@ -2,7 +2,7 @@
 
 # DatasetPreparator
 
-Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**.
+Tools in this repository were used to create the **[SC2ReSet: StarCraft II Esport Replaypack Set](https://doi.org/10.5281/zenodo.5575796)**, and finally **[SC2EGSet: StarCraft II Esport Game State Dataset](https://doi.org/10.5281/zenodo.5503997)**, citation information [Cite Us!](#cite-us).
 
 ## Installation
 
@@ -80,7 +80,7 @@ If you want to report a bug, request a feature, or open any other issue, please 
 
 Please see **[CONTRIBUTING.md](https://github.com/Kaszanas/SC2DatasetPreparator/blob/main/CONTRIBUTING.md)** for detailed development instructions and contribution guidelines.
 
-## Citing
+## Cite Us!
 
 ### This Repository
 
