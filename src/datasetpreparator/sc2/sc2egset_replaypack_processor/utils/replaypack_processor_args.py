@@ -93,6 +93,19 @@ class SC2InfoExtractorGoArguments:
         self.perform_validity_checks = "true" if perform_validity_checks else "false"
 
     @staticmethod
+    def get_download_maps_args(
+        processing_input: Path, output: Path
+    ) -> "SC2InfoExtractorGoArguments":
+        arguments = SC2InfoExtractorGoArguments(
+            processing_input=processing_input,
+            output=output,
+            only_map_download=True,
+            max_procs=4,
+        )
+
+        return arguments
+
+    @staticmethod
     def get_sc2egset_processing_args(
         processing_input: Path,
         output: Path,

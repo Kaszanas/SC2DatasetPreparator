@@ -10,11 +10,53 @@ from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_proces
     SC2InfoExtractorGoArguments,
 )
 from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.multiprocess import (
-    process_single_replaypack,
+    multiprocessing_scheduler,
+    pre_process_download_maps,
 )
 
 
-def sc2_replaypack_processor(
+def define_sc2egset_args(
+    input_path: Path,
+    output_path: Path,
+    arguments: ReplaypackProcessorArguments,
+    maybe_dir: Path,
+) -> ReplaypackProcessorArguments | None:
+    logging.debug(f"Processing entry: {maybe_dir}")
+    processing_input_dir = Path(input_path, maybe_dir).resolve()
+    if not processing_input_dir.is_dir():
+        logging.debug("Entry is not a directory, skipping!")
+        return None
+
+    logging.debug(f"Output dir: {output_path}")
+    # Create the main output directory:
+    if not output_path.exists():
+        output_path.mkdir()
+
+    # TODO: use pathlib:
+    path, output_directory_name = os.path.split(maybe_dir)
+    logging.debug(f"Output dir name: {output_directory_name}")
+    if output_directory_name == "input":
+        return None
+
+    output_directory_with_name = Path(output_path, output_directory_name).resolve()
+    logging.debug(f"Output filepath: {output_directory_with_name}")
+
+    # Create the output subdirectories:
+    if not output_directory_with_name.exists():
+        output_directory_with_name.mkdir()
+
+    sc2_info_extractor_go_args = (
+        SC2InfoExtractorGoArguments.get_sc2egset_processing_args(
+            processing_input=processing_input_dir,
+            output=output_directory_with_name,
+            perform_chat_anonymization=arguments.perform_chat_anonymization,
+        )
+    )
+
+    return sc2_info_extractor_go_args
+
+
+def sc2egset_replaypack_processor(
     arguments: ReplaypackProcessorArguments,
 ):
     """
@@ -29,49 +71,28 @@ def sc2_replaypack_processor(
 
     input_path = arguments.input_path
     output_path = arguments.output_path
-    # n_processes = arguments.n_processes
+    n_processes = arguments.n_processes
 
     multiprocessing_list = []
     for maybe_dir in tqdm(list(input_path.iterdir())):
-        logging.debug(f"Processing entry: {maybe_dir}")
-        processing_input_dir = Path(input_path, maybe_dir).resolve()
-        if not processing_input_dir.is_dir():
-            logging.debug("Entry is not a directory, skipping!")
-            continue
-
-        logging.debug(f"Output dir: {output_path}")
-        # Create the main output directory:
-        if not output_path.exists():
-            output_path.mkdir()
-
-        # TODO: use pathlib:
-        path, output_directory_name = os.path.split(maybe_dir)
-        logging.debug(f"Output dir name: {output_directory_name}")
-        if output_directory_name == "input":
-            continue
-
-        output_directory_with_name = Path(output_path, output_directory_name).resolve()
-        logging.debug(f"Output filepath: {output_directory_with_name}")
-
-        # Create the output subdirectories:
-        if not output_directory_with_name.exists():
-            output_directory_with_name.mkdir()
-
-        sc2_info_extractor_go_args = (
-            SC2InfoExtractorGoArguments.get_sc2egset_processing_args(
-                processing_input=processing_input_dir,
-                output=output_directory_with_name,
-                perform_chat_anonymization=arguments.perform_chat_anonymization,
-            )
+        sc2_info_extractor_go_args = define_sc2egset_args(
+            input_path=input_path,
+            output_path=output_path,
+            arguments=arguments,
+            maybe_dir=maybe_dir,
         )
+        if sc2_info_extractor_go_args is not None:
+            multiprocessing_list.append(sc2_info_extractor_go_args)
 
-        multiprocessing_list.append(sc2_info_extractor_go_args)
+    # Pre-process, download all maps:
+    logging.info("Downloading all maps...")
+    map_download_arguments = SC2InfoExtractorGoArguments.get_download_maps_args(
+        processing_input=arguments.input_path, output=arguments.output_path
+    )
+    pre_process_download_maps(arguments=map_download_arguments)
 
-    for args in multiprocessing_list:
-        logging.debug(f"Processing: {args}")
-        process_single_replaypack(arguments=args)
-
-    # multiprocessing_scheduler(multiprocessing_list, int(n_processes))
+    # Run processing with multiple SC2InfoExtractorGo instances:
+    multiprocessing_scheduler(multiprocessing_list, int(n_processes))
 
 
 @click.command(
@@ -127,7 +148,7 @@ def main(
         n_processes=n_processes,
     )
 
-    sc2_replaypack_processor(arguments=arguments)
+    sc2egset_replaypack_processor(arguments=arguments)
 
 
 if __name__ == "__main__":

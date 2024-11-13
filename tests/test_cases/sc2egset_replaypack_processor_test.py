@@ -1,7 +1,7 @@
 import unittest
 
 from datasetpreparator.sc2.sc2egset_replaypack_processor.sc2egset_replaypack_processor import (
-    sc2_replaypack_processor,
+    sc2egset_replaypack_processor,
 )
 
 from tests.test_settings import (
@@ -44,7 +44,7 @@ class SC2ReplaypackProcessorTest(unittest.TestCase):
         # Maybe a pytest marker to skip this test?
         # Should this even be tested given that the SC2InfoExtractorGo will have its own tests?
         # This script is only providing a multiprocessing wrapper for the SC2InfoExtractorGo.
-        sc2_replaypack_processor(
+        sc2egset_replaypack_processor(
             input_path=self.input_path,
             output_path=self.output_path,
             n_processes=1,
