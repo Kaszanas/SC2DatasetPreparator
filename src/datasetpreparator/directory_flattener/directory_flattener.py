@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from typing import Dict, List, Tuple
-import uuid
 import json
 import shutil
 import logging
@@ -9,6 +8,7 @@ import logging
 import click
 
 from datasetpreparator.settings import LOGGING_FORMAT
+import hashlib
 
 
 def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
@@ -25,6 +25,30 @@ def save_dir_mapping(output_path: str, dir_mapping: dict) -> None:
     """
     with open(os.path.join(output_path, "processed_mapping.json"), "w") as json_file:
         json.dump(dir_mapping, json_file)
+
+
+def calculate_file_hash(file_path: Path) -> str:
+    """
+    Calculates the file hash using the selected algorithm.
+
+    Parameters
+    ----------
+    file_path : Path
+        Path to the file which will be hashed.
+
+    Returns
+    -------
+    str
+        Returns the hash of the file.
+    """
+
+    # Open the file, read it in binary mode and calculate the hash:
+    with open(file_path, "rb") as file:
+        file_hash = hashlib.md5()
+        while chunk := file.read(4096):
+            file_hash.update(chunk)
+
+    return file_hash.hexdigest()
 
 
 def directory_flatten(
@@ -54,7 +78,7 @@ def directory_flatten(
     dir_structure_mapping = {}
     for file in list_of_files:
         # Get unique filename:
-        unique_filename = uuid.uuid4().hex
+        unique_filename = calculate_file_hash(file)
         original_extension = file.suffix
         new_path_and_filename = Path(dir_output_path, unique_filename).with_suffix(
             original_extension

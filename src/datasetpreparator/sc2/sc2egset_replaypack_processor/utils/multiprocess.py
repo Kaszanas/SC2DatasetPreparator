@@ -6,7 +6,7 @@ from multiprocessing import Pool
 
 from typing import List
 
-from datasetpreparator.sc2.sc2_replaypack_processor.utils.replaypack_processor_args import (
+from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_processor_args import (
     SC2InfoExtractorGoArguments,
 )
 
@@ -27,12 +27,12 @@ def multiprocessing_scheduler(
     """
 
     with Pool(processes=number_of_processes) as pool:
-        pool.imap_unordered(multiprocessing_client, processing_arguments)
+        pool.imap_unordered(process_single_replaypack, processing_arguments)
         pool.close()
         pool.join()
 
 
-def multiprocessing_client(arguments: SC2InfoExtractorGoArguments) -> None:
+def process_single_replaypack(arguments: SC2InfoExtractorGoArguments) -> None:
     """
     Responsible for running a single process that will
     extract data from a replaypack.
@@ -40,7 +40,7 @@ def multiprocessing_client(arguments: SC2InfoExtractorGoArguments) -> None:
     Parameters
     ----------
     arguments : SC2InfoExtractorGoArguments
-        Arguments tuple containing the input and output directory.
+        Specifies all of the arguments required to run SC2InfoExtractorGo.
     """
 
     # TODO: This will be refactored to use only the arguments object:
@@ -74,6 +74,36 @@ def multiprocessing_client(arguments: SC2InfoExtractorGoArguments) -> None:
             f"-perform_cleanup={arguments.perform_cleanup}",
             f"-perform_chat_anonymization={arguments.perform_chat_anonymization}",
             f"-number_of_packages={arguments.number_of_packages}",
+            f"-max_procs={arguments.max_procs}",
+            f"-log_level={arguments.log_level}",
+            f"-log_dir={output_directory_filepath}/",
+        ]
+    )
+
+
+def pre_process_download_maps(arguments: SC2InfoExtractorGoArguments) -> None:
+    """
+    Acts as a pre-process step, executes SC2InfoExtractorGo with the
+    -only_map_download flag. Maps are required in the future steps of the
+    processing due to the fact that multiple SC2InfoExtractorGo instances will
+    be running in parallel. This means that the maps cannot be downloaded and processed
+    at the same time.
+
+    Parameters
+    ----------
+    arguments : SC2InfoExtractorGoArguments
+        Specifies all of the arguments required to run SC2InfoExtractorGo.
+    """
+
+    output_directory_filepath = arguments.output
+
+    subprocess.run(
+        [
+            # FIXME hardcoded binary name
+            "/SC2InfoExtractorGo",
+            f"-input={arguments.processing_input}/",
+            f"-output={arguments.output}/",
+            "-only_map_download=true",
             f"-max_procs={arguments.max_procs}",
             f"-log_level={arguments.log_level}",
             f"-log_dir={output_directory_filepath}/",
