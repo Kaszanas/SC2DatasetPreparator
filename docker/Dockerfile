@@ -20,18 +20,16 @@ COPY --from=maps_mods /sc2reset_maps_mods/other_dependencies/ /app/processing/ot
 RUN chmod +x /app/SC2InfoExtractorGo
 
 # Copy only what is required to install the project:
-COPY pyproject.toml poetry.lock ci/install_poetry.py /app/
+COPY pyproject.toml uv.lock /app/
 
-# Install poetry
-# TODO: this is rather ugly, we are installing poetry into the release Docker build. Use multi-stage builds instead.
-ENV POETRY_HOME=/opt/poetry
-RUN python3 install_poetry.py --version 1.8.4 && \
-    $POETRY_HOME/bin/poetry --version
+# Install uv:
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 # Install only dependencies without installing current project:
-RUN $POETRY_HOME/bin/poetry \
-    config virtualenvs.create false \
-    && $POETRY_HOME/bin/poetry install --no-root
+RUN uv sync --no-install-project --all-extras
+
+# Ensure the uv-managed virtual environment is used without needing explicit activation:
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Copy entire repository contents
 COPY . .
@@ -70,4 +68,4 @@ COPY /src/datasetpreparator/directory_flattener/directory_flattener.py \
 
 
 # Install current project:
-RUN $POETRY_HOME/bin/poetry install --all-extras
+RUN uv sync --all-extras

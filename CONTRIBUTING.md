@@ -59,16 +59,16 @@ docker run -it -v .:/app datasetpreparator:devcontainer
 Ready to contribute? Here's how to set up `datasetpreparator` for local development. The code style standards that we use are defined in the `.pre-commit-config.yaml` file.
 
 1. Download a copy of `datasetpreparator` locally.
-2. Install `datasetpreparator` using `poetry`:
+2. Install `datasetpreparator` using [`uv`](https://docs.astral.sh/uv/):
 
 ```console
-  poetry install
+  uv sync --all-extras --dev
 ```
 
 3. Install the pre-commit hooks:
 
 ```console
-  poetry run pre-commit install
+  uv run pre-commit install
 ```
 
 4. Use `git` (or similar) to create a branch for local development and make your changes:
@@ -82,7 +82,7 @@ Ready to contribute? Here's how to set up `datasetpreparator` for local developm
 6. Format your commit with `commitizen`:
 
 ```console
-  poetry run cz commit
+  uv run cz commit
 ```
 
 7. Commit your changes (we are using commitizen to check commit messages) and open a pull request.

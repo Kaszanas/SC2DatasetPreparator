@@ -16,11 +16,11 @@ COMPOSE_PROJECT_NAME = datasetpreparator
 # Python variables:
 PYTHON_VERSION = 3.11
 
-TEST_COMMAND_RAW = poetry run pytest --durations=100 --ignore-glob='test_*.py' tests --cov=datasetpreparator --cov-report term-missing --cov-report html 2>&1
+TEST_COMMAND_RAW = uv run pytest --durations=100 --ignore-glob='test_*.py' tests --cov=datasetpreparator --cov-report term-missing --cov-report html 2>&1
 
 TEST_COMMAND = "$(TEST_COMMAND_RAW)"
 
-TEST_COMMAND_LOG = "poetry run pytest --durations=100 --ignore-glob='test_*.py' tests --cov=datasetpreparator --cov-report term-missing --cov-report html 2>&1 | tee /app/logs/test_output.log"
+TEST_COMMAND_LOG = "uv run pytest --durations=100 --ignore-glob='test_*.py' tests --cov=datasetpreparator --cov-report term-missing --cov-report html 2>&1 | tee /app/logs/test_output.log"
 
 ###################
 #### PIPELINE #####
@@ -302,12 +302,12 @@ docker_run_dev: ## Runs the development image containing all of the tools.
 .PHONY: doc_serve
 doc_serve: ## Serves the Mkdocs documentation locally.
 	@echo "Serving the Mkdocs documentation."
-	poetry run mkdocs serve
+	uv run mkdocs serve
 
 .PHONY: doc_build
 doc_build: ## Builds the Mkdocs documentation.
 	@echo "Building the Mkdocs documentation."
-	poetry run mkdocs build
+	uv run mkdocs build
 
 .PHONY: docker_doc_build
 docker_doc_build: ## Builds the Mkdocs documentation using Docker.
@@ -317,7 +317,7 @@ docker_doc_build: ## Builds the Mkdocs documentation using Docker.
 	docker run \
 		-v ".\docs:/docs" \
 		$(DEVCONTAINER) \
-		poetry run mkdocs build
+		uv run mkdocs build
 
 .PHONY: docker_doc_build_action
 docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
@@ -327,7 +327,7 @@ docker_doc_build_action: ## Builds the Mkdocs documentation using Docker.
 	docker run \
 		-v "docs:/docs" \
 		$(DEVCONTAINER) \
-		poetry run mkdocs build
+		uv run mkdocs build
 
 ###################
 #### PRE-COMMIT ###

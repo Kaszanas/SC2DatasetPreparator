@@ -341,7 +341,7 @@ def create_test_json_files(
             with json_path.open(mode="w", encoding="utf-8") as json_f:
                 json.dump(data, json_f)
 
-            json_files.append(json_path)
+        json_files.append(json_path)
 
     return json_files
 
