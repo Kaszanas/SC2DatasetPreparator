@@ -7,6 +7,8 @@ from tqdm import tqdm
 
 from datasetpreparator.utils.logging import initialize_logging
 
+logger = logging.getLogger(__name__)
+
 
 def sc2_move_maps(
     maps_path: Path,
@@ -22,7 +24,7 @@ def sc2_move_maps(
             .resolve()
         )
         if destination_path.exists():
-            logging.warning(
+            logger.warning(
                 f"The map {map_file.name} already exists in the destination directory. Skipping."
             )
             continue
@@ -31,10 +33,8 @@ def sc2_move_maps(
         try:
             shutil.copyfile(map_file, destination_path)
             copied_files.append(destination_path)
-        except Exception as e:
-            logging.error(
-                f"Failed to copy {str(map_file)} to {str(destination_path)}: {str(e)}"
-            )
+        except OSError as e:
+            logger.error(f"Failed to copy {map_file!s} to {destination_path!s}: {e!s}")
             continue
 
     return copied_files
@@ -79,8 +79,8 @@ def main(sc2_installation_directory: Path, maps_path: Path, log: str):
 
     maps_path_installation_directory = (sc2_installation_directory / "Maps").resolve()
     if not maps_path_installation_directory.exists():
-        logging.warning(
-            f"The maps directory {str(maps_path_installation_directory)} does not exist. Creating it."
+        logger.warning(
+            f"The maps directory {maps_path_installation_directory!s} does not exist. Creating it."
         )
         maps_path_installation_directory.mkdir(parents=True, exist_ok=True)
 

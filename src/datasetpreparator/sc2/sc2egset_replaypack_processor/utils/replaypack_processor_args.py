@@ -1,8 +1,10 @@
 import logging
-from pathlib import Path
 import os
+from pathlib import Path
 
 from datasetpreparator.utils.user_prompt import user_prompt_overwrite_ok
+
+logger = logging.getLogger(__name__)
 
 
 class SC2InfoExtractorGoArguments:
@@ -231,25 +233,25 @@ def define_sc2egset_args(
     input_path = arguments.input_path
     output_path = arguments.output_path
 
-    logging.debug(f"Processing entry: {maybe_dir}")
+    logger.debug(f"Processing entry: {maybe_dir}")
     processing_input_dir = Path(input_path, maybe_dir).resolve()
     if not processing_input_dir.is_dir():
-        logging.debug("Entry is not a directory, skipping!")
+        logger.debug("Entry is not a directory, skipping!")
         return None
 
-    logging.debug(f"Output dir: {output_path}")
+    logger.debug(f"Output dir: {output_path}")
     # Create the main output directory:
     if not user_prompt_overwrite_ok(path=output_path, force_overwrite=force_overwrite):
         output_path.mkdir(exist_ok=True)
 
     # TODO: use pathlib:
-    path, output_directory_name = os.path.split(maybe_dir)
-    logging.debug(f"Output dir name: {output_directory_name}")
+    _path, output_directory_name = os.path.split(maybe_dir)
+    logger.debug(f"Output dir name: {output_directory_name}")
     if output_directory_name == "input":
         return None
 
     output_directory_with_name = Path(output_path, output_directory_name).resolve()
-    logging.debug(f"Output filepath: {output_directory_with_name}")
+    logger.debug(f"Output filepath: {output_directory_with_name}")
 
     # Create the output subdirectories:
     if not user_prompt_overwrite_ok(
@@ -266,6 +268,6 @@ def define_sc2egset_args(
         )
     )
 
-    logging.debug(f"Finished creating args for {maybe_dir}")
+    logger.debug(f"Finished creating args for {maybe_dir}")
 
     return sc2_info_extractor_go_args

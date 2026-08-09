@@ -4,17 +4,14 @@ import zipfile
 from datasetpreparator.directory_packager.directory_packager import (
     multiple_dir_packager,
 )
-
 from tests.test_settings import (
     DELETE_SCRIPT_TEST_DIR,
     DELETE_SCRIPT_TEST_INPUT_DIR,
 )
-
-
 from tests.test_utils import (
+    create_nested_test_directories,
     create_script_test_input_dir,
     create_test_text_files,
-    create_nested_test_directories,
     dir_test_cleanup,
 )
 

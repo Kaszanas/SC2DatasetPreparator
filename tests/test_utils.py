@@ -5,6 +5,8 @@ from pathlib import Path
 
 from tests.test_settings import TEST_DIR_NAME, TEST_FILES_NAME, TEST_WORKSPACE
 
+logger = logging.getLogger(__name__)
+
 
 def get_workspace_dir() -> Path:
     """
@@ -17,10 +19,10 @@ def get_workspace_dir() -> Path:
         Returns the path to the workspace.
     """
 
-    logging.info("Entered get_workspace_dir(), attempting to set workspace_dir.")
+    logger.info("Entered get_workspace_dir(), attempting to set workspace_dir.")
 
     workspace_dir = Path(TEST_WORKSPACE).resolve()
-    logging.info(f"Successfully set workspace_dir = {workspace_dir}")
+    logger.info(f"Successfully set workspace_dir = {workspace_dir}")
     return workspace_dir
 
 
@@ -64,7 +66,7 @@ def delete_script_test_dir(script_name: str) -> None:
     script_test_dir = get_script_test_dir(script_name=script_name)
 
     if not script_test_dir.exists():
-        logging.info(f"Did not detect {str(script_test_dir)} to exist")
+        logger.info(f"Did not detect {script_test_dir!s} to exist")
         return
 
     shutil.rmtree(str(script_test_dir))
@@ -113,12 +115,12 @@ def get_script_test_input_dir(script_name: str) -> Path:
         Returns an absolute path to the test input directory.
     """
     workspace_dir = get_workspace_dir()
-    logging.info(f"Successfully set workspace_dir = {workspace_dir}")
+    logger.info(f"Successfully set workspace_dir = {workspace_dir}")
 
     input_dir = Path(
         workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/input"
     ).resolve()
-    logging.info(f"Successfully set input_dir = {input_dir}, returning.")
+    logger.info(f"Successfully set input_dir = {input_dir}, returning.")
 
     return input_dir
 
@@ -134,13 +136,13 @@ def delete_script_test_input(script_name: str) -> None:
     """
 
     test_dir = get_script_test_input_dir(script_name=script_name)
-    logging.info(f"Successfully set {str(test_dir)=}")
+    logger.info(f"Successfully set {str(test_dir)=}")
 
     if not test_dir.exists():
-        logging.info("Did not detect test_output to exist, exiting function")
+        logger.info("Did not detect test_output to exist, exiting function")
         return
 
-    logging.info(
+    logger.info(
         f"Detected that test_output exists, \
             performing removal by calling shutil.rmtree({test_dir})"
     )
@@ -163,14 +165,14 @@ def create_script_test_output_dir(script_name: str) -> Path:
     """
 
     workspace_dir = get_workspace_dir()
-    logging.info(f"Successfully set workspace_dir = {workspace_dir}")
+    logger.info(f"Successfully set workspace_dir = {workspace_dir}")
 
     test_output_path = Path(
         workspace_dir, f"{TEST_DIR_NAME}/{TEST_FILES_NAME}/{script_name}/output"
     ).resolve()
 
     if not test_output_path.exists():
-        logging.info(
+        logger.info(
             f"Detected that output_path does not exist, \
             calling os.mkdir({test_output_path})"
         )
@@ -195,11 +197,9 @@ def get_script_test_output_dir(script_name: str) -> Path:
         Paths to the test output directory.
     """
 
-    logging.info(
-        "Entered get_output_dir(), calling workspace_dir = get_workspace_dir()"
-    )
+    logger.info("Entered get_output_dir(), calling workspace_dir = get_workspace_dir()")
     workspace_dir = get_workspace_dir()
-    logging.info(
+    logger.info(
         f"Successfully set workspace_dir = {workspace_dir}, returning output_dir = "
     )
     test_output_dir = Path(
@@ -220,13 +220,13 @@ def delete_script_test_output(script_name: str) -> None:
     """
 
     test_dir = get_script_test_output_dir(script_name=script_name)
-    logging.info(f"Successfully set {str(test_dir)=}")
+    logger.info(f"Successfully set {str(test_dir)=}")
 
     if not test_dir.exists():
-        logging.info("Did not detect test_output to exist, exiting function")
+        logger.info("Did not detect test_output to exist, exiting function")
         return
 
-    logging.info(
+    logger.info(
         f"Detected that test_output exists, \
             performing removal by calling shutil.rmtree({test_dir})"
     )
@@ -355,14 +355,14 @@ def dir_test_cleanup(
     # Removes entire script test directory and returns as it
     # contains both input and output directories:
     if delete_script_test_dir_bool:
-        logging.info(f"{delete_script_test_dir_bool=}, deleting script test dir.")
+        logger.info(f"{delete_script_test_dir_bool=}, deleting script test dir.")
         delete_script_test_dir(script_name=script_name)
         return
 
     if delete_script_test_input_bool:
-        logging.info(f"{delete_script_test_input_bool=}, deleting script test input.")
+        logger.info(f"{delete_script_test_input_bool=}, deleting script test input.")
         delete_script_test_input(script_name=script_name)
 
     if delete_script_test_output_bool:
-        logging.info(f"{delete_script_test_output_bool=}, deleting script test output.")
+        logger.info(f"{delete_script_test_output_bool=}, deleting script test output.")
         delete_script_test_output(script_name=script_name)

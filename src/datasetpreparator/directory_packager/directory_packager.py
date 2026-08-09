@@ -14,6 +14,8 @@ from datasetpreparator.utils.user_prompt import (
     user_prompt_overwrite_ok,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class DirectoryPackagerArguments:
     def __init__(self, directory_path: Path, force_overwrite: bool):
@@ -49,11 +51,11 @@ def multiple_dir_packager(
 
     directory_contents = list(input_path.iterdir())
     if not directory_contents:
-        logging.error(f"The input path {str(input_path)} is empty!")
+        logger.error(f"The input path {input_path!s} is empty!")
         return []
 
     for directory in directory_contents:
-        logging.debug(f"Processing directory: {str(directory)}")
+        logger.debug(f"Processing directory: {directory!s}")
 
         directory_path = Path(input_path, directory.name).resolve()
         if not directory_path.is_dir():
@@ -97,22 +99,24 @@ def dir_packager(arguments: DirectoryPackagerArguments) -> Path:
     if user_prompt_overwrite_ok(
         path=final_archive_path, force_overwrite=arguments.force_overwrite
     ):
-        logging.info(f"Set final archive name to: {str(final_archive_path)}")
-        with ZipFile(str(final_archive_path), "w") as zip_file:
-            with logging_redirect_tqdm():
-                for file in tqdm(
-                    list(arguments.directory_path.rglob("*")),
-                    desc=f"Packaging {final_archive_path.name:<30}",
-                    unit="files",
-                ):
-                    abs_filepath = str(file.resolve())
+        logger.info(f"Set final archive name to: {final_archive_path!s}")
+        with (
+            ZipFile(str(final_archive_path), "w") as zip_file,
+            logging_redirect_tqdm(),
+        ):
+            for file in tqdm(
+                list(arguments.directory_path.rglob("*")),
+                desc=f"Packaging {final_archive_path.name:<30}",
+                unit="files",
+            ):
+                abs_filepath = str(file.resolve())
 
-                    logging.debug(f"Adding file: {abs_filepath}")
-                    zip_file.write(
-                        filename=abs_filepath,
-                        arcname=file.relative_to(arguments.directory_path),
-                        compress_type=ZIP_BZIP2,
-                    )
+                logger.debug(f"Adding file: {abs_filepath}")
+                zip_file.write(
+                    filename=abs_filepath,
+                    arcname=file.relative_to(arguments.directory_path),
+                    compress_type=ZIP_BZIP2,
+                )
 
     return final_archive_path
 
@@ -156,8 +160,8 @@ def main(input_path: Path, log: str, n_threads: int, force_overwrite: bool):
     initialize_logging(log=log)
 
     if create_directory(directory=input_path):
-        logging.error(
-            f"Input path {str(input_path)} was just created. You should fill it with files before proceeding."
+        logger.error(
+            f"Input path {input_path!s} was just created. You should fill it with files before proceeding."
         )
         return
 

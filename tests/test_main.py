@@ -1,8 +1,8 @@
 # Standard imports:
-import unittest
-import sys
-import os
 import logging
+import os
+import sys
+import unittest
 
 from dotenv import load_dotenv
 
@@ -12,7 +12,7 @@ load_dotenv()
 
 WORKSPACE_DIRECTORY = os.getenv("TEST_WORKSPACE")
 
-from tests.test_utils import get_workspace_dir  # noqa: E402
+from tests.test_utils import get_workspace_dir
 
 
 # TODO: Fix this file so that the tests can be run with debugger.

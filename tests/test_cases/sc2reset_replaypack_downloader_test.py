@@ -1,21 +1,17 @@
-from pathlib import Path
 import unittest
-
-from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.get_md5 import (
-    get_md5,
-)
+from pathlib import Path
 
 from datasetpreparator.sc2.sc2reset_replaypack_downloader.sc2reset_replaypack_downloader import (
     sc2reset_replaypack_downloader,
 )
-
+from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.get_md5 import (
+    get_md5,
+)
 from tests.test_settings import (
     DELETE_SCRIPT_TEST_DIR,
-    DELETE_SCRIPT_TEST_OUTPUT_DIR,
     DELETE_SCRIPT_TEST_INPUT_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
 )
-
-
 from tests.test_utils import (
     create_script_test_input_dir,
     create_script_test_output_dir,
@@ -41,7 +37,7 @@ class SC2ReSetDownloaderTest(unittest.TestCase):
         ]
 
     def test_sc2reset_replaypack_downloader(self):
-        replaypack_name, replaypack_url, archive_md5 = self.test_replaypack_list[0]
+        replaypack_name, _replaypack_url, archive_md5 = self.test_replaypack_list[0]
 
         sc2reset_replaypack_downloader(
             download_path=self.input_path,

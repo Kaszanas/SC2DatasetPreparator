@@ -33,6 +33,8 @@ from datasetpreparator.utils.user_prompt import (
     user_prompt_overwrite_ok,
 )
 
+logger = logging.getLogger(__name__)
+
 
 def prepare_sc2reset(
     replaypacks_input_path: Path,
@@ -69,7 +71,7 @@ def prepare_sc2reset(
     ):
         directory_flattener_output_path.mkdir(exist_ok=True)
 
-    logging.info("Flattening directories...")
+    logger.info("Flattening directories...")
     multiple_directory_flattener(
         input_path=replaypacks_input_path,
         output_path=directory_flattener_output_path,
@@ -82,7 +84,7 @@ def prepare_sc2reset(
     # hosted later on. They are also needed for the SC2EGSet to reproduce the results.
     # Download all maps for multiprocess, map files are used as a source of truth for
     # SC2InfoExtractorGo downloading mechanism:
-    logging.info("Downloading all maps using SC2InfoExtractorGo...")
+    logger.info("Downloading all maps using SC2InfoExtractorGo...")
     sc2infoextractorgo_map_download(
         input_path=directory_flattener_output_path,
         maps_directory=maps_output_path,
@@ -90,7 +92,7 @@ def prepare_sc2reset(
     )
 
     # Package SC2ReSet and the downloaded maps, move to the output directory:
-    logging.info("Packaging SC2ReSet and the downloaded maps...")
+    logger.info("Packaging SC2ReSet and the downloaded maps...")
     multiple_dir_packager(
         input_path=directory_flattener_output_path,
         n_threads=n_processes,
@@ -98,7 +100,7 @@ def prepare_sc2reset(
     )
 
     sc2reset_output_path = Path(output_path, "SC2ReSet").resolve()
-    logging.info("Moving SC2ReSet to the output directory...")
+    logger.info("Moving SC2ReSet to the output directory...")
     move_files(
         input_path=directory_flattener_output_path,
         output_path=sc2reset_output_path,
@@ -146,26 +148,26 @@ def prepare_sc2egset(
     )
 
     # Process SC2EGSet, this will use the same map directory as the previous step:
-    logging.info("Processing SC2EGSet using SC2InfoExtractorGo...")
+    logger.info("Processing SC2EGSet using SC2InfoExtractorGo...")
     sc2egset_replaypack_processor(
         arguments=sc2egset_processor_args,
         force_overwrite=force_overwrite,
     )
 
     # Processed Mapping Copier:
-    logging.info("Copying processed_mapping.json files...")
+    logger.info("Copying processed_mapping.json files...")
     processed_mapping_copier(
         input_path=directory_flattener_output_path,
         output_path=sc2egset_replaypack_processor_output,
     )
 
     # File Renamer:
-    logging.info(
-        f"Renaming auxilliary (log) files in {str(sc2egset_replaypack_processor_output)}"
+    logger.info(
+        f"Renaming auxilliary (log) files in {sc2egset_replaypack_processor_output!s}"
     )
     file_renamer(input_path=sc2egset_replaypack_processor_output)
 
-    logging.info("Packaging SC2EGSet...")
+    logger.info("Packaging SC2EGSet...")
     multiple_dir_packager(
         input_path=sc2egset_replaypack_processor_output,
         n_threads=n_processes,
@@ -174,7 +176,7 @@ def prepare_sc2egset(
 
     # SC2EGSet should be ready, move it to the final output directory:
     sc2egset_output = Path(output_path, "SC2EGSet").resolve()
-    logging.info("Moving SC2EGSet to the output directory...")
+    logger.info("Moving SC2EGSet to the output directory...")
     move_files(
         input_path=sc2egset_replaypack_processor_output,
         output_path=sc2egset_output,
@@ -255,8 +257,8 @@ def main(
     # This input will be flattened:
     replaypacks_input_path = Path(input_path).resolve()
     if create_directory(directory=replaypacks_input_path):
-        logging.error(
-            f"Input path {str(replaypacks_input_path)} was just created. You should fill it with files before proceeding."
+        logger.error(
+            f"Input path {replaypacks_input_path!s} was just created. You should fill it with files before proceeding."
         )
         return
 

@@ -31,7 +31,7 @@ SC2RESET_REPLAYPACKS: list[tuple[str, str, str]] = [
     ),
     (
         "2017_IEM_XI_World_Championship_Katowice",
-        "https://zenodo.org/record/14963356/files/2017_IEM_XI_World_Championship_Katowice.zip?download=1",  # noqa
+        "https://zenodo.org/record/14963356/files/2017_IEM_XI_World_Championship_Katowice.zip?download=1",
         "a2c038f7f7a0ec7127f891c38f5066ba",
     ),
     (
@@ -221,7 +221,7 @@ SC2RESET_REPLAYPACKS: list[tuple[str, str, str]] = [
     ),
     (
         "2021_Cheeseadelphia_Winter_Championship",
-        "https://zenodo.org/record/14963356/files/2021_Cheeseadelphia_Winter_Championship.zip?download=1",  # noqa
+        "https://zenodo.org/record/14963356/files/2021_Cheeseadelphia_Winter_Championship.zip?download=1",
         "d0ced57f244bebabfde8cdb7008e2669",
     ),
     (
@@ -271,7 +271,7 @@ SC2RESET_REPLAYPACKS: list[tuple[str, str, str]] = [
     ),
     (
         "2022_Dreamhack_SC2_Masters_Last_Chance2021",
-        "https://zenodo.org/record/14963356/files/2022_Dreamhack_SC2_Masters_Last_Chance2021.zip?download=1",  # noqa
+        "https://zenodo.org/record/14963356/files/2022_Dreamhack_SC2_Masters_Last_Chance2021.zip?download=1",
         "de257c49c80277ba142c57313f11e2e5",
     ),
     (

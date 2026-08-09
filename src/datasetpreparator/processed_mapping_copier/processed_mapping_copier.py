@@ -7,6 +7,8 @@ import click
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import create_directory
 
+logger = logging.getLogger(__name__)
+
 
 def processed_mapping_copier(input_path: Path, output_path: Path) -> None:
     """
@@ -80,8 +82,8 @@ def processed_mapping_copier(input_path: Path, output_path: Path) -> None:
 def main(input_path: Path, output_path: Path, log: str) -> None:
     initialize_logging(log=log)
     if create_directory(directory=input_path):
-        logging.error(
-            f"Input path {str(input_path)} was just created. It should be filled with files before proceeding."
+        logger.error(
+            f"Input path {input_path!s} was just created. It should be filled with files before proceeding."
         )
         return
 

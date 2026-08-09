@@ -15,6 +15,8 @@ from datasetpreparator.utils.user_prompt import (
     user_prompt_overwrite_ok,
 )
 
+logger = logging.getLogger(__name__)
+
 
 class MultiprocessFlattenArguments:
     def __init__(
@@ -124,18 +126,18 @@ def directory_flatten(
         new_path_and_filename = Path(dir_output_path, unique_filename).with_suffix(
             original_extension
         )
-        logging.debug(f"New path and filename! {str(new_path_and_filename)}")
+        logger.debug(f"New path and filename! {new_path_and_filename!s}")
 
         current_file = Path(root_directory, file).resolve()
-        logging.debug(f"Current file: {str(current_file)}")
+        logger.debug(f"Current file: {current_file!s}")
 
         # Copying files:
         if not current_file.exists():
-            logging.error(f"File does not exist. Path len: {len(current_file)}")
+            logger.error(f"File does not exist. Path len: {len(current_file)}")
             continue
 
         shutil.copy(current_file, new_path_and_filename)
-        logging.debug(f"File copied to {str(new_path_and_filename)}")
+        logger.debug(f"File copied to {new_path_and_filename!s}")
 
         # Finding the relative path from the root directory to the file:
         dir_structure_mapping[new_path_and_filename.name] = str(root_dir_name_and_file)
@@ -227,9 +229,7 @@ def create_output_directory(
         path=arguments.dir_output_path,
         force_overwrite=arguments.force_overwrite,
     ):
-        logging.debug(
-            f"Creating directory {str(arguments.dir_output_path)}, didn't exist."
-        )
+        logger.debug(f"Creating directory {arguments.dir_output_path!s}, didn't exist.")
         arguments.dir_output_path.mkdir(exist_ok=True)
 
     return MultiprocessFlattenArguments(
@@ -281,12 +281,12 @@ def multiple_directory_flattener(
 
     # input must be a directory:
     if not input_path.is_dir():
-        logging.error(f"Input path must be a directory! {str(input_path.resolve())}")
+        logger.error(f"Input path must be a directory! {input_path.resolve()!s}")
         return (False, [Path()])
 
     # Input must exist:
     if not input_path.exists():
-        logging.error(f"Input path must exist! {str(input_path.resolve())}")
+        logger.error(f"Input path must exist! {input_path.resolve()!s}")
         return (False, [Path()])
 
     # Output path must be an existing directory:
@@ -305,14 +305,12 @@ def multiple_directory_flattener(
     ):
         maybe_dir = Path(input_path, item).resolve()
         if not maybe_dir.is_dir():
-            logging.debug(f"Skipping {str(maybe_dir)}, not a directory.")
+            logger.debug(f"Skipping {maybe_dir!s}, not a directory.")
             continue
 
         files_with_extension = list(maybe_dir.glob(f"**/*{file_extension}"))
         if not files_with_extension:
-            logging.debug(
-                f"Skipping {str(maybe_dir)}, no files with selected extension."
-            )
+            logger.debug(f"Skipping {maybe_dir!s}, no files with selected extension.")
             continue
 
         dir_output_path = Path(output_path, item.name).resolve()

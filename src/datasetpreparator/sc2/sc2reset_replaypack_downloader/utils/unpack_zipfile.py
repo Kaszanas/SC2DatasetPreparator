@@ -37,7 +37,7 @@ def unpack_zipfile(
 
     Raises
     ------
-    Exception
+    ValueError
         Raises an exception if the number of workers is less or equal to zero.
 
     Examples
@@ -65,7 +65,7 @@ def unpack_zipfile(
     """
 
     if n_workers <= 0:
-        raise Exception("Number of workers cannot be equal or less than zero!")
+        raise ValueError("Number of workers cannot be equal or less than zero!")
 
     file_list: list[str] = []
     path_to_extract = Path(destination_dir, destination_subdir)

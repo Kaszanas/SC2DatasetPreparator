@@ -13,8 +13,8 @@ repos:
       - id: commitizen
         stages: [commit-msg]
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.9.10
+    # Ruff version: v0.16.2
+    rev: 7c55798a78262d14b2074abf623d8a992ebb70d4
     hooks:
       # Run the linter.
       - id: ruff

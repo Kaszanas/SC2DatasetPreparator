@@ -2,6 +2,8 @@ import logging
 import zipfile
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 
 def unpack_chunk(zip_path: Path, filenames: list[str], output_extract_path: Path):
     """
@@ -41,8 +43,5 @@ def unpack_chunk(zip_path: Path, filenames: list[str], output_extract_path: Path
         for filename in filenames:
             try:
                 zip_file.extract(filename, str(output_extract_path))
-            except zipfile.error as e:
-                logging.error(
-                    f"zipfile error was raised: {e}",
-                    exc_info=True,
-                )
+            except zipfile.error:
+                logger.exception("zipfile error was raised")

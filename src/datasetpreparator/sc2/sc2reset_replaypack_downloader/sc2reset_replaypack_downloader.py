@@ -15,6 +15,8 @@ from datasetpreparator.sc2.sc2reset_replaypack_downloader.utils.unpack_zipfile i
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import create_directory
 
+logger = logging.getLogger(__name__)
+
 
 def sc2reset_replaypack_downloader(
     download_path: Path,
@@ -60,7 +62,7 @@ def sc2reset_replaypack_downloader(
         if ok:
             downloaded_paths.append((replaypack_name, downloaded_replaypack_path))
             continue
-        logging.error(
+        logger.error(
             f"Replaypack {replaypack_name} could not be downloaded. Adding to retry list..."
         )
 

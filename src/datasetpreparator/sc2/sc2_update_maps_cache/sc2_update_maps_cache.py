@@ -3,12 +3,15 @@ import shutil
 from pathlib import Path
 
 import click
+from tqdm import tqdm
 
 from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.download_maps import (
     sc2infoextractorgo_map_download,
 )
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import create_directory
+
+logger = logging.getLogger(__name__)
 
 
 class BnetPathNotFound(Exception):
@@ -55,12 +58,10 @@ def place_dependency_in_cache(
     cache_dir.mkdir(parents=True, exist_ok=True)
     cache_map_filepath = (cache_dir / map_hash).with_suffix(file_extension).resolve()
     if cache_map_filepath.exists():
-        logging.info(
-            f"The cache entry already exists, skipping: {str(cache_map_filepath)}"
-        )
+        logger.info(f"The cache entry already exists, skipping: {cache_map_filepath!s}")
         return cache_map_filepath
 
-    logging.info(f"No cache entry existed prior, copying to: {str(cache_map_filepath)}")
+    logger.info(f"No cache entry existed prior, copying to: {cache_map_filepath!s}")
     shutil.copy(src=map_filepath, dst=cache_map_filepath)
 
     return cache_map_filepath
@@ -96,14 +97,14 @@ def read_execute_info(path: Path = Path("~/Documents")) -> Path | None:
             parts = [p.strip() for p in line.decode("utf-8").split("=")]
             if len(parts) != 2:
                 continue
-            if not parts[0] == "executable":
+            if parts[0] != "executable":
                 continue
 
             exec_path = Path(parts[1]).resolve()
 
             exec_path_parents_list = list(exec_path.parents)
             if len(exec_path_parents_list) < 3:
-                logging.warning(
+                logger.warning(
                     "Could not find the Battle.net cache based on ExecuteInfo.txt, parent list too short"
                 )
                 return None
@@ -206,7 +207,7 @@ def get_bnet_path(bnet_base_dir: Path | None = None) -> Path:
     type=int,
     help="Number of processes to use for reading replays and acquiring the map urls to download.",
     default=4,
-    required=True,
+    required=False,
 )
 @click.option(
     "--log",
@@ -224,9 +225,9 @@ def sc2_update_maps_cache(
 ) -> None:
     initialize_logging(log=log)
 
-    if create_directory(directory=replays_path):
-        logging.warning(
-            f"The replays path {str(replays_path)} was just created. You should fill it with files before proceeding."
+    if replays_path and create_directory(directory=replays_path):
+        logger.warning(
+            f"The replays path {replays_path!s} was just created. You should fill it with files before proceeding."
         )
         return
 
@@ -244,7 +245,11 @@ def sc2_update_maps_cache(
 
     # Populate all of the maps to the cache directory.
     all_map_files = list(maps_path.rglob("*.s2ma"))
-    for map_filepath in all_map_files:
+    for map_filepath in tqdm(
+        iterable=all_map_files,
+        desc="Placing dependencies in cache",
+        unit="file",
+    ):
         place_dependency_in_cache(
             bnet_base_dir=bnet_path,
             map_filepath=map_filepath,

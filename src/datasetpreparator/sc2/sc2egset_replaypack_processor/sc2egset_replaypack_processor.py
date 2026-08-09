@@ -17,6 +17,8 @@ from datasetpreparator.utils.user_prompt import (
     create_directory,
 )
 
+logger = logging.getLogger(__name__)
+
 
 @click.command(
     help="Tool used to recreate SC2EGSet Dataset. Executes SC2InfoExtractorGo (https://github.com/Kaszanas/SC2InfoExtractorGo) on multiple replaypack directories with hardcoded CLI arguments. Assists in processing StarCraft 2 (SC2) datasets."
@@ -88,24 +90,24 @@ def main(
     initialize_logging(log=log)
 
     replaypacks_input_path = input_path.resolve()
-    logging.info(f"Input path: {str(replaypacks_input_path)}")
+    logger.info(f"Input path: {replaypacks_input_path!s}")
     if create_directory(directory=replaypacks_input_path):
-        logging.error(
-            f"Input path {str(replaypacks_input_path)} was just created. You should fill it with files before proceeding."
+        logger.error(
+            f"Input path {replaypacks_input_path!s} was just created. You should fill it with files before proceeding."
         )
         return
 
     output_path = output_path.resolve()
     create_directory(directory=output_path)
-    logging.info(f"Output path: {str(output_path)}")
+    logger.info(f"Output path: {output_path!s}")
 
     maps_path = maps_path.resolve()
     create_directory(directory=maps_path)
-    logging.info(f"Maps path: {str(maps_path)}")
+    logger.info(f"Maps path: {maps_path!s}")
     # Create output directory if it does not exist:
 
     # Pre-processing, downloading maps and flattening directories:
-    logging.info("Downloading maps...")
+    logger.info("Downloading maps...")
     sc2infoextractorgo_map_download(
         input_path=replaypacks_input_path,
         maps_directory=maps_path,
@@ -119,7 +121,7 @@ def main(
         maps_directory=maps_path,
         n_processes=n_processes,
     )
-    logging.info("Processing replaypacks with SC2InfoExtractorGo...")
+    logger.info("Processing replaypacks with SC2InfoExtractorGo...")
     sc2egset_replaypack_processor(
         arguments=sc2egset_processor_args,
         force_overwrite=force_overwrite,
