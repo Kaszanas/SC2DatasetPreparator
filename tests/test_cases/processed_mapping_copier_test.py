@@ -3,14 +3,11 @@ import unittest
 from datasetpreparator.processed_mapping_copier.processed_mapping_copier import (
     processed_mapping_copier,
 )
-
 from tests.test_settings import (
     DELETE_SCRIPT_TEST_DIR,
-    DELETE_SCRIPT_TEST_OUTPUT_DIR,
     DELETE_SCRIPT_TEST_INPUT_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
 )
-
-
 from tests.test_utils import (
     create_script_test_input_dir,
     create_script_test_output_dir,

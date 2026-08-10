@@ -1,12 +1,12 @@
 import os
-from pathlib import Path
 import unittest
+from pathlib import Path
 
 from datasetpreparator.sc2.sc2_update_maps_cache.sc2_update_maps_cache import (
     BnetPathNotFound,
-    place_dependency_in_cache,
     get_bnet_path,
     # BnetCacheNotFound,
+    place_dependency_in_cache,
 )
 from tests.test_utils import (
     create_script_test_input_dir,

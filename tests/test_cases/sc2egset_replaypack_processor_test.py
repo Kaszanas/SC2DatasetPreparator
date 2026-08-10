@@ -3,23 +3,19 @@ import unittest
 from datasetpreparator.sc2.sc2egset_replaypack_processor.sc2egset_replaypack_processor import (
     sc2egset_replaypack_processor,
 )
-
 from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_processor_args import (
     ReplaypackProcessorArguments,
 )
 from tests.test_settings import (
     DELETE_SCRIPT_TEST_DIR,
-    DELETE_SCRIPT_TEST_OUTPUT_DIR,
     DELETE_SCRIPT_TEST_INPUT_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
 )
-
-
 from tests.test_utils import (
     create_script_test_input_dir,
     create_script_test_output_dir,
     dir_test_cleanup,
 )
-
 
 # TODO: sc2_replaypack_processor by default uses another piece of software for parsing SC2 replays.
 # So it will be downloading the data from another repository.

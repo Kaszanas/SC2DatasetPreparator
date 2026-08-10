@@ -6,6 +6,8 @@ from tqdm import tqdm
 
 from datasetpreparator.utils.user_prompt import user_prompt_overwrite_ok
 
+logger = logging.getLogger(__name__)
+
 
 def move_files(
     input_path: Path,
@@ -36,19 +38,15 @@ def move_files(
     if user_prompt_overwrite_ok(path=output_path, force_overwrite=force_overwrite):
         output_path.mkdir(exist_ok=True)
 
-    logging.info(
-        f"Searching for files with extension {extension} in {str(input_path)}..."
-    )
+    logger.info(f"Searching for files with extension {extension} in {input_path!s}...")
 
     search_method = input_path.rglob if recursive else input_path.glob
     files = list(search_method(f"*{extension}"))
     if not files:
-        logging.warning(
-            f"No files with extension {extension} found in {str(input_path)}."
-        )
+        logger.warning(f"No files with extension {extension} found in {input_path!s}.")
         return
 
-    logging.info(f"Moving {len(files)} files to {str(output_path)}...")
+    logger.info(f"Moving {len(files)} files to {output_path!s}...")
 
     for file in tqdm(
         files,

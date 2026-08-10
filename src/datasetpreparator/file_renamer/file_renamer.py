@@ -6,6 +6,8 @@ import click
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import create_directory
 
+logger = logging.getLogger(__name__)
+
 
 def file_renamer(input_path: Path) -> None:
     """
@@ -23,16 +25,16 @@ def file_renamer(input_path: Path) -> None:
     """
 
     if not input_path.exists():
-        logging.error(
-            f"Input path {str(input_path)} does not exist. No files will be renamed."
+        logger.error(
+            f"Input path {input_path!s} does not exist. No files will be renamed."
         )
         return
     if not input_path.is_dir():
-        logging.error(f"Input path {str(input_path)} is not a directory.")
+        logger.error(f"Input path {input_path!s} is not a directory.")
         return
 
     if not len(list(input_path.iterdir())) > 0:
-        logging.error(f"Input path {str(input_path)} is empty. No files to rename.")
+        logger.error(f"Input path {input_path!s} is empty. No files to rename.")
         return
 
     all_files = input_path.glob("**/*")
@@ -90,8 +92,8 @@ def main(input_path: Path, log: str) -> None:
     initialize_logging(log=log)
 
     if create_directory(directory=input_path):
-        logging.error(
-            f"Input path {str(input_path)} was just created. You should fill it with files before proceeding."
+        logger.error(
+            f"Input path {input_path!s} was just created. You should fill it with files before proceeding."
         )
 
     file_renamer(input_path=input_path)

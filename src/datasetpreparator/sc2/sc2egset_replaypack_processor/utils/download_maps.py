@@ -1,11 +1,14 @@
 import logging
 from pathlib import Path
+
 from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.multiprocess import (
     pre_process_download_maps,
 )
 from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_processor_args import (
     SC2InfoExtractorGoArguments,
 )
+
+logger = logging.getLogger(__name__)
 
 
 def sc2infoextractorgo_map_download(
@@ -29,7 +32,7 @@ def sc2infoextractorgo_map_download(
     """
 
     # Pre-process, download all maps:
-    logging.info("Downloading all maps...")
+    logger.info("Downloading all maps...")
     map_download_arguments = SC2InfoExtractorGoArguments.get_download_maps_args(
         processing_input=input_path,
         maps_directory=maps_directory,

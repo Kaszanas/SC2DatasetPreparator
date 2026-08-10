@@ -1,7 +1,8 @@
+import logging
 import os
 import sys
 
-import logging
+logger = logging.getLogger(__name__)
 
 
 def pytest_sessionstart(session):
@@ -14,7 +15,7 @@ def pytest_sessionstart(session):
     path_to_add = os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.environ.get("TEST_WORKSPACE"))
     )
-    logging.info(f"Adding tests module to path {path_to_add}")
+    logger.info(f"Adding tests module to path {path_to_add}")
     sys.path.insert(0, path_to_add)
 
 
@@ -29,4 +30,4 @@ def pytest_sessionfinish(session, exitstatus):
     )
 
     sys.path.remove(path_to_remove)
-    logging.info(f"Removing tests module from path {path_to_remove}")
+    logger.info(f"Removing tests module from path {path_to_remove}")

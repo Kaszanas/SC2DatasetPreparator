@@ -1,22 +1,23 @@
 import logging
 import unittest
+
 from datasetpreparator.directory_flattener.directory_flattener import (
     multiple_directory_flattener,
 )
-
 from tests.test_settings import (
     DELETE_SCRIPT_TEST_DIR,
-    DELETE_SCRIPT_TEST_OUTPUT_DIR,
     DELETE_SCRIPT_TEST_INPUT_DIR,
+    DELETE_SCRIPT_TEST_OUTPUT_DIR,
 )
-
 from tests.test_utils import (
+    create_nested_test_directories,
     create_script_test_input_dir,
     create_script_test_output_dir,
     create_test_text_files,
-    create_nested_test_directories,
     dir_test_cleanup,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class DirectoryFlattenerTest(unittest.TestCase):
@@ -73,19 +74,19 @@ class DirectoryFlattenerTest(unittest.TestCase):
 
         # Check the number of output directories:
         self.assertEqual(self.n_dirs, len(list_of_output_dirs))
-        logging.info(f"Number of output directories: {len(list_of_output_dirs)}")
-        logging.info(f"Output directories: {list_of_output_dirs}")
+        logger.info(f"Number of output directories: {len(list_of_output_dirs)}")
+        logger.info(f"Output directories: {list_of_output_dirs}")
 
         for output_dir in list_of_output_dirs:
-            logging.info(f"Checking output directory: {output_dir}")
+            logger.info(f"Checking output directory: {output_dir}")
             # Assert the final directory have the same number of
             # files with the selected extension.
             out_files = list(output_dir.glob(f"*{self.file_extension}"))
 
-            logging.info(
+            logger.info(
                 f"Number of files with extension {self.file_extension}: {len(out_files)}"
             )
-            logging.info(f"{self.n_nested_files=}")
+            logger.info(f"{self.n_nested_files=}")
 
             # Check only the number of files with the selected extension:
             self.assertEqual(self.n_nested_files, len(out_files))

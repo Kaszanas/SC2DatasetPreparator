@@ -13,6 +13,8 @@ from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.replaypack_proces
 )
 from datasetpreparator.settings import PATH_TO_SC2INFOEXTRACTORGO
 
+logger = logging.getLogger(__name__)
+
 
 def multiprocessing_scheduler(
     processing_arguments: list[SC2InfoExtractorGoArguments],
@@ -52,7 +54,7 @@ def process_single_replaypack(arguments: SC2InfoExtractorGoArguments) -> None:
 
     copy_processed_mapping_file(arguments=arguments)
 
-    logging.debug(
+    logger.debug(
         f"Running subprocess for {arguments.processing_input} with output to {arguments.output}",
     )
 
@@ -74,7 +76,7 @@ def process_single_replaypack(arguments: SC2InfoExtractorGoArguments) -> None:
         "-skip_map_download",
     ]
 
-    subprocess.run(command)
+    subprocess.run(command, check=False)
 
 
 def copy_processed_mapping_file(arguments: SC2InfoExtractorGoArguments) -> None:
@@ -93,7 +95,7 @@ def copy_processed_mapping_file(arguments: SC2InfoExtractorGoArguments) -> None:
     ).resolve()
 
     if input_mapping_filepath.exists():
-        logging.debug(f"Found mapping json in {arguments.processing_input}")
+        logger.debug(f"Found mapping json in {arguments.processing_input}")
 
         if not arguments.output.exists():
             arguments.output.mkdir(parents=True, exist_ok=True)
@@ -102,8 +104,8 @@ def copy_processed_mapping_file(arguments: SC2InfoExtractorGoArguments) -> None:
             arguments.output, "processed_mapping.json"
         ).resolve()
 
-        logging.debug(
-            f"Copying {str(input_mapping_filepath)} to {str(output_mapping_filepath)}"
+        logger.debug(
+            f"Copying {input_mapping_filepath!s} to {output_mapping_filepath!s}"
         )
         shutil.copy(input_mapping_filepath, output_mapping_filepath)
 
@@ -134,13 +136,13 @@ def sc2egset_replaypack_processor(
             force_overwrite=force_overwrite,
         )
         if sc2_info_extractor_go_args is not None:
-            logging.debug(
+            logger.debug(
                 f"Appending {sc2_info_extractor_go_args} to multiprocessing_list"
             )
             multiprocessing_list.append(sc2_info_extractor_go_args)
 
     # Run processing with multiple SC2InfoExtractorGo instances:
-    logging.debug("Running multiprocessing_scheduler")
+    logger.debug("Running multiprocessing_scheduler")
     multiprocessing_scheduler(multiprocessing_list, int(arguments.n_processes))
 
 
@@ -168,4 +170,4 @@ def pre_process_download_maps(arguments: SC2InfoExtractorGoArguments) -> None:
         "-log_dir=logs/",
     ]
 
-    subprocess.run(command)
+    subprocess.run(command, check=False)

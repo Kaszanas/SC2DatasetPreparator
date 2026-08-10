@@ -7,6 +7,8 @@ import click
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import user_prompt_overwrite_ok
 
+logger = logging.getLogger(__name__)
+
 
 def merge_files(path_to_json_one: Path, path_to_json_two: Path) -> dict[str, str]:
     """
@@ -92,7 +94,7 @@ def json_merger(
     # at this stage no merging of JSON files has been done yet.
     # User won't have to wait for the files to be merged to be prompted.
     if not user_prompt_overwrite_ok(output_filepath, force_overwrite):
-        logging.error("User did not confirm possible overwrite. Exiting...")
+        logger.error("User did not confirm possible overwrite. Exiting...")
         return Path("")
 
     output_dict = merge_files(

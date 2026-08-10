@@ -1,6 +1,8 @@
 import logging
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 
 def user_prompt_overwrite_ok(path: Path, force_overwrite: bool) -> bool:
     """
@@ -28,12 +30,12 @@ def user_prompt_overwrite_ok(path: Path, force_overwrite: bool) -> bool:
     # File or directory does not exist, so it can be created,
     # there is no risk of overwriting anything:
     if not path.exists():
-        logging.debug(f"Path {str(path.resolve())} does not exist. Safe to create.")
+        logger.debug(f"Path {path.resolve()!s} does not exist. Safe to create.")
         return True
 
     # Directory is empty, so it can be overwritten without any risk:
     if path.is_dir() and len(list(path.iterdir())) == 0:
-        logging.debug(f"Directory {str(path.resolve())} is empty. Safe to overwrite.")
+        logger.debug(f"Directory {path.resolve()!s} is empty. Safe to overwrite.")
         return True
 
     return_map = {
@@ -47,12 +49,12 @@ def user_prompt_overwrite_ok(path: Path, force_overwrite: bool) -> bool:
     user_input = input("Do you want to overwrite it? (y/n): ")
 
     if user_input.lower() in return_map:
-        logging.debug(
+        logger.debug(
             f"User input: {user_input.lower()}, returning: {return_map[user_input.lower()]}"
         )
         return return_map[user_input.lower()]
 
-    logging.debug(
+    logger.debug(
         f"Invalid input provided: {user_input.lower()}, calling the function recursively."
     )
     print("Invalid input, please type 'y' or 'n'.")

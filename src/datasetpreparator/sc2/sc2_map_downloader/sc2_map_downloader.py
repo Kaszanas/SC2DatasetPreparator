@@ -9,6 +9,8 @@ from datasetpreparator.sc2.sc2egset_replaypack_processor.utils.download_maps imp
 from datasetpreparator.utils.logging import initialize_logging
 from datasetpreparator.utils.user_prompt import create_directory
 
+logger = logging.getLogger(__name__)
+
 
 def sc2_map_downloader(input_path: Path, output_path: Path) -> Path:
     """
@@ -73,8 +75,8 @@ def sc2_map_downloader(input_path: Path, output_path: Path) -> Path:
 )
 def main(input_path: Path, output_path: Path, log: str) -> None:
     if create_directory(directory=input_path):
-        logging.error(
-            f"Input path {str(input_path)} was just created. You should fill it with files before proceeding."
+        logger.error(
+            f"Input path {input_path!s} was just created. You should fill it with files before proceeding."
         )
         return
 
@@ -87,7 +89,7 @@ def main(input_path: Path, output_path: Path, log: str) -> None:
         output_path=output_path,
     )
 
-    logging.info(f"Finished downloading maps to: {str(output_dir)}")
+    logger.info(f"Finished downloading maps to: {output_dir!s}")
 
 
 if __name__ == "__main__":
